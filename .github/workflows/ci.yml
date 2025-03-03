@@ -9,10 +9,14 @@ on:
     paths:
       - '**.py'
       - '.github/**'
+      - requirements.txt
+      - requirements-dev.txt
   pull_request:
     paths:
       - '**.py'
       - '.github/**'
+      - requirements.txt
+      - requirements-dev.txt
 
 # Workflow tasks
 jobs:
