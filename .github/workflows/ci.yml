@@ -2,7 +2,17 @@
 name: CI
 
 # Workflow trigger
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - overhaul/master
+    paths:
+      - '**.py'
+      - '.github/**'
+  pull_request:
+    paths:
+      - '**.py'
+      - '.github/**'
 
 # Workflow tasks
 jobs:
