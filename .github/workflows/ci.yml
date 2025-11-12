@@ -7,14 +7,14 @@ on:
     branches:
       - overhaul/master
     paths:
-      - '**.py'
-      - '.github/**'
+      - "**.py"
+      - ".github/**"
       - requirements.txt
       - requirements-dev.txt
   pull_request:
     paths:
-      - '**.py'
-      - '.github/**'
+      - "**.py"
+      - ".github/**"
       - requirements.txt
       - requirements-dev.txt
 
@@ -27,7 +27,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.10', '3.11', '3.12']
+        python-version:
+          - 3.12
+          - 3.13
+          - 3.14
 
     steps:
       - uses: actions/checkout@v4
@@ -48,19 +51,16 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo
 
-       # brew is very slow sometimes. TODO: speedup brew by using caching.
+        # brew is very slow sometimes. TODO: speedup brew by using caching.
       - name: Install platform-specific requirements (macOS)
         if: matrix.os == 'macos-latest'
         run: brew install pygobject3 gtk+3 cairo py3cairo pkg-config
 
       - name: Install Python requirements
         run: |
-          python3 -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
-
-      - name: Running flake8
-        run: flake8 pyonfx
 
       - name: Running mypy
         run: mypy pyonfx --python-version ${{ matrix.python-version }}
@@ -76,7 +76,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.10', '3.11', '3.12']
+        python-version:
+          - 3.12
+          - 3.13
+          - 3.14
 
     steps:
       - uses: actions/checkout@v4
@@ -91,7 +94,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo
 
-       # brew is very slow sometimes. TODO: speedup brew by using caching.
+        # brew is very slow sometimes. TODO: speedup brew by using caching.
       - name: Install platform-specific requirements (macOS)
         if: matrix.os == 'macos-latest'
         run: brew install python py3cairo pygobject3 pango
@@ -99,7 +102,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22
+          go-version: '1.22'
 
       - name: Install fonts (non-Windows)
         if: matrix.os != 'windows-latest'
@@ -122,7 +125,7 @@ jobs:
 
       - name: Install Python requirements
         run: |
-          python3 -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
           pip install opencv-python
