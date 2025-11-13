@@ -67,10 +67,6 @@ jobs:
       - name: Running mypy
         run: mypy pyonfx --python-version ${{ matrix.python-version }}
 
-      - name: Cancelling pipeline (failed)
-        if: failure()
-        uses: andymckay/cancel-action@0.5
-
   # Execute pytest to check PyonFX's functionalities
   test:
     name: "Test (${{matrix.os}}, Python ${{ matrix.python-version }})"
