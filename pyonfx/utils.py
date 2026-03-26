@@ -243,7 +243,7 @@ class ColorUtility:
             CU = ColorUtility(lines)
             # Parsing just a single line (the first in this case) in the file
             CU = ColorUtility([line[0]])
-    """  # noqa: E501
+    """
 
     color_changes: list[dict[str, Any]]
     c1_req: bool
