@@ -141,7 +141,7 @@ class Font(_AbstractFont):
             path = self.context.copy_path()
 
             # Convert points to shape
-            for ptype, ppath in path:  # type: ignore[attr-defined]
+            for ptype, ppath in path:
                 if ptype == 0:
                     cmds.append(DC(m, (ppath[0] + x_add, ppath[1])))
                 elif ptype == 1:

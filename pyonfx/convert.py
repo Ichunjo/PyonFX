@@ -168,8 +168,8 @@ class ConvertColour:
     @staticmethod
     def rgb_to_xyz(r: float, g: float, b: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_RGB_to_XYZ.html
-        rgb_mat = np.array((r, g, b), np.float64)  # type: ignore[var-annotated]
-        conv_mat = np.array(  # type: ignore[var-annotated]
+        rgb_mat = np.array((r, g, b), np.float64)
+        conv_mat = np.array(
             [(0.4124564, 0.3575761, 0.1804375),
              (0.2126729, 0.7151522, 0.0721750),
              (0.0193339, 0.1191920, 0.9503041)],
@@ -180,7 +180,7 @@ class ConvertColour:
             rgb_mat / 12.92,
             ((rgb_mat + 0.055) / 1.055) ** 2.4
         )
-        return tuple(np.dot(conv_mat, np.array([*inv_srgb_comp])))  # type: ignore
+        return tuple(np.dot(conv_mat, np.array([*inv_srgb_comp])))
 
     @classmethod
     def rgb_to_xyy(cls, r: float, g: float, b: float) -> tuple[float, float, float]:
@@ -270,8 +270,8 @@ class ConvertColour:
     @staticmethod
     def xyz_to_rgb(x: float, y: float, z: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_RGB.html
-        xyz_mat = np.array((x, y, z), np.float64)  # type: ignore[var-annotated]
-        conv_mat = np.array(  # type: ignore[var-annotated]
+        xyz_mat = np.array((x, y, z), np.float64)
+        conv_mat = np.array(
             [(3.2404542, -1.5371385, -0.4985314),
              (-0.9692660, 1.8760108, 0.0415560),
              (0.0556434, -0.2040259, 1.0572252)],
@@ -283,7 +283,7 @@ class ConvertColour:
             linear_rgb * 12.92,
             1.055 * linear_rgb ** (1 / 2.4) - 0.055
         )
-        return tuple(map(lambda a: clamp_value(a, 0.0, 1.0), srgb_comp))  # type: ignore
+        return tuple(map(lambda a: clamp_value(a, 0.0, 1.0), srgb_comp))
 
     # -------------------------------------------------------------------------
     # ---------------------------- xyY Conversions ----------------------------

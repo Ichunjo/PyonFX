@@ -44,8 +44,8 @@ class Cartesian2D(Coordinates, ABC, empty_slots=True):
         :param zp:              Zero point where the rotation will be performed, defaults to (0, 0)
         """
         theta = radians(rot)
-        R = np.array([(cos(theta), -sin(theta)), (sin(theta), cos(theta))], np.float32)  # type: ignore[var-annotated]
-        O, P = np.atleast_2d(np.asanyarray(zp, np.float32)), np.atleast_2d(np.asanyarray(self, np.float32))  # type: ignore[var-annotated]
+        R = np.array([(cos(theta), -sin(theta)), (sin(theta), cos(theta))], np.float32)
+        O, P = np.atleast_2d(np.asanyarray(zp, np.float32)), np.atleast_2d(np.asanyarray(self, np.float32))
         for attr, value in zip(self.__slots__, np.squeeze((R @ (P.T - O.T) + O.T).T)):
             setattr(self, attr, float(value))
 
@@ -82,8 +82,8 @@ class Cartesian3D(Cartesian2D, ABC, empty_slots=True):
             raise ValueError(f'{self.__class__.__name__}: Wrong axis number') from i_err
 
         R = rmat(radians(rot))
-        O = np.atleast_3d(np.asanyarray(zp, np.float32))  # type: ignore[var-annotated]
-        P = np.atleast_3d(np.asanyarray(self, np.float32))  # type: ignore[var-annotated]
+        O = np.atleast_3d(np.asanyarray(zp, np.float32))
+        P = np.atleast_3d(np.asanyarray(self, np.float32))
 
         for attr, value in zip(self.__slots__, np.squeeze((R @ (P.T - O.T) + O.T).T)):
             setattr(self, attr, float(value))

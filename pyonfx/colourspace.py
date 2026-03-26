@@ -179,7 +179,7 @@ class _NumBased(ColourSpace[Nb], ABC, empty_slots=True):
     def interpolate(self: _NumBasedT, nobj: _NumBasedT, pct: Pct, /) -> _NumBasedT:
         if not isinstance(nobj, self.__class__):
             raise ValueError(f'{self.__class__.__name__}: {nobj} is not of the same type')
-        return self.__class__(tuple(  # type: ignore[var-annotated]
+        return self.__class__(tuple(
             (1 - pct) * cs1_val + pct * cs2_val
             for cs1_val, cs2_val in zip(self, nobj)
         ))
@@ -256,7 +256,7 @@ class _BaseRGB(ColourSpace[Nb], ABC, empty_slots=True):
 
     def to_rgb(self, rgb_type: type[_RGB_T], /) -> _RGB_T:
         if type(self) is rgb_type:
-            return self.__copy__()  # type: ignore
+            return self.__copy__()
 
         newpeaks = rgb_type.peaks
 
@@ -313,7 +313,7 @@ class _RGBNoAlpha(_BaseRGB[Nb], ABC, empty_slots=True):
 
         :param _x:          Colourspace object or tuple of three numbers R, G and B values
         """
-        return super().__new__(cls, _x)  # type: ignore[arg-type]
+        return super().__new__(cls, _x)
 
     def __init__(self, _x: ColourSpace[ACV] | tuple[Nb, Nb, Nb]) -> None:
         """
@@ -338,7 +338,7 @@ class _RGBAlpha(_BaseRGB[Nb], ABC, empty_slots=True):
                             or tuple of three numbers R, G and B values
                             or tuple of four numbers R, G, B and Alpha values
         """
-        return super().__new__(cls, _x)  # type: ignore[arg-type]
+        return super().__new__(cls, _x)
 
     def __init__(self, _x: ColourSpace[ACV] | tuple[Nb, Nb, Nb] | tuple[Nb, Nb, Nb, Nb]) -> None:
         """
@@ -928,12 +928,12 @@ class HTML(_HexBased):
             r, g, b = map(self.hex_to_int, fmatch.groups())
             self._rgb = RGB((r, g, b))
         elif _istup3(_x, int):
-            self._rgb = RGB(_x)  # type: ignore[arg-type]
+            self._rgb = RGB(_x)
             seq = ''.join(hex(x)[2:].zfill(2) for x in self._rgb)
         elif _istup3(_x, str):
-            r, g, b = map(self.hex_to_int, _x)  # type: ignore[arg-type]
+            r, g, b = map(self.hex_to_int, _x)
             self._rgb = RGB((r, g, b))
-            seq = ''.join(_x)  # type: ignore[arg-type]
+            seq = ''.join(_x)
         else:
             raise NotImplementedError
 
@@ -1032,12 +1032,12 @@ class ASSColor(_HexBased):
             r, g, b = map(self.hex_to_int, fmatch.groups()[::-1])
             self._rgb = RGB((r, g, b))
         elif _istup3(_x, int):
-            self._rgb = RGB(_x[::-1])  # type: ignore[arg-type]
+            self._rgb = RGB(_x[::-1])
             seq = ''.join(hex(x)[2:].zfill(2) for x in _x)
         elif _istup3(_x, str):
-            r, g, b = map(self.hex_to_int, _x)  # type: ignore[arg-type]
+            r, g, b = map(self.hex_to_int, _x)
             self._rgb = RGB((r, g, b))
-            seq = ''.join(_x)  # type: ignore[arg-type]
+            seq = ''.join(_x)
         else:
             raise NotImplementedError
         self.data = "&H" + seq.upper() + "&"

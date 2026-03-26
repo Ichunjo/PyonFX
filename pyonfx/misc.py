@@ -34,7 +34,7 @@ def chunk(iterable: Iterable[T_co], size: Literal[3]) -> Iterator[tuple[T_co, T_
     ...
 
 
-def chunk(iterable: Iterable[T_co], size: int = 2) -> Iterator[tuple[T_co, ...]]:  # type: ignore
+def chunk(iterable: Iterable[T_co], size: int = 2) -> Iterator[tuple[T_co, ...]]:
     """
     Split an iterable of arbitrary length into equal size chunks
 

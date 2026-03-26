@@ -593,7 +593,7 @@ class ScriptInfo(_MetaData, slots_ex=True, slots_ex_exclude='play_res'):
         si.title = 'Default Aegisub file'
         si.script_type = 'v4.00+'
         si.wrap_style = 0
-        si.scaled_border_and_shadow = True  # type: ignore[assignment]
+        si.scaled_border_and_shadow = True
         si.y_cb_cr__matrix = 'None'
         return si
 
@@ -1023,8 +1023,8 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
         :param input_fps:   Original FPS
         :param output_fps:  Target FPS
         """
-        self.start_time *= input_fps / output_fps  # type: ignore[assignment]
-        self.end_time *= input_fps / output_fps  # type: ignore[assignment]
+        self.start_time *= input_fps / output_fps
+        self.end_time *= input_fps / output_fps
 
     def to_shape(self, fscx: float | None = None, fscy: float | None = None, copy: bool = True) -> Shape:
         """

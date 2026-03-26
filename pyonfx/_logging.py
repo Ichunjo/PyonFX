@@ -13,7 +13,7 @@ import loguru
 loguru.logger.remove(0)
 
 
-F = TypeVar('F', bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])
 
 
 class LogLevel(IntEnum):
@@ -29,8 +29,8 @@ class LogLevel(IntEnum):
 
 
 def _loguru_format(record: loguru.Record) -> str:
-    if record['extra']['user'] and record['level'].no >= 60 and record['extra']['level'] >= 40:
-        return '<level>{message}</level>\n'
+    if record["extra"]["user"] and record["level"].no >= 60 and record["extra"]["level"] >= 40:
+        return "<level>{message}</level>\n"
 
     return (
         "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
@@ -51,24 +51,29 @@ class SingletonMeta(ABCMeta):
         return cls._instances[cls]
 
 
-class Singleton(ABC, metaclass=SingletonMeta):
-    ...
+class Singleton(ABC, metaclass=SingletonMeta): ...
 
 
 class Logger(Singleton):
-    __slots__ = ('__id', '__level')
+    __slots__ = ("__id", "__level")
 
     def __init__(self) -> None:
         self.__level = 40
         ids_ = loguru.logger.configure(
             handlers=[
-                dict(sink=sys.stderr, level=self.__level, format=_loguru_format, backtrace=True, diagnose=True)
+                {
+                    "sink": sys.stderr,
+                    "level": self.__level,
+                    "format": _loguru_format,
+                    "backtrace": True,
+                    "diagnose": True,
+                }
             ],
-            levels=[  # type: ignore
-                dict(name='USER WARNING', no=LogLevel.USER_WARNING, color='<yellow><bold>'),
-                dict(name='USER INFO', no=LogLevel.USER_INFO, color='<white><bold>')
+            levels=[
+                {"name": "USER WARNING", "no": LogLevel.USER_WARNING, "color": "<yellow><bold>"},
+                {"name": "USER INFO", "no": LogLevel.USER_INFO, "color": "<white><bold>"},
             ],
-            extra=dict(user=False, level=self.__level)
+            extra=dict(user=False, level=self.__level),
         )
         self.__id = ids_.pop(0)
 
@@ -97,18 +102,16 @@ class Logger(Singleton):
         sys.exit(1)
 
     def user_warning(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=True, level=self.__level).log('USER WARNING', str(message))
+        loguru.logger.opt(depth=depth).bind(user=True, level=self.__level).log("USER WARNING", str(message))
 
     def user_info(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=True, level=self.__level).log('USER INFO', str(message))
+        loguru.logger.opt(depth=depth).bind(user=True, level=self.__level).log("USER INFO", str(message))
 
     @overload
-    def catch(self, func: F, /) -> F:
-        ...
+    def catch(self, func: F, /) -> F: ...
 
     @overload
-    def catch(self, /, *, force_exit: bool = ...) -> Callable[[F], F]:
-        ...
+    def catch(self, /, *, force_exit: bool = ...) -> Callable[[F], F]: ...
 
     def catch(self, func: F | None = None, /, *, force_exit: bool = False) -> F | Callable[[F], F]:
         if func is None:
