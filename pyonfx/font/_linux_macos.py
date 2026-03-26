@@ -2,8 +2,8 @@ import html
 from functools import cache, cached_property, lru_cache
 from typing import TYPE_CHECKING, Any
 
-import cairo  # type: ignore
-import gi  # type: ignore
+import cairo  # pyright: ignore[reportMissingImports]
+import gi  # pyright: ignore[reportMissingImports]
 
 gi.require_version("Pango", "1.0")
 gi.require_version("PangoCairo", "1.0")
