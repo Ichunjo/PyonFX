@@ -34,12 +34,14 @@ class Image:
         :return:            List of Pixel
         """
         import cv2  # type: ignore
+
         img_bgr = cv2.imread(str(self.path))
         rows, columns, channels = img_bgr.shape
         return [
             Pixel(
-                PointCartesian2D(co, ro), Opacity(1.0),
-                ASSColor(tuple(map(int, (img_bgr[ro, co, ch] for ch in range(channels)))))  # type: ignore
+                PointCartesian2D(co, ro),
+                Opacity(1.0),
+                ASSColor(tuple(map(int, (img_bgr[ro, co, ch] for ch in range(channels))))),  # type: ignore
             )
             for ro in range(rows)
             for co in range(columns)

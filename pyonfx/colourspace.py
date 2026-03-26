@@ -1,4 +1,5 @@
 """Colourspace module"""
+
 from __future__ import annotations
 
 __all__ = [
@@ -27,7 +28,7 @@ __all__ = [
     "Lab",
     "Luv",
     "Opacity",
-    "xyY"
+    "xyY",
 ]
 
 import re
@@ -196,10 +197,7 @@ class _NumBased(ColourSpace[Nb], ABC, empty_slots=True):
     def interpolate(self, nobj: Self, pct: Pct, /) -> Self:
         if not isinstance(nobj, self.__class__):
             raise ValueError(f"{self.__class__.__name__}: {nobj} is not of the same type")
-        return self.__class__(tuple(
-            (1 - pct) * cs1_val + pct * cs2_val
-            for cs1_val, cs2_val in zip(self, nobj)
-        ))
+        return self.__class__(tuple((1 - pct) * cs1_val + pct * cs2_val for cs1_val, cs2_val in zip(self, nobj)))
 
 
 class _ForceNumber(_NumBased[Nb], ABC, empty_slots=True):
@@ -217,11 +215,7 @@ class _ForceNumber(_NumBased[Nb], ABC, empty_slots=True):
         if name in {"peaks", "force_type"}:
             raise ValueError(f"{self.__class__.__name__}: Can't change {name}")
         if not name.startswith("_"):
-            value = clamp_value(
-                self.force_type(value),
-                self.force_type(self.peaks[0]),
-                self.force_type(self.peaks[1])
-            )
+            value = clamp_value(self.force_type(value), self.force_type(self.peaks[0]), self.force_type(self.peaks[1]))
         super().__setattr__(name, value)
 
     @logger.catch
@@ -248,11 +242,13 @@ class _ForceFloat(_ForceNumber[float], ABC, empty_slots=True):
 
 class _ForceInt(_ForceNumber[int], ABC, empty_slots=True):
     """Force values to int (truncate them if necessary) and clamp in the range peaks"""
+
     force_type: type[int] = int
 
 
 class _BaseRGB(ColourSpace[Nb], ABC, empty_slots=True):
     """Base class for RGB colourspaces"""
+
     r: Nb
     """Red value"""
     g: Nb
@@ -314,11 +310,7 @@ class _BaseRGB(ColourSpace[Nb], ABC, empty_slots=True):
         return HTML((r, g, b))
 
     def to_ass_color(self) -> ASSColor:
-        return ASSColor(
-            "&H"
-            + "".join(hex(x)[2:].zfill(2) for x in reversed(self.to_rgb(RGB)))
-            + "&"
-        )
+        return ASSColor("&H" + "".join(hex(x)[2:].zfill(2) for x in reversed(self.to_rgb(RGB))) + "&")
 
 
 class _RGBNoAlpha(_BaseRGB[Nb], ABC, empty_slots=True):
@@ -375,19 +367,16 @@ class _RGBAlpha(_BaseRGB[Nb], ABC, empty_slots=True):
             super().__init__(_x)
 
 
-
 class RGBS(_RGBNoAlpha[float], _ForceFloat):
     """RGB colourspace in range 0.0 - 1.0"""
 
-    peaks: tuple[float, float] = (0., 1.)
+    peaks: tuple[float, float] = (0.0, 1.0)
 
     @overload
-    def __init__(self, _x: ColourSpace[TCV_co], /) -> None:
-        ...
+    def __init__(self, _x: ColourSpace[TCV_co], /) -> None: ...
 
     @overload
-    def __init__(self, _x: tuple[float, float, float], /) -> None:
-        ...
+    def __init__(self, _x: tuple[float, float, float], /) -> None: ...
 
     def __init__(self, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> None:
         super().__init__(_x)
@@ -396,35 +385,33 @@ class RGBS(_RGBNoAlpha[float], _ForceFloat):
 class RGBAS(_RGBAlpha[float], _ForceFloat):
     """RGB with alpha colourspace in range 0.0 - 1.0"""
 
-    peaks: tuple[float, float] = (0., 1.)
+    peaks: tuple[float, float] = (0.0, 1.0)
 
     @overload
-    def __init__(self, _x: ColourSpace[TCV_co], /) -> None:
-        ...
+    def __init__(self, _x: ColourSpace[TCV_co], /) -> None: ...
 
     @overload
-    def __init__(self, _x: tuple[float, float, float], /) -> None:
-        ...
+    def __init__(self, _x: tuple[float, float, float], /) -> None: ...
 
     @overload
-    def __init__(self, _x: tuple[float, float, float, float], /) -> None:
-        ...
+    def __init__(self, _x: tuple[float, float, float, float], /) -> None: ...
 
-    def __init__(self, _x: ColourSpace[TCV_co] | tuple[float, float, float] | tuple[float, float, float, float]) -> None:
+    def __init__(
+        self, _x: ColourSpace[TCV_co] | tuple[float, float, float] | tuple[float, float, float, float]
+    ) -> None:
         super().__init__(_x)
 
 
 class RGB(_RGBNoAlpha[int], _ForceInt):
     """RGB colourspace in range 0 - 255"""
-    peaks: tuple[int, int] = (0, (2 ** 8) - 1)
+
+    peaks: tuple[int, int] = (0, (2**8) - 1)
 
     @overload
-    def __init__(self, _x: ColourSpace[TCV_co], /) -> None:
-        ...
+    def __init__(self, _x: ColourSpace[TCV_co], /) -> None: ...
 
     @overload
-    def __init__(self, _x: tuple[int, int, int], /) -> None:
-        ...
+    def __init__(self, _x: tuple[int, int, int], /) -> None: ...
 
     def __init__(self, _x: ColourSpace[TCV_co] | tuple[int, int, int]) -> None:
         super().__init__(_x)
@@ -436,40 +423,41 @@ class RGB24(RGB):
 
 class RGB30(RGB, slots_ex=True):
     """RGB colourspace in range 0 - 1023"""
-    peaks: tuple[int, int] = (0, (2 ** 10) - 1)
+
+    peaks: tuple[int, int] = (0, (2**10) - 1)
 
 
 class RGB36(RGB):
     """RGB colourspace in range 0 - 4095"""
-    peaks: tuple[int, int] = (0, (2 ** 12) - 1)
+
+    peaks: tuple[int, int] = (0, (2**12) - 1)
 
 
 class RGB42(RGB):
     """RGB colourspace in range 0 - 16383"""
-    peaks: tuple[int, int] = (0, (2 ** 14) - 1)
+
+    peaks: tuple[int, int] = (0, (2**14) - 1)
 
 
 class RGB48(RGB):
     """RGB colourspace in range 0 - 65535"""
-    peaks: tuple[int, int] = (0, (2 ** 16) - 1)
+
+    peaks: tuple[int, int] = (0, (2**16) - 1)
 
 
 class RGBA(_RGBAlpha[int], _ForceInt):
     """RGB with alpha colourspace in range 0 - 255"""
 
-    peaks: tuple[int, int] = (0, (2 ** 8) - 1)
+    peaks: tuple[int, int] = (0, (2**8) - 1)
 
     @overload
-    def __init__(self, _x: ColourSpace[TCV_co], /) -> None:
-        ...
+    def __init__(self, _x: ColourSpace[TCV_co], /) -> None: ...
 
     @overload
-    def __init__(self, _x: tuple[int, int, int], /) -> None:
-        ...
+    def __init__(self, _x: tuple[int, int, int], /) -> None: ...
 
     @overload
-    def __init__(self, _x: Tup4[int], /) -> None:
-        ...
+    def __init__(self, _x: Tup4[int], /) -> None: ...
 
     def __init__(self, _x: ColourSpace[TCV_co] | tuple[int, int, int] | Tup4[int]) -> None:
         super().__init__(_x)
@@ -481,22 +469,26 @@ class RGBA32(RGBA):
 
 class RGBA40(RGBA):
     """RGB with alpha colourspace in range 0 - 1023"""
-    peaks: tuple[int, int] = (0, (2 ** 10) - 1)
+
+    peaks: tuple[int, int] = (0, (2**10) - 1)
 
 
 class RGBA48(RGBA):
     """RGB with alpha colourspace in range 0 - 4095"""
-    peaks: tuple[int, int] = (0, (2 ** 12) - 1)
+
+    peaks: tuple[int, int] = (0, (2**12) - 1)
 
 
 class RGBA56(RGBA):
     """RGB with alpha colourspace in range 0 - 16383"""
-    peaks: tuple[int, int] = (0, (2 ** 14) - 1)
+
+    peaks: tuple[int, int] = (0, (2**14) - 1)
 
 
 class RGBA64(RGBA):
     """RGB with alpha colourspace in range 0 - 65535"""
-    peaks: tuple[int, int] = (0, (2 ** 16) - 1)
+
+    peaks: tuple[int, int] = (0, (2**16) - 1)
 
 
 class _HueSaturationBased(_ForceFloat, ColourSpace[float], ABC, empty_slots=True):
@@ -508,7 +500,7 @@ class _HueSaturationBased(_ForceFloat, ColourSpace[float], ABC, empty_slots=True
     s: float
     """Saturation"""
 
-    peaks: tuple[float, float] = (0., 1.)
+    peaks: tuple[float, float] = (0.0, 1.0)
 
     @abstractmethod
     def __init__(self, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> None:
@@ -562,7 +554,7 @@ class _HueSaturationBased(_ForceFloat, ColourSpace[float], ABC, empty_slots=True
 
         :return:            Tuple of float with H in range 0.0 - 360.0
         """
-        return cast(tuple[float, float, float], (self.h * 360, *(*self, )[1:3]))
+        return cast(tuple[float, float, float], (self.h * 360, *(*self,)[1:3]))
 
 
 class HSL(_HueSaturationBased):
@@ -692,7 +684,7 @@ class Opacity(ColourSpace[float]):
                         0.0 means full transparent
         """
         super().__init__()
-        self.value = clamp_value(_x, 0., 1.0)
+        self.value = clamp_value(_x, 0.0, 1.0)
 
     @property
     def ass_hex(self) -> str:
@@ -950,20 +942,16 @@ class ASSColor(_HexBased):
     data: str
 
     @overload
-    def __new__(cls, _x: str) -> ASSColor:
-        ...
+    def __new__(cls, _x: str) -> ASSColor: ...
 
     @overload
-    def __new__(cls, _x: tuple[str, str, str]) -> ASSColor:
-        ...
+    def __new__(cls, _x: tuple[str, str, str]) -> ASSColor: ...
 
     @overload
-    def __new__(cls, _x: tuple[int, int, int]) -> ASSColor:
-        ...
+    def __new__(cls, _x: tuple[int, int, int]) -> ASSColor: ...
 
     @overload
-    def __new__(cls, _x: ColourSpace[TCV_co]) -> ASSColor:
-        ...
+    def __new__(cls, _x: ColourSpace[TCV_co]) -> ASSColor: ...
 
     def __new__(cls, _x: str | tuple[str, str, str] | tuple[int, int, int] | ColourSpace[TCV_co]) -> ASSColor:
         return _x.to_ass_color() if not isinstance(_x, (str, tuple)) else super().__new__(cls)
@@ -1070,7 +1058,7 @@ class XYZ(XYZBased):
     z: float
     """Quasi-equal to blue value"""
 
-    peaks: tuple[float, float] = (0., 1.)
+    peaks: tuple[float, float] = (0.0, 1.0)
 
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co], /) -> XYZ:
@@ -1136,11 +1124,12 @@ class XYZ(XYZBased):
 
 class xyY(XYZBased):
     """xyY colourspace object"""
+
     x: float
     y: float
     Y: float
 
-    peaks: tuple[float, float] = (0, 1.)
+    peaks: tuple[float, float] = (0, 1.0)
 
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co]) -> xyY:
@@ -1206,6 +1195,7 @@ class xyY(XYZBased):
 
 class Lab(XYZBased):
     """Lab colourspace object based on Cartesian coordinates"""
+
     L: float
     """Lightness value"""
     a: float
@@ -1219,7 +1209,7 @@ class Lab(XYZBased):
     with negative numbers toward blue and positive toward yellow
     """
 
-    peaks: tuple[float, float] = (-50000., 50000)
+    peaks: tuple[float, float] = (-50000.0, 50000)
 
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co]) -> Lab:
@@ -1298,7 +1288,7 @@ class LCHab(XYZBased):
     H: float
     """Hue angle, angle of the hue in the CIELAB color wheel"""
 
-    peaks: tuple[float, float] = (-50000., 50000)
+    peaks: tuple[float, float] = (-50000.0, 50000)
 
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co]) -> LCHab:
@@ -1370,7 +1360,7 @@ class Luv(XYZBased):
     u: float
     v: float
 
-    peaks: tuple[float, float] = (-50000., 50000)
+    peaks: tuple[float, float] = (-50000.0, 50000)
 
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co]) -> Luv:
@@ -1449,7 +1439,7 @@ class LCHuv(XYZBased):
     H: float
     """Hue angle, angle of the hue in the CIELAB color wheel"""
 
-    peaks: tuple[float, float] = (-50000., 50000)
+    peaks: tuple[float, float] = (-50000.0, 50000)
 
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co]) -> LCHuv:

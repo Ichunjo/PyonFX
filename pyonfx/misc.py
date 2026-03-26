@@ -26,13 +26,11 @@ def clamp_value(val: Nb, min_val: Nb, max_val: Nb) -> Nb:
 
 
 @overload
-def chunk(iterable: Iterable[T_co], size: Literal[2] = 2) -> Iterator[tuple[T_co, T_co]]:
-    ...
+def chunk(iterable: Iterable[T_co], size: Literal[2] = 2) -> Iterator[tuple[T_co, T_co]]: ...
 
 
 @overload
-def chunk(iterable: Iterable[T_co], size: Literal[3]) -> Iterator[tuple[T_co, T_co, T_co]]:
-    ...
+def chunk(iterable: Iterable[T_co], size: Literal[3]) -> Iterator[tuple[T_co, T_co, T_co]]: ...
 
 
 def chunk(iterable: Iterable[T_co], size: int = 2) -> Iterator[tuple[T_co, ...]]:
@@ -59,8 +57,11 @@ def frange(start: float, stop: float, step: float) -> Iterator[float]:
     """
     # from more_itertools import numeric_range
     # return iter(numeric_range(start, stop, step))
-    return iter(map(lambda x: float(x), np.linspace(start, stop, round((stop - start) / step),
-                                                    endpoint=False, dtype=np.float64)))
+    return iter(
+        map(
+            lambda x: float(x), np.linspace(start, stop, round((stop - start) / step), endpoint=False, dtype=np.float64)
+        )
+    )
 
 
 def cround(x: float) -> int:

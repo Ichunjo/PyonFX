@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 from functools import cached_property
@@ -35,17 +34,18 @@ class _Process:
 
     @cached_property
     def originals(self) -> list[str]:
-        return [
-            f"Dialogue: 0,{t.start},{t.end},Default,,0,0,0,,"
-            for t in self.times
-        ][:20]
+        return [f"Dialogue: 0,{t.start},{t.end},Default,,0,0,0,," for t in self.times][:20]
 
     @cached_property
     def processed(self) -> list[Line]:
         return [
             Line.from_text(
                 f"Dialogue: 0,{t.start},{t.end},Default,,0,0,0,,",
-                i, FPS, self.io.meta, self.io.styles, fix_timestamps=True
+                i,
+                FPS,
+                self.io.meta,
+                self.io.styles,
+                fix_timestamps=True,
             )
             for i, t in enumerate(self.times)
         ][:20]
@@ -64,12 +64,12 @@ def test_convert_time0() -> None:
         check.equal(
             ConvertTime.ts2seconds(ostart),
             ConvertTime.ts2seconds(tstart),
-            msg="Start line n°" + str(i) + " | " + ostart + " == " + tstart
+            msg="Start line n°" + str(i) + " | " + ostart + " == " + tstart,
         )
         check.equal(
             ConvertTime.ts2seconds(oend),
             ConvertTime.ts2seconds(tend),
-            msg="End line n°" + str(i) + " | " + oend + " == " + tend
+            msg="End line n°" + str(i) + " | " + oend + " == " + tend,
         )
 
 
@@ -89,12 +89,12 @@ def test_convert_time1() -> None:
         check.equal(
             ConvertTime.ts2seconds(ostart),
             ConvertTime.ts2seconds(tstart),
-            msg="Start line n°" + str(i) + " | " + ostart + " == " + tstart
+            msg="Start line n°" + str(i) + " | " + ostart + " == " + tstart,
         )
         check.equal(
             ConvertTime.ts2seconds(oend),
             ConvertTime.ts2seconds(tend),
-            msg="End line n°" + str(i) + " | " + oend + " == " + tend
+            msg="End line n°" + str(i) + " | " + oend + " == " + tend,
         )
 
 
@@ -139,12 +139,12 @@ def test_convert_time3() -> None:
         check.equal(
             ConvertTime.ts2seconds(ostart),
             ConvertTime.ts2seconds(tstart),
-            msg="Start line n°" + str(i) + " | " + ostart + " == " + tstart
+            msg="Start line n°" + str(i) + " | " + ostart + " == " + tstart,
         )
         check.equal(
             ConvertTime.ts2seconds(oend),
             ConvertTime.ts2seconds(tend),
-            msg="End line n°" + str(i) + " | " + oend + " == " + tend
+            msg="End line n°" + str(i) + " | " + oend + " == " + tend,
         )
 
 

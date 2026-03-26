@@ -12,6 +12,7 @@ from .coordinates import Axis, Coordinates
 
 class CartesianAxis(Axis):
     """Simple Enum for Cartesian axis"""
+
     X = 0
     Y = 1
     Z = 2
@@ -36,7 +37,7 @@ class Cartesian2D(Coordinates, ABC, empty_slots=True):
         # Faster access than using super()
         NamedMutableSequence.__init__(self, x=x, y=y)
 
-    def __rotate__(self, rot: float, axis: CartesianAxis = CartesianAxis.Z, zp: tuple[float, ...] = (0., 0.)) -> None:
+    def __rotate__(self, rot: float, axis: CartesianAxis = CartesianAxis.Z, zp: tuple[float, ...] = (0.0, 0.0)) -> None:
         """
         Rotate on an imaginary Z-axis
 
@@ -67,7 +68,9 @@ class Cartesian3D(Cartesian2D, ABC, empty_slots=True):
         # Faster access than using super()
         NamedMutableSequence.__init__(self, x=x, y=y, z=z)
 
-    def __rotate__(self, rot: float, axis: CartesianAxis = CartesianAxis.Z, zp: tuple[float, ...] = (0., 0., 0.)) -> None:
+    def __rotate__(
+        self, rot: float, axis: CartesianAxis = CartesianAxis.Z, zp: tuple[float, ...] = (0.0, 0.0, 0.0)
+    ) -> None:
         """
         Rotate on given axis
 
@@ -90,24 +93,12 @@ class Cartesian3D(Cartesian2D, ABC, empty_slots=True):
 
 
 def _rot_mat_x(theta: float) -> NDArray[np.float32]:
-    return np.array(
-        [(1, 0, 0),
-         (0, cos(theta), -sin(theta)),
-         (0, sin(theta), cos(theta))], np.float32
-    )
+    return np.array([(1, 0, 0), (0, cos(theta), -sin(theta)), (0, sin(theta), cos(theta))], np.float32)
 
 
 def _rot_mat_y(theta: float) -> NDArray[np.float32]:
-    return np.array(
-        [(cos(theta), 0, sin(theta)),
-         (0, 1, 0),
-         (-sin(theta), 0, cos(theta))], np.float32
-    )
+    return np.array([(cos(theta), 0, sin(theta)), (0, 1, 0), (-sin(theta), 0, cos(theta))], np.float32)
 
 
 def _rot_mat_z(theta: float) -> NDArray[np.float32]:
-    return np.array(
-        [(cos(theta), -sin(theta), 0),
-         (sin(theta), cos(theta), 0),
-         (0, 0, 1)], np.float32
-    )
+    return np.array([(cos(theta), -sin(theta), 0), (sin(theta), cos(theta), 0), (0, 0, 1)], np.float32)

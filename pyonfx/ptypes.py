@@ -1,4 +1,5 @@
 """Internal types module"""
+
 from __future__ import annotations
 
 from abc import ABC, ABCMeta, abstractmethod
@@ -45,8 +46,7 @@ SomeArrayLike = Union[Sequence[float], NDArray[Any]]
 
 class CheckAnnotated(Generic[T], ABC):
     @abstractmethod
-    def check(self, val: T | Iterable[T], param_name: str) -> None:
-        ...
+    def check(self, val: T | Iterable[T], param_name: str) -> None: ...
 
 
 class ValueRangeInclExcl(CheckAnnotated[float]):
@@ -105,6 +105,7 @@ def check_annotations(func: F, /) -> F:
 
 class View(Reversible[T], Collection[T]):
     """Abstract View class"""
+
     __slots__ = "__x"
 
     def __init__(self, __x: Collection[T]) -> None:
@@ -135,10 +136,14 @@ class AutoSlotsMeta(ABCMeta):
         return {"__slots__": (), "__slots_ex__": ()}
 
     def __new__(
-        cls, name: str, bases: tuple[type, ...], namespace: dict[str, Any],
-        empty_slots: bool = False, slots_ex: bool = False,
+        cls,
+        name: str,
+        bases: tuple[type, ...],
+        namespace: dict[str, Any],
+        empty_slots: bool = False,
+        slots_ex: bool = False,
         slots_ex_exclude: str | tuple[str, ...] | None = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> AutoSlotsMeta:
         if empty_slots:
             return super().__new__(cls, name, bases, namespace, **kwargs)
@@ -148,10 +153,7 @@ class AutoSlotsMeta(ABCMeta):
 
         # Get all possible values to put in __slots__
         _slots_inherited = OrderedSet(
-            banno
-            for base in abases
-            if hasattr(base, "__annotations__")
-            for banno in base.__annotations__
+            banno for base in abases if hasattr(base, "__annotations__") for banno in base.__annotations__
         )
 
         # __annotations__ and __slots__ from the current class
@@ -160,14 +162,16 @@ class AutoSlotsMeta(ABCMeta):
         _all_slots = _slots_inherited | _slots
 
         # Get possible class variables & properties
-        attrs = {
-            attr: getattr(abase, attr) for abase in abases for attr in dir(abase)
-        }
+        attrs = {attr: getattr(abase, attr) for abase in abases for attr in dir(abase)}
         attrs.update(namespace)
         attrs = {
-            k: v for k, v in attrs.items()
-            if not k.startswith("__") and not k.endswith("__")
-            and not isinstance(v, (FunctionType, classmethod, staticmethod, MethodType, MemberDescriptorType, _lru_cache_wrapper))
+            k: v
+            for k, v in attrs.items()
+            if not k.startswith("__")
+            and not k.endswith("__")
+            and not isinstance(
+                v, (FunctionType, classmethod, staticmethod, MethodType, MemberDescriptorType, _lru_cache_wrapper)
+            )
             and k not in {"_abc_impl", "_is_protocol"}
         }
 
@@ -175,7 +179,7 @@ class AutoSlotsMeta(ABCMeta):
         namespace["__slots__"] = tuple(k for k in _all_slots if k not in namespace)
 
         if slots_ex:
-            sex_exld = (slots_ex_exclude, ) if isinstance(slots_ex_exclude, str) else slots_ex_exclude or tuple[str]()
+            sex_exld = (slots_ex_exclude,) if isinstance(slots_ex_exclude, str) else slots_ex_exclude or tuple[str]()
             namespace["__slots_ex__"] = namespace["__slots__"] + tuple(set(attrs) - set(sex_exld))
 
         return super().__new__(cls, name, bases, namespace, **kwargs)
@@ -219,19 +223,14 @@ class NamedMutableSequence(AutoSlots, Sequence[T_co], Generic[T_co], ABC, empty_
         return type(self) is type(__o) and tuple(self) is tuple(__o)
 
     @overload
-    def __getitem__(self, index: int) -> T_co:
-        ...
+    def __getitem__(self, index: int) -> T_co: ...
 
     @overload
-    def __getitem__(self, index: slice) -> tuple[T_co, ...]:
-        ...
+    def __getitem__(self, index: slice) -> tuple[T_co, ...]: ...
 
     def __getitem__(self, index: int | slice) -> T_co | tuple[T_co, ...]:
         if isinstance(index, slice):
-            return tuple(
-                self.__getattribute__(self.__slots__[i])
-                for i in range(index.start, index.stop)
-            )
+            return tuple(self.__getattribute__(self.__slots__[i]) for i in range(index.start, index.stop))
         return self.__getattribute__(self.__slots__[index])
 
     def __setitem__(self, item: int, value: Any) -> None:

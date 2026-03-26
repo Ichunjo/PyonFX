@@ -1,4 +1,3 @@
-
 import html
 from functools import cache, cached_property, lru_cache
 from typing import TYPE_CHECKING, Any
@@ -40,23 +39,15 @@ class Font(_AbstractFont):
         font_description = Pango.FontDescription()
         font_description.set_family(self.style.fontname)
         font_description.set_absolute_size(self.style.fontsize * self.upscale * PANGO_SCALE)
-        font_description.set_weight(
-            Pango.Weight.BOLD if self.style.bold else Pango.Weight.NORMAL
-        )
-        font_description.set_style(
-            Pango.Style.ITALIC if self.style.italic else Pango.Style.NORMAL
-        )
+        font_description.set_weight(Pango.Weight.BOLD if self.style.bold else Pango.Weight.NORMAL)
+        font_description.set_style(Pango.Style.ITALIC if self.style.italic else Pango.Style.NORMAL)
 
         self.layout.set_font_description(font_description)
-        self._metrics = Pango.Context.get_metrics(
-            self.layout.get_context(), self.layout.get_font_description()
-        )
+        self._metrics = Pango.Context.get_metrics(self.layout.get_context(), self.layout.get_font_description())
 
         if LIBASS_FONTHACK:
             self.fonthack_scale = self.style.fontsize / (
-                (self._metrics.get_ascent() + self._metrics.get_descent())
-                / PANGO_SCALE
-                * self.downscale
+                (self._metrics.get_ascent() + self._metrics.get_descent()) / PANGO_SCALE * self.downscale
             )
         else:
             self.fonthack_scale = 1
@@ -97,15 +88,8 @@ class Font(_AbstractFont):
         width = sum(get_rect(char).width for char in text)
 
         return _TextExtents(
-            (
-                width * self.downscale * self.fonthack_scale
-                + self.hspace * (len(text) - 1)
-            )
-            * self.xscale,
-            get_rect(text).height
-            * self.downscale
-            * self.yscale
-            * self.fonthack_scale,
+            (width * self.downscale * self.fonthack_scale + self.hspace * (len(text) - 1)) * self.xscale,
+            get_rect(text).height * self.downscale * self.yscale * self.fonthack_scale,
         )
 
     @lru_cache(maxsize=256)
@@ -113,7 +97,7 @@ class Font(_AbstractFont):
     def text_to_shape(self, text: str) -> Shape:
         if not text:
             raise ValueError(f"{self.__class__.__name__}: Text is empty!")
-        curr_width = 0.
+        curr_width = 0.0
         cmds: list[DrawingCommand] = []
         DC, DP = DrawingCommand, DrawingProp
         m, l, b = DP.MOVE, DP.LINE, DP.BÉZIER
@@ -148,12 +132,7 @@ class Font(_AbstractFont):
                     cmds.append(DC(l, (ppath[0] + x_add, ppath[1])))
                 elif ptype == 2:
                     cmds.append(
-                        DC(
-                            b,
-                            (ppath[0] + x_add, ppath[1]),
-                            (ppath[2] + x_add, ppath[3]),
-                            (ppath[4] + x_add, ppath[5])
-                        )
+                        DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5]))
                     )
 
             self.context.new_path()

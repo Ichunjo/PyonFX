@@ -48,4 +48,3 @@ def test_flatten4() -> None:
     original.flatten()
     original.round()
     check.equal(str(original), str(dest))
-

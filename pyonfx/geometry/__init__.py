@@ -1,4 +1,5 @@
 """Geometry submodule"""
+
 from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
@@ -40,7 +41,7 @@ __all__ = [
     "VectorCartesian3D",
     "VectorCylindrical",
     "VectorPolar",
-    "VectorSpherical"
+    "VectorSpherical",
 ]
 
 
@@ -56,6 +57,7 @@ _AssBézierCurve = tuple[PointCartesian2D, PointCartesian2D, PointCartesian2D]
 
 class Geometry:
     """Collection of geometric methods for Point and Vectors"""
+
     __slots__ = ()
 
     @overload
@@ -119,8 +121,7 @@ class Geometry:
 
     @overload
     @staticmethod
-    def rotate(_o: PointT, /, rot: float, axis: Axis, zp: tuple[float, ...] | None) -> PointT:
-        ...
+    def rotate(_o: PointT, /, rot: float, axis: Axis, zp: tuple[float, ...] | None) -> PointT: ...
 
     @staticmethod
     @logger.catch(force_exit=True)
@@ -195,8 +196,7 @@ class Geometry:
 
     @overload
     @staticmethod
-    def vector(p0: PointT, p1: PointT) -> Vector:
-        ...
+    def vector(p0: PointT, p1: PointT) -> Vector: ...
 
     @staticmethod
     @logger.catch(force_exit=True)
@@ -390,10 +390,7 @@ class Geometry:
     @classmethod
     @logger.catch(force_exit=True)
     def line_intersect(
-        cls,
-        p0: PointCartesian2D, p1: PointCartesian2D,
-        p2: PointCartesian2D, p3: PointCartesian2D,
-        strict: bool = True
+        cls, p0: PointCartesian2D, p1: PointCartesian2D, p2: PointCartesian2D, p3: PointCartesian2D, strict: bool = True
     ) -> PointCartesian2D:
         """
         Get line intersection coordinates between 4 points in the cartesian system
@@ -449,9 +446,7 @@ class Geometry:
             # Step can be a float so we're using frange
             for i in frange(step, distance, step):
                 pct = i / distance
-                ncoord.append(
-                    PointCartesian2D(p0.x + (p1.x - p0.x) * pct, p0.y + (p1.y - p0.y) * pct)
-                )
+                ncoord.append(PointCartesian2D(p0.x + (p1.x - p0.x) * pct, p0.y + (p1.y - p0.y) * pct))
         ncoord.append(p1)
         return ncoord
 
@@ -487,14 +482,8 @@ class Geometry:
             """Check flatness of 4th degree curve with angles"""
             lcoord = list(chain.from_iterable(b_coord))
             # Pack curve vectors (only ones non zero)
-            vecs = [
-                reduce(lambda a, b: b - a, coord)
-                for coord in zip(lcoord, lcoord[2:])
-            ]
-            vecsp = [
-                (v0, v1) for v0, v1 in chunk(vecs, 2)
-                if not (v0 == 0 and v1 == 0)
-            ]
+            vecs = [reduce(lambda a, b: b - a, coord) for coord in zip(lcoord, lcoord[2:])]
+            vecsp = [(v0, v1) for v0, v1 in chunk(vecs, 2) if not (v0 == 0 and v1 == 0)]
             # print(vecs)
             # print(vecsp)
             # # Old code:
@@ -531,13 +520,12 @@ class Geometry:
         :param factor:      Factor parameter where the point is, defaults to 0.5
         :return:            Point in this line segment
         """
-        return PointCartesian2D(
-            p0.x + factor * (p1.x - p0.x),
-            p0.y + factor * (p1.y - p0.y)
-        )
+        return PointCartesian2D(p0.x + factor * (p1.x - p0.x), p0.y + factor * (p1.y - p0.y))
 
     @staticmethod
-    def point_on_bézier_curve(curv: Sequence[Point], factor: float = 0.5, *, use_fsum: bool = False) -> PointCartesian3D:
+    def point_on_bézier_curve(
+        curv: Sequence[Point], factor: float = 0.5, *, use_fsum: bool = False
+    ) -> PointCartesian3D:
         """
         Calculate the coordinates of a point on a Bézier curve
 
@@ -549,22 +537,24 @@ class Geometry:
         n = len(curv) - 1
 
         def calc_c(c: float, i: int) -> float:
-            return comb(n, i) * (1 - factor) ** (n - i) * factor ** i * c
+            return comb(n, i) * (1 - factor) ** (n - i) * factor**i * c
 
         def _sum(_seq: Iterable[float]) -> float:
             return fsum(_seq) if use_fsum else sum(_seq)
 
         return PointCartesian3D(
-            *[_sum(calc_c(v, i)
-              for i, v in enumerate(coord_zip))
-              for coord_zip in zip(*(p.to_3d() for p in curv))]
+            *[_sum(calc_c(v, i) for i, v in enumerate(coord_zip)) for coord_zip in zip(*(p.to_3d() for p in curv))]
         )
 
     @classmethod
     def round_vertex(
         cls,
-        p0: PointCartesian2D, p1: PointCartesian2D, p2: PointCartesian2D,
-        deviation: float, tolerance: float = 157.5, tension: float = 0.5
+        p0: PointCartesian2D,
+        p1: PointCartesian2D,
+        p2: PointCartesian2D,
+        deviation: float,
+        tolerance: float = 157.5,
+        tension: float = 0.5,
     ) -> list[PointCartesian2D]:
         """
         Round vertex in a cubic bézier curve
@@ -581,14 +571,14 @@ class Geometry:
         """
         v0 = cls.vector(p0, p1)
         v1 = cls.vector(p2, p1)
-        tension = clamp_value(tension, 0., 1.)
+        tension = clamp_value(tension, 0.0, 1.0)
         if degrees(cls.angle(v0, v1)) < tolerance:
             try:
-                b0 = cls.point_on_segment(p1, p0, clamp_value(deviation / v0.norm, 0., 1.))
+                b0 = cls.point_on_segment(p1, p0, clamp_value(deviation / v0.norm, 0.0, 1.0))
             except ZeroDivisionError:
                 b0 = p1
             try:
-                b3 = cls.point_on_segment(p1, p2, clamp_value(deviation / v1.norm, 0., 1.))
+                b3 = cls.point_on_segment(p1, p2, clamp_value(deviation / v1.norm, 0.0, 1.0))
             except ZeroDivisionError:
                 b3 = p1
             b1 = cls.point_on_segment(p1, b0, tension)
@@ -598,12 +588,8 @@ class Geometry:
 
     @staticmethod
     def make_ellipse(
-        w: float, h: float,
-        c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True
-    ) -> tuple[
-        PointCartesian2D,
-        _AssBézierCurve, _AssBézierCurve, _AssBézierCurve, _AssBézierCurve
-    ]:
+        w: float, h: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True
+    ) -> tuple[PointCartesian2D, _AssBézierCurve, _AssBézierCurve, _AssBézierCurve, _AssBézierCurve]:
         """
         Make ellipse coordinates with given width and height, centered around (c_xy)
 
@@ -615,36 +601,19 @@ class Geometry:
         """
         c = 0.551915024494  # https://spencermortensen.com/articles/bezier-circle/
         cx, cy = c_xy
-        cl = - int((-1) ** clockwise)
+        cl = -int((-1) ** clockwise)
         P = PointCartesian2D
         return (
             P((cx - 0) * cl, cy + h),
-            (
-                P((cx - w * c) * cl, cy + h),
-                P((cx - w) * cl, cy + h * c),
-                P((cx - w) * cl, cy - 0)
-            ),
-            (
-                P((cx - w) * cl, cy - h * c),
-                P((cx - w * c) * cl, cy - h),
-                P((cx - 0) * cl, cy - h)
-            ),
-            (
-                P((cx + w * c) * cl, cy - h),
-                P((cx + w) * cl, cy - h * c),
-                P((cx + w) * cl, cy - 0)
-            ),
-            (
-                P((cx + w) * cl, cy + h * c),
-                P((cx + w * c) * cl, cy + h),
-                P((cx - 0) * cl, cy + h)
-            )
+            (P((cx - w * c) * cl, cy + h), P((cx - w) * cl, cy + h * c), P((cx - w) * cl, cy - 0)),
+            (P((cx - w) * cl, cy - h * c), P((cx - w * c) * cl, cy - h), P((cx - 0) * cl, cy - h)),
+            (P((cx + w * c) * cl, cy - h), P((cx + w) * cl, cy - h * c), P((cx + w) * cl, cy - 0)),
+            (P((cx + w) * cl, cy + h * c), P((cx + w * c) * cl, cy + h), P((cx - 0) * cl, cy + h)),
         )
 
     @staticmethod
     def make_parallelogram(
-        w: float, h: float, angle: float,
-        c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True
+        w: float, h: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True
     ) -> tuple[PointCartesian2D, PointCartesian2D, PointCartesian2D, PointCartesian2D, PointCartesian2D]:
         """
         Make parallelogram coordinates with given width, height and angle, centered around (c_xy)
@@ -656,7 +625,7 @@ class Geometry:
         :param clockwise:       Direction of point creation, defaults to True
         :return:                Parallelogram coordinates
         """
-        cl = - int((-1) ** clockwise)
+        cl = -int((-1) ** clockwise)
         cx, cy = c_xy
 
         l = h / cos(radians(90 - angle))
@@ -672,15 +641,18 @@ class Geometry:
             P((x1 + cx) * cl, y1 + cy),
             P((x2 + cx) * cl, y2 + cy),
             P((x3 + cx) * cl, y3 + cy),
-            P((x0 + cx) * cl, y0 + cy)
+            P((x0 + cx) * cl, y0 + cy),
         )
 
     @classmethod
     @logger.catch(force_exit=True)
     def make_triangle(
         cls,
-        side: float | tuple[float, float], angle: tuple[float, float] | float,
-        c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True
+        side: float | tuple[float, float],
+        angle: tuple[float, float] | float,
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
     ) -> tuple[PointCartesian2D, PointCartesian2D, PointCartesian2D, PointCartesian2D]:
         """
         Make general triangle coordinates with given sides and angles, centered around (c_xy)
@@ -692,7 +664,7 @@ class Geometry:
         :param orthocentred:    Centred in the orthocenter, defaults to True
         :return:                Triangle coordinates
         """
-        cl = - int((-1) ** clockwise)
+        cl = -int((-1) ** clockwise)
         cx, cy = c_xy
         P = PointCartesian2D
 
@@ -708,7 +680,7 @@ class Geometry:
         elif isinstance(side, tuple) and isinstance(angle, (int, float)):
             ab, ac = side
             A = angle
-            bc = sqrt(ac ** 2 + ab ** 2 - 2 * ac * ab * cos(radians(A)))
+            bc = sqrt(ac**2 + ab**2 - 2 * ac * ab * cos(radians(A)))
             Br = asin(sin(radians(A)) * ac / bc)
 
             x0, y0 = 0, 0
@@ -716,13 +688,12 @@ class Geometry:
             x2, y2 = x1 - bc * cos(Br), bc * sin(Br)
         else:
             raise ValueError(
-                f"{cls.__name__}: possibles values are one side and two angles "
-                + "or two sides and one angle"
+                f"{cls.__name__}: possibles values are one side and two angles " + "or two sides and one angle"
             )
 
         return (
             P((x0 + cx) * cl, y0 + cy),
             P((x1 + cx) * cl, y1 + cy),
             P((x2 + cx) * cl, y2 + cy),
-            P((x0 + cx) * cl, y0 + cy)
+            P((x0 + cx) * cl, y0 + cy),
         )

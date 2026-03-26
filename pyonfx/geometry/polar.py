@@ -8,6 +8,7 @@ from .coordinates import Axis, Coordinates
 
 class PolarAxis(Axis):
     """Simple Enum for Polar axis"""
+
     R = 0
     PHI = 1
     Z = 2

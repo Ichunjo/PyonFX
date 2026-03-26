@@ -19,6 +19,7 @@ from .misc import cround
 
 class Time(float):
     """Time interface"""
+
     def __new__(cls, seconds: ConvertibleToFloat) -> Time:
         """
         Make a new Time object
@@ -92,7 +93,7 @@ class Time(float):
         :param is_start:        Whether the time is a start time or not.
         :return:                ASS timestamp.
         """
-        s = self - fps ** -1 * 0.5
+        s = self - fps**-1 * 0.5
         s = bound2assframe(s, fps, is_start, shifted=True)
         s = min(max(Time(0), s), Time(35999.999))
         ts = s.ts(precision=3)
@@ -147,7 +148,7 @@ class Time(float):
             return time
 
         t = bound2assframe(time, fps, is_start, shifted=True)
-        t += fps ** -1 * 0.5
+        t += fps**-1 * 0.5
         return t
 
     @classmethod
@@ -162,8 +163,8 @@ class Time(float):
         if f == 0:
             return cls(0.0)
 
-        t = round(float(10 ** 9 * f * fps ** -1))
-        return cls(t / 10 ** 9)
+        t = round(float(10**9 * f * fps**-1))
+        return cls(t / 10**9)
 
     @classmethod
     def from_assframe(cls, f: int, fps: Fraction | float, /, is_start: bool) -> Time:
@@ -216,13 +217,13 @@ def bound2assframe(time: Time, fps: Fraction | float, /, is_start: bool, shifted
         return time
 
     if not shifted:
-        time -= fps ** -1 * 0.5
+        time -= fps**-1 * 0.5
 
     f = time.assframe(fps, is_start)
     ntime = Time.from_assframe(f, fps, is_start)
 
     if not shifted:
-        ntime += fps ** -1 * 0.5
+        ntime += fps**-1 * 0.5
     return ntime
 
 

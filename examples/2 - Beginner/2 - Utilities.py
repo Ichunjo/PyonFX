@@ -44,9 +44,7 @@ def romaji(line, l):
 
         # Main Effect
         # Let's create a FrameUtility object and set up an interval for the random positions
-        FU = FrameUtility(
-            line.start_time + syl.start_time, line.start_time + syl.end_time
-        )
+        FU = FrameUtility(line.start_time + syl.start_time, line.start_time + syl.end_time)
         interval = 2
 
         # Starting to iterate over the frames

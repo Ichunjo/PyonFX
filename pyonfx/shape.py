@@ -14,15 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program. If not, see http://www.gnu.org/licenses/.
 """Shape module"""
+
 from __future__ import annotations
 
-__all__ = [
-    "DrawingCommand",
-    "DrawingProp",
-    "OutlineMode",
-    "Pixel",
-    "Shape"
-]
+__all__ = ["DrawingCommand", "DrawingProp", "OutlineMode", "Pixel", "Shape"]
 import inspect
 import re
 import sys
@@ -34,8 +29,9 @@ from enum import Enum, auto
 if sys.version_info >= (3, 11):
     from enum import StrEnum
 else:
-    class StrEnum(str, Enum):
-        ...
+
+    class StrEnum(str, Enum): ...
+
 
 from collections.abc import Callable, Iterable, MutableSequence, Sequence
 from math import atan, ceil, cos, degrees, isfinite, radians, sqrt
@@ -62,6 +58,7 @@ from .ptypes import Alignment, View
 
 class Pixel(NamedTuple):
     """A simple NamedTuple to represent pixels"""
+
     pos: PointCartesian2D
     opacity: Opacity | None = None
     colour: ASSColor | None = None
@@ -77,17 +74,22 @@ class Pixel(NamedTuple):
         """
         self.pos.round(round_digits)
         alpha = (
-            f"\\alpha{self.opacity}" if self.opacity.ass_hex not in {"&HFF&", "&H00&"} else ""
-        ) if self.opacity is not None else ""
+            (f"\\alpha{self.opacity}" if self.opacity.ass_hex not in {"&HFF&", "&H00&"} else "")
+            if self.opacity is not None
+            else ""
+        )
         colour = f"\\c{self.colour}" if self.colour is not None else ""
         return (
             f"{{\\p1\\pos({self.pos.x + shift_x},{self.pos.y + shift_y})"
-            + alpha + colour + f"}}{Shape.square(1.5).to_str()}"
+            + alpha
+            + colour
+            + f"}}{Shape.square(1.5).to_str()}"
         )
 
 
 class OutlineMode(Enum):
     """Simple enum class for OutlineMode in Shape.to_outline method"""
+
     MITER = auto()
     BEVEL = auto()
     ROUND = auto()
@@ -183,16 +185,13 @@ class _AbstractDrawingCommand(Sequence[Point], ABC):
     _coordinates: tuple[Point, ...]
 
     @abstractmethod
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...
 
     @overload
-    def __getitem__(self, index: int) -> Point:
-        ...
+    def __getitem__(self, index: int) -> Point: ...
 
     @overload
-    def __getitem__(self, index: slice) -> Sequence[Point]:
-        ...
+    def __getitem__(self, index: slice) -> Sequence[Point]: ...
 
     def __getitem__(self, index: int | slice) -> Point | Sequence[Point]:
         return self._coordinates[index]
@@ -219,8 +218,7 @@ class _AbstractDrawingCommand(Sequence[Point], ABC):
         return repr(str(self._prop) + ", " + ", ".join(map(str, self)))
 
     @abstractmethod
-    def to_str(self, round_digits: int = 3, optimise: bool = True) -> str:
-        ...
+    def to_str(self, round_digits: int = 3, optimise: bool = True) -> str: ...
 
 
 class DrawingCommand(_AbstractDrawingCommand):
@@ -308,20 +306,17 @@ class DrawingCommand(_AbstractDrawingCommand):
 
 
 class _AbstractShape(MutableSequence[DrawingCommand], ABC):
-    __slots__ = ("_commands", )
+    __slots__ = ("_commands",)
     _commands: list[DrawingCommand]
 
     @abstractmethod
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...
 
     @overload
-    def __getitem__(self, index: SupportsIndex) -> DrawingCommand:
-        ...
+    def __getitem__(self, index: SupportsIndex) -> DrawingCommand: ...
 
     @overload
-    def __getitem__(self, index: slice) -> Shape:
-        ...
+    def __getitem__(self, index: slice) -> Shape: ...
 
     def __getitem__(self, index: SupportsIndex | slice) -> DrawingCommand | Shape:
         if isinstance(index, SupportsIndex):
@@ -329,16 +324,16 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
         return Shape(self._commands[index], copy_cmds=False)
 
     @overload
-    def __setitem__(self, index: SupportsIndex, value: DrawingCommand) -> None:
-        ...
+    def __setitem__(self, index: SupportsIndex, value: DrawingCommand) -> None: ...
 
     @overload
-    def __setitem__(self, index: slice, value: Iterable[DrawingCommand]) -> None:
-        ...
+    def __setitem__(self, index: slice, value: Iterable[DrawingCommand]) -> None: ...
 
     @logger.catch
     def __setitem__(self, index: SupportsIndex | slice, value: DrawingCommand | Iterable[DrawingCommand]) -> None:
-        if (isinstance(index, SupportsIndex) and isinstance(value, DrawingCommand)) or (isinstance(index, slice) and not isinstance(value, DrawingCommand)):
+        if (isinstance(index, SupportsIndex) and isinstance(value, DrawingCommand)) or (
+            isinstance(index, slice) and not isinstance(value, DrawingCommand)
+        ):
             self._commands[index] = value
         else:
             raise NotImplementedError(f"{self.__class__.__name__}: not supported")
@@ -382,8 +377,7 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
         return repr(self._commands)
 
     @abstractmethod
-    def to_str(self, round_digits: int = 3, optimise: bool = True) -> str:
-        ...
+    def to_str(self, round_digits: int = 3, optimise: bool = True) -> str: ...
 
 
 class Shape(_AbstractShape):
@@ -451,28 +445,24 @@ class Shape(_AbstractShape):
             cmd.round(ndigits)
 
     @overload
-    def map(self, func: Callable[[float, float], tuple[float, float]], /, *, unsafe: bool = False) -> None:
-        ...
+    def map(self, func: Callable[[float, float], tuple[float, float]], /, *, unsafe: bool = False) -> None: ...
 
     @overload
-    def map(self, func: Callable[[float, float], Point], /, *, unsafe: bool = False) -> None:
-        ...
+    def map(self, func: Callable[[float, float], Point], /, *, unsafe: bool = False) -> None: ...
 
     @overload
-    def map(self, func: Callable[[float, float, float], tuple[float, float, float]], /, *, unsafe: bool = False) -> None:
-        ...
+    def map(
+        self, func: Callable[[float, float, float], tuple[float, float, float]], /, *, unsafe: bool = False
+    ) -> None: ...
 
     @overload
-    def map(self, func: Callable[[float, float, float], Point], /, *, unsafe: bool = False) -> None:
-        ...
+    def map(self, func: Callable[[float, float, float], Point], /, *, unsafe: bool = False) -> None: ...
 
     @overload
-    def map(self, func: Callable[[Point], Point], /, *, unsafe: bool = False) -> None:
-        ...
+    def map(self, func: Callable[[Point], Point], /, *, unsafe: bool = False) -> None: ...
 
     @overload
-    def map(self, func: Callable[[Point], tuple[float, float]], /, *, unsafe: bool = False) -> None:
-        ...
+    def map(self, func: Callable[[Point], tuple[float, float]], /, *, unsafe: bool = False) -> None: ...
 
     @logger.catch
     def map(self, func: Callable[..., Any], /, *, unsafe: bool = False) -> None:
@@ -485,6 +475,7 @@ class Shape(_AbstractShape):
                                 representing the x, y (and z) coordinates of each point.
         :param func:            Deactivate integrity's checks
         """
+
         def _wraps(p: Point, f: Callable[..., Any]) -> Point | tuple[float, float]:
             signature = inspect.signature(f)
             # 3 float parameters
@@ -506,32 +497,36 @@ class Shape(_AbstractShape):
             for cmd in self.__iter__()
         ]
 
-    def move(self, _x: float = 0., _y: float = 0., /) -> None:
+    def move(self, _x: float = 0.0, _y: float = 0.0, /) -> None:
         """
         Moves shape coordinates in given direction.
 
         :param _x:              Displacement along the x-axis, defaults to 0.
         :param _y:              Displacement along the y-axis, defaults to 0.
         """
+
         def _func(p: Point) -> Point:
             p = p.to_2d()
             p.x += _x
             p.y += _y
             return p
+
         self.map(_func, unsafe=True)
 
-    def scale(self, _x: float = 1., _y: float = 1., /) -> None:
+    def scale(self, _x: float = 1.0, _y: float = 1.0, /) -> None:
         """
         Scale shape coordinates by given factors
 
         :param _x:              X-axis scale factor, defaults to 1.
         :param _y:              Y-axis scale factor, defaults to 1.
         """
+
         def _func(p: Point) -> Point:
             p = p.to_2d()
             p.x *= _x
             p.y *= _y
             return p
+
         self.map(_func, unsafe=True)
 
     @property
@@ -552,9 +547,7 @@ class Shape(_AbstractShape):
 
         :return:                A tuple of coordinates of the bounding box
         """
-        all_x, all_y = [
-            tuple(c) for c in unzip(c.to_2d() for dc in self for c in dc)
-        ]
+        all_x, all_y = [tuple(c) for c in unzip(c.to_2d() for dc in self for c in dc)]
         return PointCartesian2D(min(all_x), min(all_y)), PointCartesian2D(max(all_x), max(all_y))
 
     @logger.catch
@@ -565,27 +558,24 @@ class Shape(_AbstractShape):
         :param an:             Alignment argument in the range 1 <= an <= 9
         """
         align = {
-            7: (0., 0.),
-            8: (-0.5, 0.),
-            9: (-1., 0.),
-            4: (0., -0.5),
+            7: (0.0, 0.0),
+            8: (-0.5, 0.0),
+            9: (-1.0, 0.0),
+            4: (0.0, -0.5),
             5: (-0.5, -0.5),
-            6: (-1., -0.5),
-            1: (0., -1.),
-            2: (-0.5, -1.),
-            3: (-1., -1.),
+            6: (-1.0, -0.5),
+            1: (0.0, -1.0),
+            2: (-0.5, -1.0),
+            3: (-1.0, -1.0),
         }
         try:
             an_x, an_y = align[an]
         except KeyError as key_err:
             raise ValueError(f'{self.__class__.__name__}: Wrong "an" value!') from key_err
         pb0, pb1 = self.bounding
-        self.move(
-            pb0.x * -1 + an_x * (pb1.x + pb0.x * -1),
-            pb0.y * -1 + an_y * (pb1.y + pb0.y * -1)
-        )
+        self.move(pb0.x * -1 + an_x * (pb1.x + pb0.x * -1), pb0.y * -1 + an_y * (pb1.y + pb0.y * -1))
 
-    def rotate(self, rot: float, axis: CartesianAxis, /, zero_pad: tuple[float, ...] | None = (0., 0., 0.)) -> None:
+    def rotate(self, rot: float, axis: CartesianAxis, /, zero_pad: tuple[float, ...] | None = (0.0, 0.0, 0.0)) -> None:
         """
         Rotate current shape to given rotation in given axis
 
@@ -595,7 +585,7 @@ class Shape(_AbstractShape):
         """
         self.map(lambda p: Geometry.rotate(p.to_3d(), rot, axis, zero_pad).project_2d(), unsafe=True)
 
-    def shear(self, fax: float = 0., fay: float = 0., /) -> None:
+    def shear(self, fax: float = 0.0, fay: float = 0.0, /) -> None:
         """
         Perform a shearing (perspective distortion) transformation of the text.
         A factor of 0 means no distortion.
@@ -643,7 +633,7 @@ class Shape(_AbstractShape):
         return cls(flatten(shape._commands for shape in shapes), copy_cmds=False)
 
     @logger.catch
-    def flatten(self, tolerance: float = 1.) -> None:
+    def flatten(self, tolerance: float = 1.0) -> None:
         """
         Flatten shape's bezier curves into lines.
 
@@ -661,8 +651,11 @@ class Shape(_AbstractShape):
         self._commands.reverse()
 
         for cmd0, cmd1 in zip_offset(
-            self._commands, self._commands, offsets=(0, 1),
-            longest=True, fillvalue=DrawingCommand(m, (0, 0), unsafe=True)
+            self._commands,
+            self._commands,
+            offsets=(0, 1),
+            longest=True,
+            fillvalue=DrawingCommand(m, (0, 0), unsafe=True),
         ):
             if cmd0._prop in {m, n, l}:
                 ncmds.append(cmd0)
@@ -672,7 +665,8 @@ class Shape(_AbstractShape):
                 flatten_cmds.extendleft(
                     DrawingCommand(l, co, unsafe=True)
                     for co in Geometry.curve4_to_lines(
-                        (cmd1[-1].to_2d(), *(c.to_2d() for c in cmd0)), tolerance  # type: ignore[arg-type]
+                        (cmd1[-1].to_2d(), *(c.to_2d() for c in cmd0)),
+                        tolerance,  # type: ignore[arg-type]
                     )
                 )
                 ncmds.extend(flatten_cmds)
@@ -683,7 +677,7 @@ class Shape(_AbstractShape):
         self._commands = ncmds
 
     @logger.catch
-    def split_lines(self, max_length: float = 16., tolerance: float = 1.) -> None:
+    def split_lines(self, max_length: float = 16.0, tolerance: float = 1.0) -> None:
         """
         Flatten Shape bezier curves into lines and split the latter into shorter segments
         with maximum given length.
@@ -711,8 +705,7 @@ class Shape(_AbstractShape):
                 assert cmd1
                 splitted_cmds: deque[DrawingCommand] = deque()
                 splitted_cmds.extendleft(
-                    DrawingCommand(l, c)
-                    for c in Geometry.split_line(cmd1[-1].to_2d(), cmd0[0].to_2d(), max_length)
+                    DrawingCommand(l, c) for c in Geometry.split_line(cmd1[-1].to_2d(), cmd0[0].to_2d(), max_length)
                 )
                 ncmds.extend(splitted_cmds)
             else:
@@ -749,8 +742,7 @@ class Shape(_AbstractShape):
             for pre, curr, post in zip(pres, shape, posts):
                 if curr.prop in {m, n, l}:
                     curve = Geometry.round_vertex(
-                        pre[-1].to_2d(), curr[0].to_2d(), post[0].to_2d(),
-                        deviation, tolerance, tension
+                        pre[-1].to_2d(), curr[0].to_2d(), post[0].to_2d(), deviation, tolerance, tension
                     )
                     ncmds.append(DrawingCommand(curr.prop, curve.pop(0)))
                     if curve:
@@ -762,7 +754,7 @@ class Shape(_AbstractShape):
 
     @classmethod
     @logger.catch(force_exit=True)
-    def ring(cls, out_rad: float, in_rad: float, c_xy: tuple[float, float] = (0., 0.), /) -> Shape:
+    def ring(cls, out_rad: float, in_rad: float, c_xy: tuple[float, float] = (0.0, 0.0), /) -> Shape:
         """
         Make a ring Shape object with given inner and outer radius, centered around (c_xy)
 
@@ -780,7 +772,7 @@ class Shape(_AbstractShape):
         return disk
 
     @classmethod
-    def disk(cls, radius: float, c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True) -> Shape:
+    def disk(cls, radius: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True) -> Shape:
         """
         Make a disk Shape object with given radius, centered around (c_xy)
 
@@ -792,7 +784,7 @@ class Shape(_AbstractShape):
         return cls.ellipse(radius, radius, c_xy, clockwise)
 
     @classmethod
-    def ellipse(cls, w: float, h: float, c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True) -> Shape:
+    def ellipse(cls, w: float, h: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True) -> Shape:
         """
         Make an ellipse Shape object with given width and height, centered around (c_xy)
 
@@ -818,7 +810,7 @@ class Shape(_AbstractShape):
         return cls(cmds, copy_cmds=False)
 
     @classmethod
-    def heart(cls, size: float = 30., voffset: float = 0., /) -> Shape:
+    def heart(cls, size: float = 30.0, voffset: float = 0.0, /) -> Shape:
         """
         Make an heart Shape object with given size
 
@@ -835,12 +827,12 @@ class Shape(_AbstractShape):
             DC(b, (27 * mult, 22 * mult), (30 * mult, 18 * mult), (30 * mult, 14 * mult), unsafe=True),
             DC(b, (31 * mult, 7 * mult), (22 * mult, 0), (15 * mult, 10 * mult + voffset), unsafe=True),
             DC(b, (8 * mult, 0), (-1 * mult, 7 * mult), (0, 14 * mult), unsafe=True),
-            DC(b, (0, 18 * mult), (3 * mult, 22 * mult), (15 * mult, 30 * mult), unsafe=True)
+            DC(b, (0, 18 * mult), (3 * mult, 22 * mult), (15 * mult, 30 * mult), unsafe=True),
         ]
         return cls(cmds, copy_cmds=False)
 
     @classmethod
-    def square(cls, length: float, c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True) -> Shape:
+    def square(cls, length: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True) -> Shape:
         """
         Make a square Shape object with given width, centered around (c_xy)
 
@@ -852,7 +844,7 @@ class Shape(_AbstractShape):
         return cls.rectangle(length, length, c_xy, clockwise)
 
     @classmethod
-    def rectangle(cls, w: float, h: float, c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True) -> Shape:
+    def rectangle(cls, w: float, h: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True) -> Shape:
         """
         Make a rectangle Shape object with given width, centered around (c_xy)
 
@@ -865,7 +857,9 @@ class Shape(_AbstractShape):
         return cls.parallelogram(w, h, 90, c_xy, clockwise)
 
     @classmethod
-    def diamond(cls, length: float, angle: float, c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True) -> Shape:
+    def diamond(
+        cls, length: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True
+    ) -> Shape:
         """
         Make a diamond Shape object with given length and angle, centered around (c_xy)
 
@@ -878,7 +872,9 @@ class Shape(_AbstractShape):
         return cls.parallelogram(length, length / cos(radians(90 - angle)), angle, c_xy, clockwise)
 
     @classmethod
-    def parallelogram(cls, w: float, h: float, angle: float, c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True) -> Shape:
+    def parallelogram(
+        cls, w: float, h: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True
+    ) -> Shape:
         """
         Make a parallelogram Shape object with given width, height and angle, centered around (c_xy)
 
@@ -899,13 +895,20 @@ class Shape(_AbstractShape):
             DC(l, coordinates[1], unsafe=True),
             DC(l, coordinates[2], unsafe=True),
             DC(l, coordinates[3], unsafe=True),
-            DC(l, coordinates[4], unsafe=True)
+            DC(l, coordinates[4], unsafe=True),
         ]
         return cls(cmds, copy_cmds=False)
 
     @classmethod
-    def equilateral_tr(cls, height: float, c_xy: tuple[float, float] = (0., 0.), /,
-                       clockwise: bool = True, *, orthocentred: bool = True) -> Shape:
+    def equilateral_tr(
+        cls,
+        height: float,
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
+        *,
+        orthocentred: bool = True,
+    ) -> Shape:
         """
         Make a equilateral triangle Shape object with given height, centered around (c_xy)
 
@@ -918,8 +921,16 @@ class Shape(_AbstractShape):
         return cls.triangle(height * 2 / sqrt(3), (60, 60), c_xy, clockwise, orthocentred=orthocentred)
 
     @classmethod
-    def isosceles_tr(cls, height: float, base: float, c_xy: tuple[float, float] = (0., 0.), /,
-                     clockwise: bool = True, *, orthocentred: bool = True) -> Shape:
+    def isosceles_tr(
+        cls,
+        height: float,
+        base: float,
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
+        *,
+        orthocentred: bool = True,
+    ) -> Shape:
         """
         Make a isosceles triangle Shape object with given height and base, centered around (c_xy)
 
@@ -934,8 +945,15 @@ class Shape(_AbstractShape):
         return cls.triangle(base, (angle, angle), c_xy, clockwise, orthocentred=orthocentred)
 
     @classmethod
-    def orthogonal_tr(cls, side: tuple[float, float], c_xy: tuple[float, float] = (0., 0.), /,
-                      clockwise: bool = True, *, orthocentred: bool = True) -> Shape:
+    def orthogonal_tr(
+        cls,
+        side: tuple[float, float],
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
+        *,
+        orthocentred: bool = True,
+    ) -> Shape:
         """
         Make an orthognal (right-angled) triangle Shape object with given sides, centered around (c_xy)
 
@@ -949,8 +967,16 @@ class Shape(_AbstractShape):
 
     @overload
     @classmethod
-    def triangle(cls, side: float, angle: tuple[float, float], c_xy: tuple[float, float] = (0., 0.), /,
-                 clockwise: bool = True, *, orthocentred: bool = True) -> Shape:
+    def triangle(
+        cls,
+        side: float,
+        angle: tuple[float, float],
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
+        *,
+        orthocentred: bool = True,
+    ) -> Shape:
         """
         Make a general triangle Shape object with given side and angles, centered around (c_xy)
 
@@ -964,8 +990,16 @@ class Shape(_AbstractShape):
 
     @overload
     @classmethod
-    def triangle(cls, side: tuple[float, float], angle: float, c_xy: tuple[float, float] = (0., 0.), /,
-                 clockwise: bool = True, *, orthocentred: bool = True) -> Shape:
+    def triangle(
+        cls,
+        side: tuple[float, float],
+        angle: float,
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
+        *,
+        orthocentred: bool = True,
+    ) -> Shape:
         """
         Make a general triangle Shape object with given sides and angle, centered around (c_xy)
 
@@ -978,8 +1012,16 @@ class Shape(_AbstractShape):
         """
 
     @classmethod
-    def triangle(cls, side: float | tuple[float, float], angle: tuple[float, float] | float,
-                 c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True, *, orthocentred: bool = True) -> Shape:
+    def triangle(
+        cls,
+        side: float | tuple[float, float],
+        angle: tuple[float, float] | float,
+        c_xy: tuple[float, float] = (0.0, 0.0),
+        /,
+        clockwise: bool = True,
+        *,
+        orthocentred: bool = True,
+    ) -> Shape:
         DC = DrawingCommand
         m, l = DrawingProp.MOVE, DrawingProp.LINE
 
@@ -1001,7 +1043,7 @@ class Shape(_AbstractShape):
         return triangle
 
     @classmethod
-    def star(cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0., 0.)) -> Shape:
+    def star(cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0.0, 0.0)) -> Shape:
         """
         Make a star Shape object with given number of outer edges and sizes, centered around (c_xy).
         Use DrawingProp.LINE
@@ -1017,7 +1059,9 @@ class Shape(_AbstractShape):
         return cls.stellation(edges, inner_size, outer_size, DrawingProp.LINE, c_xy)
 
     @classmethod
-    def starfish(cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0., 0.)) -> Shape:
+    def starfish(
+        cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0.0, 0.0)
+    ) -> Shape:
         """
         Make a starfish Shape object with given number of outer edges and sizes, centered around (c_xy).
         Use DrawingProp.CUBIC_BSPLINE
@@ -1031,7 +1075,7 @@ class Shape(_AbstractShape):
         return cls.stellation(edges, inner_size, outer_size, DrawingProp.CUBIC_BSPLINE, c_xy)
 
     @classmethod
-    def glance(cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0., 0.)) -> Shape:
+    def glance(cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0.0, 0.0)) -> Shape:
         """
         Make a glance Shape object with given number of outer edges and sizes, centered around (c_xy).
         Use DrawingProp.BÉZIER
@@ -1048,8 +1092,9 @@ class Shape(_AbstractShape):
 
     @classmethod
     @logger.catch(force_exit=True)
-    def stellation(cls, edges: int, inner_size: float, outer_size: float,
-                   prop: DrawingProp, c_xy: tuple[float, float] = (0., 0.)) -> Shape:
+    def stellation(
+        cls, edges: int, inner_size: float, outer_size: float, prop: DrawingProp, c_xy: tuple[float, float] = (0.0, 0.0)
+    ) -> Shape:
         """
         Make a stellationable Shape object with given number of outer edges and sizes, centered around (c_xy).
         Support DrawingProp.LINE, DrawingProp.CUBIC_BSPLINE and DrawingProp.BÉZIER.
@@ -1071,8 +1116,8 @@ class Shape(_AbstractShape):
         cmds.append(DC(m, (0, -outer_size)))
 
         for i in range(1, edges + 1):
-            inner_p = Geometry.rotate(PointCartesian2D(0, -inner_size), ((i - 0.5) / edges) * 360, None, (0., 0.))
-            outer_p = Geometry.rotate(PointCartesian2D(0, -outer_size), (i / edges) * 360, None, (0., 0.))
+            inner_p = Geometry.rotate(PointCartesian2D(0, -inner_size), ((i - 0.5) / edges) * 360, None, (0.0, 0.0))
+            outer_p = Geometry.rotate(PointCartesian2D(0, -outer_size), (i / edges) * 360, None, (0.0, 0.0))
             if prop == l:
                 cmds.extend((DC(prop, inner_p, unsafe=True), DC(prop, outer_p, unsafe=True)))
             elif prop == b:
@@ -1085,7 +1130,7 @@ class Shape(_AbstractShape):
                 raise NotImplementedError(f'{cls.__name__}: prop "{prop}" not supported!')
 
         shape = cls(cmds, copy_cmds=False)
-        if c_xy != (0., 0.):
+        if c_xy != (0.0, 0.0):
             shape.move(*c_xy)
 
         return shape
@@ -1113,27 +1158,19 @@ class Shape(_AbstractShape):
             lendraw = len(sdraw)
             if sdraw[0].startswith(("m", "n")) and lendraw == 3:
                 cmds.append(
-                    DC(
-                        _dp_value2member_map[sdraw.pop(0)],
-                        (float(sdraw.pop(0)), float(sdraw.pop(0))),
-                        unsafe=unsafe
-                    )
+                    DC(_dp_value2member_map[sdraw.pop(0)], (float(sdraw.pop(0)), float(sdraw.pop(0))), unsafe=unsafe)
                 )
             elif sdraw[0].startswith(("l", "p")) and lendraw >= 3:
                 p = sdraw.pop(0)
                 cmds.extend(
-                    DC(
-                        _dp_value2member_map[p],
-                        (float(x), float(y)),
-                        unsafe=unsafe
-                    ) for x, y in sliced(sdraw, 2, strict=not unsafe)
+                    DC(_dp_value2member_map[p], (float(x), float(y)), unsafe=unsafe)
+                    for x, y in sliced(sdraw, 2, strict=not unsafe)
                 )
-            elif sdraw[0].startswith("b") and (lendraw - 1) / 2 % 3 == 0.:
+            elif sdraw[0].startswith("b") and (lendraw - 1) / 2 % 3 == 0.0:
                 sdraw.remove("b")
                 cmds.extend(
-                    DC(
-                        DP.CUBIC_BÉZIER_CURVE, *coords, unsafe=unsafe
-                    ) for coords in chunk(chunk(map(float, sdraw), 2), 3)
+                    DC(DP.CUBIC_BÉZIER_CURVE, *coords, unsafe=unsafe)
+                    for coords in chunk(chunk(map(float, sdraw), 2), 3)
                 )
             elif sdraw[0].startswith("s") and (lendraw - 1) % 2 == 0.0:
                 sdraw.remove("s")
@@ -1216,10 +1253,7 @@ class Shape(_AbstractShape):
         # Fill the image from the polygon coordinates
         image[rr, cc] = 255
         # Downscale while avoiding aliasing
-        image = skimage_rescale(
-            image, 1 / ss,
-            preserve_range=True, anti_aliasing=anti_aliasing
-        )
+        image = skimage_rescale(image, 1 / ss, preserve_range=True, anti_aliasing=anti_aliasing)
         # Return all those pixels
         return [
             Pixel(PointCartesian2D(x - shiftp.x, y - shiftp.y), Opacity(float(alpha) / 255))
@@ -1229,9 +1263,15 @@ class Shape(_AbstractShape):
         ]
 
     @logger.catch
-    def to_outline(self, bord_xy: float, bord_y: float | None = None,
-                   mode: OutlineMode = OutlineMode.ROUND, *,
-                   miter_limit: float = 200., max_circumference: float = 2.) -> None:
+    def to_outline(
+        self,
+        bord_xy: float,
+        bord_y: float | None = None,
+        mode: OutlineMode = OutlineMode.ROUND,
+        *,
+        miter_limit: float = 200.0,
+        max_circumference: float = 2.0,
+    ) -> None:
         """
         Converts Shape command for filling to a Shape command for stroking.
 
@@ -1274,9 +1314,15 @@ class Shape(_AbstractShape):
         self._commands = stroke_cmds
 
 
-def _stroke_lines(shape: MutableSequence[DrawingCommand], width: float,
-                  xscale: float, yscale: float, mode: OutlineMode,
-                  miter_limit: float, max_circumference: float) -> list[PointCartesian2D]:
+def _stroke_lines(
+    shape: MutableSequence[DrawingCommand],
+    width: float,
+    xscale: float,
+    yscale: float,
+    mode: OutlineMode,
+    miter_limit: float,
+    max_circumference: float,
+) -> list[PointCartesian2D]:
     outline: list[PointCartesian2D] = []
 
     pre_points = list(shape)
@@ -1286,33 +1332,33 @@ def _stroke_lines(shape: MutableSequence[DrawingCommand], width: float,
 
     for point, pre_point, post_point in zip(shape, pre_points, post_points):
         # -- Calculate orthogonal vectors to both neighbour points
-        p, pre_p, post_p = point._coordinates[0].to_2d(), pre_point._coordinates[0].to_2d(), post_point._coordinates[0].to_2d()
+        p, pre_p, post_p = (
+            point._coordinates[0].to_2d(),
+            pre_point._coordinates[0].to_2d(),
+            post_point._coordinates[0].to_2d(),
+        )
         vec0, vec1 = Geometry.vector(p, pre_p), Geometry.vector(p, post_p)
 
-        o_vec0 = Geometry.orthogonal(vec0.to_3d(), VectorCartesian3D(0., 0., 1.)).to_2d()
+        o_vec0 = Geometry.orthogonal(vec0.to_3d(), VectorCartesian3D(0.0, 0.0, 1.0)).to_2d()
         o_vec0 = Geometry.stretch(o_vec0, width)
 
-        o_vec1 = Geometry.orthogonal(vec1.to_3d(), VectorCartesian3D(0., 0., -1.)).to_2d()
+        o_vec1 = Geometry.orthogonal(vec1.to_3d(), VectorCartesian3D(0.0, 0.0, -1.0)).to_2d()
         o_vec1 = Geometry.stretch(o_vec1, width)
 
         # -- Check for gap or edge join
         inter = Geometry.line_intersect(
             PointCartesian2D(p.x + o_vec0.x - vec0.x, p.y + o_vec0.y - vec0.y),
-            PointCartesian2D(p.x + o_vec0.x,          p.y + o_vec0.y),
+            PointCartesian2D(p.x + o_vec0.x, p.y + o_vec0.y),
             PointCartesian2D(p.x + o_vec1.x - vec1.x, p.y + o_vec1.y - vec1.y),
-            PointCartesian2D(p.x + o_vec1.x,          p.y + o_vec1.y),
-            strict=True
+            PointCartesian2D(p.x + o_vec1.x, p.y + o_vec1.y),
+            strict=True,
         )
         if isfinite(inter.y):
             # -- Add gap point
-            outline.append(
-                PointCartesian2D(p.x + (inter.x - p.x) * xscale, p.y + (inter.y - p.y) * yscale)
-            )
+            outline.append(PointCartesian2D(p.x + (inter.x - p.x) * xscale, p.y + (inter.y - p.y) * yscale))
         else:
             # -- Add first edge point
-            outline.append(
-                PointCartesian2D(p.x + o_vec0.x * xscale, p.y + o_vec0.y * yscale)
-            )
+            outline.append(PointCartesian2D(p.x + o_vec0.x * xscale, p.y + o_vec0.y * yscale))
             # -- Create join by mode
             if mode == OutlineMode.ROUND:
                 outline.extend(_join_mode_round(p, o_vec0, o_vec1, xscale, yscale, width, max_circumference))
@@ -1321,27 +1367,29 @@ def _stroke_lines(shape: MutableSequence[DrawingCommand], width: float,
             else:  # OutlineMode.BEVEL:
                 continue
             # -- Add end edge point
-            outline.append(
-                PointCartesian2D(p.x + o_vec1.x * xscale, p.y + o_vec1.y * yscale)
-            )
+            outline.append(PointCartesian2D(p.x + o_vec1.x * xscale, p.y + o_vec1.y * yscale))
     return outline
 
 
 def _join_mode_miter(
     p: PointCartesian2D,
-    vec0: VectorCartesian2D, vec1: VectorCartesian2D,
-    o_vec0: VectorCartesian2D, o_vec1: VectorCartesian2D,
-    xscale: float, yscale: float, miter_limit: float
+    vec0: VectorCartesian2D,
+    vec1: VectorCartesian2D,
+    o_vec0: VectorCartesian2D,
+    o_vec1: VectorCartesian2D,
+    xscale: float,
+    yscale: float,
+    miter_limit: float,
 ) -> list[PointCartesian2D]:
     """Internal function"""
     outline: list[PointCartesian2D] = []
 
     inter = Geometry.line_intersect(
         PointCartesian2D(p.x + o_vec0.x - vec0.x, p.y + o_vec0.y - vec0.y),
-        PointCartesian2D(p.x + o_vec0.x,          p.y + o_vec0.y),
+        PointCartesian2D(p.x + o_vec0.x, p.y + o_vec0.y),
         PointCartesian2D(p.x + o_vec1.x - vec1.x, p.y + o_vec1.y - vec1.y),
-        PointCartesian2D(p.x + o_vec1.x,          p.y + o_vec1.y),
-        strict=False
+        PointCartesian2D(p.x + o_vec1.x, p.y + o_vec1.y),
+        strict=False,
     )
     # -- Vectors intersect
     if isfinite(inter.y):
@@ -1352,35 +1400,33 @@ def _join_mode_miter(
             outline.append(
                 PointCartesian2D(
                     p.x + (o_vec0.x + (is_vec.x - o_vec0.x) * fix_scale) * xscale,
-                    p.y + (o_vec0.y + (is_vec.y - o_vec0.y) * fix_scale) * yscale
+                    p.y + (o_vec0.y + (is_vec.y - o_vec0.y) * fix_scale) * yscale,
                 )
             )
             outline.append(
                 PointCartesian2D(
                     p.x + (o_vec1.x + (is_vec.x - o_vec1.x) * fix_scale) * xscale,
-                    p.y + (o_vec1.y + (is_vec.y - o_vec1.y) * fix_scale) * yscale
+                    p.y + (o_vec1.y + (is_vec.y - o_vec1.y) * fix_scale) * yscale,
                 )
             )
         else:
-            outline.append(
-                PointCartesian2D(p.x + is_vec.x * xscale, p.y + is_vec.y * yscale)
-            )
+            outline.append(PointCartesian2D(p.x + is_vec.x * xscale, p.y + is_vec.y * yscale))
     # -- Parallel vectors
     else:
         vec0, vec1 = Geometry.stretch(vec0, miter_limit), Geometry.stretch(vec1, miter_limit)
-        outline.append(
-            PointCartesian2D(p.x + (o_vec0.x + vec0.x) * xscale, p.y + (o_vec0.y + vec0.y) * yscale)
-        )
-        outline.append(
-            PointCartesian2D(p.x + (o_vec1.x + vec1.x) * xscale, p.y + (o_vec1.y + vec1.y) * yscale)
-        )
+        outline.append(PointCartesian2D(p.x + (o_vec0.x + vec0.x) * xscale, p.y + (o_vec0.y + vec0.y) * yscale))
+        outline.append(PointCartesian2D(p.x + (o_vec1.x + vec1.x) * xscale, p.y + (o_vec1.y + vec1.y) * yscale))
     return outline
 
 
 def _join_mode_round(
     p: PointCartesian2D,
-    o_vec0: VectorCartesian2D, o_vec1: VectorCartesian2D,
-    xscale: float, yscale: float, width: float, max_circumference: float
+    o_vec0: VectorCartesian2D,
+    o_vec1: VectorCartesian2D,
+    xscale: float,
+    yscale: float,
+    width: float,
+    max_circumference: float,
 ) -> list[PointCartesian2D]:
     """Internal function"""
     outline: list[PointCartesian2D] = []
@@ -1392,12 +1438,7 @@ def _join_mode_round(
     if circ > max_circumference:
         # -- Add curve edge points
         circ_rest = circ % max_circumference
-        for cur_circ in frange(
-            circ_rest if circ_rest > 0 else max_circumference,
-            circ, max_circumference
-        ):
-            curve_vec = Geometry.rotate(o_vec0, cur_circ / circ * degree, None, (0., 0.))
-            outline.append(
-                PointCartesian2D(p.x + curve_vec.x * xscale, p.y + curve_vec.y * yscale)
-            )
+        for cur_circ in frange(circ_rest if circ_rest > 0 else max_circumference, circ, max_circumference):
+            curve_vec = Geometry.rotate(o_vec0, cur_circ / circ * degree, None, (0.0, 0.0))
+            outline.append(PointCartesian2D(p.x + curve_vec.x * xscale, p.y + curve_vec.y * yscale))
     return outline

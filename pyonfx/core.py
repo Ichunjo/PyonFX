@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program. If not, see http://www.gnu.org/licenses/.
 """Main core module"""
+
 from __future__ import annotations
 
 __all__ = [
@@ -28,7 +29,7 @@ __all__ = [
     "ScriptInfo",
     "Style",
     "Syllable",
-    "Word"
+    "Word",
 ]
 
 import copy
@@ -87,27 +88,34 @@ class Ass(AutoSlots):
 
     @overload
     def __init__(
-        self, input_: AnyPath, output: AnyPath | None = None,
+        self,
+        input_: AnyPath,
+        output: AnyPath | None = None,
         fps: float = ...,
-        extended: bool = True, vertical_kanji: bool = False,
-        fix_timestamps: bool = True
-    ) -> None:
-        ...
+        extended: bool = True,
+        vertical_kanji: bool = False,
+        fix_timestamps: bool = True,
+    ) -> None: ...
 
     @overload
     def __init__(
-        self, input_: None, output: AnyPath | None = None,
+        self,
+        input_: None,
+        output: AnyPath | None = None,
         fps: float | None = ...,
-        extended: bool = True, vertical_kanji: bool = False,
-        fix_timestamps: bool = True
-    ) -> None:
-        ...
+        extended: bool = True,
+        vertical_kanji: bool = False,
+        fix_timestamps: bool = True,
+    ) -> None: ...
 
     def __init__(
-        self, input_: AnyPath | None, output: AnyPath | None = None,
+        self,
+        input_: AnyPath | None,
+        output: AnyPath | None = None,
         fps: float | None = 24000 / 1001,
-        extended: bool = True, vertical_kanji: bool = False,
-        fix_timestamps: bool = True
+        extended: bool = True,
+        vertical_kanji: bool = False,
+        fix_timestamps: bool = True,
     ) -> None:
         """
         :param input_:              Input file path
@@ -133,16 +141,18 @@ class Ass(AutoSlots):
 
         # Find section pattern
         self._sections = {
-            m.group(0): _Section(m.group(0), *m.span(0))
-            for m in re.finditer(r"(^\[[^\]]*])", lines_file, re.MULTILINE)
+            m.group(0): _Section(m.group(0), *m.span(0)) for m in re.finditer(r"(^\[[^\]]*])", lines_file, re.MULTILINE)
         }
 
         # Slice text
         for sec1, sec2 in zip_offset(
-            self._sections.values(), self._sections.values(), offsets=(0, 1),
-            longest=True, fillvalue=_Section(start=None)
+            self._sections.values(),
+            self._sections.values(),
+            offsets=(0, 1),
+            longest=True,
+            fillvalue=_Section(start=None),
         ):
-            sec1.text = lines_file[sec1.end:sec2.start]
+            sec1.text = lines_file[sec1.end : sec2.start]
 
         # Make a Meta object from both Script Info and Aegisub Project Garbage
         self.meta = Meta()
@@ -185,9 +195,7 @@ class Ass(AutoSlots):
             for ltext in sec.text.strip().splitlines()[1:]:
                 if not ltext:
                     continue
-                self._lines.append(
-                    Line.from_text(ltext, next(n), fps, self.meta, self.styles, fix_timestamps)
-                )
+                self._lines.append(Line.from_text(ltext, next(n), fps, self.meta, self.styles, fix_timestamps))
 
         if not extended:
             return
@@ -261,17 +269,16 @@ class Ass(AutoSlots):
                                     If False, start and end times will just be the raw timestamps.
         """
         self._output_lines.append(
-            line.as_text(
-                fix_timestamps=fix_timestamps if fix_timestamps is not None else self._fix_timestamps
-            )
+            line.as_text(fix_timestamps=fix_timestamps if fix_timestamps is not None else self._fix_timestamps)
         )
 
     @logger.catch
     def save(
         self,
         lines: Iterable[Line] | None = None,
-        comment_original: bool = True, fix_timestamps: bool | None = None,
-        keep_extradata: bool = True
+        comment_original: bool = True,
+        fix_timestamps: bool | None = None,
+        keep_extradata: bool = True,
     ) -> None:
         """
         Write the lines added by :py:func:`add_line` to the output file specified in the constructor
@@ -327,20 +334,14 @@ class Ass(AutoSlots):
             f.writelines(self._output_lines)
             if lines:
                 f.writelines(
-                    line.as_text(fix_timestamps=fix_timestamps
-                                 if fix_timestamps is not None
-                                 else self._fix_timestamps)
+                    line.as_text(fix_timestamps=fix_timestamps if fix_timestamps is not None else self._fix_timestamps)
                     for line in lines
                 )
             f.write("\n")
 
             # Write extradata
             if keep_extradata and "[Aegisub Extradata]" in self._sections:
-                f.write(
-                    "[Aegisub Extradata]\n"
-                    + self._sections["[Aegisub Extradata]"].text.strip()
-                    + "\n"
-                )
+                f.write("[Aegisub Extradata]\n" + self._sections["[Aegisub Extradata]"].text.strip() + "\n")
 
         logger.user_info(f"Produced lines: {len(self._output_lines + (list(lines) if lines else []))}")
         logger.user_info(f"Process duration (in seconds): {round(time.time() - self._ptime, ndigits=3)}")
@@ -359,7 +360,9 @@ class Ass(AutoSlots):
             subprocess.call(["aegisub", self._output])
 
     @logger.catch
-    def open_mpv(self, video_path: AnyPath | None = None, video_start: str | None = None, full_screen: bool = False) -> None:
+    def open_mpv(
+        self, video_path: AnyPath | None = None, video_start: str | None = None, full_screen: bool = False
+    ) -> None:
         """
         Open the output specified in the constructor with MPV.
         Please add MPV in your PATH (https://pyonfx.readthedocs.io/en/latest/quick%20start.html#installation-extra-step)
@@ -374,9 +377,7 @@ class Ass(AutoSlots):
 
         # Check if mpv is usable
         if self.meta.project_garbage.video__file.startswith("?dummy") and not video_path:
-            raise FileNotFoundError(
-                f"{self.__class__.__name__}: Cannot use MPV; dummy video detected"
-            )
+            raise FileNotFoundError(f"{self.__class__.__name__}: Cannot use MPV; dummy video detected")
 
         # Setting up the command to execute
         cmd = ["mpv"]
@@ -420,9 +421,7 @@ class AssUntitled(Ass):
 
 
 class AssVoid(Ass):
-    def __init__(
-        self, output: AnyPath | None = None, /, fps: float | None = None, fix_timestamps: bool = True
-    ) -> None:
+    def __init__(self, output: AnyPath | None = None, /, fps: float | None = None, fix_timestamps: bool = True) -> None:
         """
         :param output:              Output file path
         :param fps:                 Framerate Per Second of the video related to the .ass file
@@ -498,6 +497,7 @@ class Meta(_DataCore):
 
     More info about each of them can be found on http://docs.aegisub.org/manual/Styles
     """
+
     script_info: ScriptInfo
     project_garbage: ProjectGarbage
 
@@ -509,7 +509,7 @@ class Meta(_DataCore):
         meta = cls()
         meta.script_info = ScriptInfo.get_default()
         meta.project_garbage = ProjectGarbage.get_default()
-        meta.fps = 24000/1001
+        meta.fps = 24000 / 1001
         return meta
 
 
@@ -647,6 +647,7 @@ class Style(_DataCore):
 
     More info about styles can be found on http://docs.aegisub.org/3.2/ASS_Tags/.
     """
+
     name: str
     """Style name"""
     fontname: str
@@ -837,13 +838,15 @@ class Style(_DataCore):
 
     @classmethod
     def get_default(cls) -> Style:
-        return cls.from_text("Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1")
+        return cls.from_text(
+            "Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1"
+        )
 
     def resample(
         self,
         src_res: Meta | ScriptInfo | tuple[int, int],
         target_res: tuple[int, int] = (1920, 1080),
-        scaled_border_and_shadow: bool = True
+        scaled_border_and_shadow: bool = True,
     ) -> None:
         """
         Resample current style to a target resolution
@@ -896,21 +899,40 @@ class Style(_DataCore):
 
         :return: ASS string
         """
+
         def fstr(v: float) -> str:
             if isinstance(v, int) or v.is_integer():
                 return str(int(v))
             return str(v)
+
         style = "Style: "
-        style += ",".join([
-            self.name, self.fontname, fstr(self.fontsize),
-            self.alpha_color1, self.alpha_color2, self.alpha_color3, self.alpha_color4,
-            repr(self.bold), repr(self.italic), repr(self.underline), repr(self.strikeout),
-            fstr(self.scale_x), fstr(self.scale_y),
-            fstr(self.spacing), fstr(self.angle),
-            repr(self.border_style), fstr(self.outline), fstr(self.shadow),
-            str(self.alignment), str(self.margin_l), str(self.margin_r), str(self.margin_v),
-            str(self.encoding)
-        ])
+        style += ",".join(
+            [
+                self.name,
+                self.fontname,
+                fstr(self.fontsize),
+                self.alpha_color1,
+                self.alpha_color2,
+                self.alpha_color3,
+                self.alpha_color4,
+                repr(self.bold),
+                repr(self.italic),
+                repr(self.underline),
+                repr(self.strikeout),
+                fstr(self.scale_x),
+                fstr(self.scale_y),
+                fstr(self.spacing),
+                fstr(self.angle),
+                repr(self.border_style),
+                fstr(self.outline),
+                fstr(self.shadow),
+                str(self.alignment),
+                str(self.margin_l),
+                str(self.margin_r),
+                str(self.margin_v),
+                str(self.encoding),
+            ]
+        )
         return style + "\n"
 
 
@@ -935,6 +957,7 @@ class _PositionedText(_DataCore, ABC, empty_slots=True):
 
 class _AssText(_PositionedText, ABC, empty_slots=True):
     """Abstract AssText object"""
+
     i: int
     """Index number"""
 
@@ -1019,7 +1042,7 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
         self.start_time += time
         self.end_time += time
 
-    def shift_time0(self, fps: float | Fraction = 24000/1001, shifted: bool = False) -> None:
+    def shift_time0(self, fps: float | Fraction = 24000 / 1001, shifted: bool = False) -> None:
         """
         Convenience function to shift by 0 frame to fix frame timing issues.
         This does not currently exactly reproduce the aegisub behaviour but it should have the same effect.
@@ -1074,7 +1097,9 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
 
         return shape
 
-    def to_clip(self, an: Alignment = 7, fscx: float | None = None, fscy: float | None = None, copy: bool = True) -> Shape:
+    def to_clip(
+        self, an: Alignment = 7, fscx: float | None = None, fscy: float | None = None, copy: bool = True
+    ) -> Shape:
         """
         Convert current AssText object to shape based on its Style attribute, suitable for \\clip tag
 
@@ -1131,6 +1156,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
     Note:
         (*) = This field is available only if :class:`extended<Ass>` = True
     """
+
     comment: bool
     """If *True*, this line will not be displayed on the screen"""
     layer: int
@@ -1161,8 +1187,12 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
     @classmethod
     @logger.catch(force_exit=True)
     def from_text(
-        cls, text: str, i: int, fps: float,
-        meta: Meta | None = None, styles: Iterable[Style] | None = None,
+        cls,
+        text: str,
+        i: int,
+        fps: float,
+        meta: Meta | None = None,
+        styles: Iterable[Style] | None = None,
         fix_timestamps: bool = True,
     ) -> Line:
         """
@@ -1216,7 +1246,9 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
             try:
                 style = _styles_to_map(styles)[linesplit[3]]
             except KeyError:
-                logger.user_warning(f"{LineNotFoundWarning()}: Line {self.i} is using an undefined style, assigning default style...")
+                logger.user_warning(
+                    f"{LineNotFoundWarning()}: Line {self.i} is using an undefined style, assigning default style..."
+                )
                 logger.debug(f"{self.i}: {self.raw_text}")
                 try:
                     style = copy.deepcopy(_styles_to_map(styles)["Default"])
@@ -1369,7 +1401,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
                 cur_x += word.width + word.postspace * (space_width + self.style.spacing) + self.style.spacing
         else:
             max_width = max(word.width for word in self.words)
-            sum_height = sum((word.height for word in self.words), 0.)
+            sum_height = sum((word.height for word in self.words), 0.0)
 
             cur_y = x_fix = play_res_y / 2 - sum_height / 2
             for word in self.words:
@@ -1433,11 +1465,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
             syl.width, syl.height = font.text_extents(syl.text)
             syl.ascent, syl.descent, syl.internal_leading, syl.external_leading = font.metrics
 
-            if (
-                syl.text.endswith(" ")
-            ) or (
-                k1 and k1.groupdict()["syltext"].startswith(" ")
-            ):
+            if (syl.text.endswith(" ")) or (k1 and k1.groupdict()["syltext"].startswith(" ")):
                 word_i += 1
 
             syl.start_time = last_time
@@ -1507,7 +1535,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
         # Kanji vertical position
         if vertical_kanji:
             max_width = max(syl.width for syl in self.syls)
-            sum_height = sum((syl.height for syl in self.syls), 0.)
+            sum_height = sum((syl.height for syl in self.syls), 0.0)
 
             cur_y = meta.script_info.play_res_y / 2 - sum_height / 2
 
@@ -1623,7 +1651,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
                 char.y = self.y
         else:
             max_width = max(char.width for char in self.chars)
-            sum_height = sum((char.height for char in self.chars), 0.)
+            sum_height = sum((char.height for char in self.chars), 0.0)
 
             cur_y = x_fix = meta.script_info.play_res_y / 2 - sum_height / 2
 
@@ -1719,13 +1747,20 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
         else:
             start = self.start_time.ts()[1:-1]
             end = self.end_time.ts()[1:-1]
-        ass_line += ",".join([
-            str(self.layer),
-            start, end,
-            self.style.name, self.actor,
-            str(self.margin_l), str(self.margin_r), str(self.margin_v),
-            self.effect, self.text
-        ])
+        ass_line += ",".join(
+            [
+                str(self.layer),
+                start,
+                end,
+                self.style.name,
+                self.actor,
+                str(self.margin_l),
+                str(self.margin_r),
+                str(self.margin_v),
+                self.effect,
+                self.text,
+            ]
+        )
         return ass_line + "\n"
 
 
@@ -1736,6 +1771,7 @@ class Word(_AssText, slots_ex=True):
     A word can be defined as some text with some optional space before or after.
     (e.g.: In the string "What a beautiful world!", "beautiful" and "world" are both distinct words).
     """
+
     prespace: int
     """Word free space before text"""
     postspace: int
@@ -1744,6 +1780,7 @@ class Word(_AssText, slots_ex=True):
 
 class _WordElement(Word, ABC, empty_slots=True):
     """Abstract WordElement class"""
+
     word_i: int
     """Word index (e.g.: In line text ``Hello PyonFX users!``, letter "u" will have word_i=2)"""
     inline_fx: OrderedSet[str]
@@ -1757,6 +1794,7 @@ class Syllable(_WordElement, slots_ex=True):
     A syl can be defined as some text after a karaoke tag (k, ko, kf)
     (e.g.: In ``{\\k0}Hel{\\k0}lo {\\k0}Pyon{\\k0}FX {\\k0}users!``, "Pyon" and "FX" are distinct syllables),
     """
+
     tags: OrderedSet[str]
     """All the remaining tags before syl text apart \\k ones"""
 
@@ -1767,6 +1805,7 @@ class Char(_WordElement, slots_ex=True):
 
     A char is defined by some text between two karaoke tags (k, ko, kf).
     """
+
     syl_i: int
     """Char syl index (e.g.: In line text ``{\\k0}Hel{\\k0}lo {\\k0}Pyon{\\k0}FX {\\k0}users!``, letter "F" will have syl_i=3)"""
     syl_char_i: int

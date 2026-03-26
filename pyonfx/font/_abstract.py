@@ -1,4 +1,5 @@
 """Font getting data module"""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -28,6 +29,7 @@ class _TextExtents(NamedTuple):
 
 class _AbstractFont(ABC):
     """Class for getting data from fonts"""
+
     style: Style
     xscale: float
     yscale: float
@@ -47,8 +49,7 @@ class _AbstractFont(ABC):
         self.hspace = style.spacing
 
     @abstractmethod
-    def __del__(self) -> None:
-        ...
+    def __del__(self) -> None: ...
 
     @property
     @abstractmethod

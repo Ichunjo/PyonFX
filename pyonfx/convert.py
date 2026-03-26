@@ -14,12 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program. If not, see http://www.gnu.org/licenses/.
 """Conversion module"""
+
 from __future__ import annotations
 
-__all__ = [
-    "ConvertColour",
-    "ConvertTime"
-]
+__all__ = ["ConvertColour", "ConvertTime"]
 
 import colorsys
 import math
@@ -34,6 +32,7 @@ from .ptypes import Tup3
 
 class ConvertTime:
     """Time conversion class"""
+
     # Seconds | Timestamp
     @staticmethod
     def ts2seconds(ts: str, /) -> float:
@@ -58,8 +57,8 @@ class ConvertTime:
         if f == 0:
             return 0.0
 
-        t = round(float(10 ** 9 * f * fps ** -1))
-        s = t / 10 ** 9
+        t = round(float(10**9 * f * fps**-1))
+        s = t / 10**9
         return s
 
     # Seconds | ASS frame
@@ -99,7 +98,7 @@ class ConvertTime:
     # Ass Timestamp | Seconds
     @classmethod
     def seconds2assts(cls, s: float, fps: float, /, is_start: bool) -> str:
-        s -= fps ** -1 * 0.5
+        s -= fps**-1 * 0.5
         s = cls.bound2assframe(s, fps, is_start, shifted=True)
         ts = cls.seconds2ts(min(max(0, s), 35999.999), precision=3)
         return ts[1:-1]
@@ -110,7 +109,7 @@ class ConvertTime:
         if s == 0.0:
             return s
         s = cls.bound2assframe(s, fps, is_start, shifted=True)
-        s += fps ** -1 * 0.5
+        s += fps**-1 * 0.5
         return s
 
     @staticmethod
@@ -137,12 +136,11 @@ class ConvertTime:
         if s == 0.0:
             return s
         if not shifted:
-            s -= fps ** -1 * 0.5
+            s -= fps**-1 * 0.5
         s = cls.assf2seconds(cls.seconds2assf(s, fps, is_start), fps, is_start)
         if not shifted:
-            s += fps ** -1 * 0.5
+            s += fps**-1 * 0.5
         return s
-
 
 
 class ConvertColour:
@@ -153,7 +151,6 @@ class ConvertColour:
     D65_XYZ_TRISTIMULUS_10: Final[Tup3[float]] = (0.9481, 1.000, 1.07304)
     κ: Final[float] = 24389 / 27
     ϵ: Final[float] = 216 / 24389
-
 
     @staticmethod
     def hsl_to_rgb(h: float, s: float, l: float) -> tuple[float, float, float]:
@@ -171,16 +168,10 @@ class ConvertColour:
         # http://www.brucelindbloom.com/index.html?Eqn_RGB_to_XYZ.html
         rgb_mat = np.array((r, g, b), np.float64)
         conv_mat = np.array(
-            [(0.4124564, 0.3575761, 0.1804375),
-             (0.2126729, 0.7151522, 0.0721750),
-             (0.0193339, 0.1191920, 0.9503041)],
-            np.float64
+            [(0.4124564, 0.3575761, 0.1804375), (0.2126729, 0.7151522, 0.0721750), (0.0193339, 0.1191920, 0.9503041)],
+            np.float64,
         )
-        inv_srgb_comp = np.where(
-            rgb_mat <= 0.04045,
-            rgb_mat / 12.92,
-            ((rgb_mat + 0.055) / 1.055) ** 2.4
-        )
+        inv_srgb_comp = np.where(rgb_mat <= 0.04045, rgb_mat / 12.92, ((rgb_mat + 0.055) / 1.055) ** 2.4)
         return tuple(np.dot(conv_mat, np.array([*inv_srgb_comp])))
 
     @classmethod
@@ -235,7 +226,7 @@ class ConvertColour:
     def xyz_to_lab(cls, x: float, y: float, z: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_Lab.html
         xr, yr, zr = [a / b for a, b in zip((x, y, z), cls.D65_XYZ_TRISTIMULUS_10)]
-        fx, fy, fz = [a ** (1/3) if a > cls.ϵ else (cls.κ * a + 16) / 116 for a in (xr, yr, zr)]
+        fx, fy, fz = [a ** (1 / 3) if a > cls.ϵ else (cls.κ * a + 16) / 116 for a in (xr, yr, zr)]
         return 116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)
 
     @classmethod
@@ -246,7 +237,7 @@ class ConvertColour:
     @classmethod
     def xyz_to_luv(cls, x: float, y: float, z: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_Luv.html
-        if x == y == z == 0.:
+        if x == y == z == 0.0:
             return 0, 0, 0
 
         x_ref, y_ref, z_ref = cls.D65_XYZ_TRISTIMULUS_10
@@ -273,17 +264,15 @@ class ConvertColour:
         # http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_RGB.html
         xyz_mat = np.array((x, y, z), np.float64)
         conv_mat = np.array(
-            [(3.2404542, -1.5371385, -0.4985314),
-             (-0.9692660, 1.8760108, 0.0415560),
-             (0.0556434, -0.2040259, 1.0572252)],
-            np.float64
+            [
+                (3.2404542, -1.5371385, -0.4985314),
+                (-0.9692660, 1.8760108, 0.0415560),
+                (0.0556434, -0.2040259, 1.0572252),
+            ],
+            np.float64,
         )
         linear_rgb = np.dot(conv_mat, xyz_mat)
-        srgb_comp = np.where(
-            linear_rgb <= 0.0031308,
-            linear_rgb * 12.92,
-            1.055 * linear_rgb ** (1 / 2.4) - 0.055
-        )
+        srgb_comp = np.where(linear_rgb <= 0.0031308, linear_rgb * 12.92, 1.055 * linear_rgb ** (1 / 2.4) - 0.055)
         return tuple(map(lambda a: clamp_value(a, 0.0, 1.0), srgb_comp))
 
     # -------------------------------------------------------------------------
@@ -335,8 +324,8 @@ class ConvertColour:
         fx = a / 500 + fy
         fz = fy - b / 200
 
-        yr = fy ** 3 if l > cls.ϵ * cls.κ else l / cls.κ
-        xr, zr = map(lambda n: n ** 3 if n ** 3 > cls.ϵ else (116 * n - 16) / cls.κ, (fx, fz))
+        yr = fy**3 if l > cls.ϵ * cls.κ else l / cls.κ
+        xr, zr = map(lambda n: n**3 if n**3 > cls.ϵ else (116 * n - 16) / cls.κ, (fx, fz))
         return tuple(n * m for n, m in zip((xr, yr, zr), cls.D65_XYZ_TRISTIMULUS_10))  # type: ignore
 
     @classmethod
@@ -347,7 +336,7 @@ class ConvertColour:
     @staticmethod
     def lab_to_lch_ab(l: float, a: float, b: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_Lab_to_LCH.html
-        return l, math.sqrt(a ** 2 + b ** 2), (math.atan2(b, a) * 180 / math.pi) % 360
+        return l, math.sqrt(a**2 + b**2), (math.atan2(b, a) * 180 / math.pi) % 360
 
     @classmethod
     def lab_to_luv(cls, l: float, a: float, b: float) -> tuple[float, float, float]:
@@ -411,7 +400,7 @@ class ConvertColour:
 
         a = ((52 * l) / (u + 13 * l * u0) - 1) * (1 / 3)
         b = (-5) * y
-        c = - 1 / 3
+        c = -1 / 3
         d = ((39 * l) / (v + 13 * l * v0) - 5) * y
 
         x = (d - b) / (a - c)
@@ -437,7 +426,7 @@ class ConvertColour:
     @staticmethod
     def luv_to_lch_uv(l: float, u: float, v: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_Luv_to_LCH.html
-        return l, math.sqrt(u ** 2 + v ** 2), (math.degrees(math.atan2(v, u))) % 360
+        return l, math.sqrt(u**2 + v**2), (math.degrees(math.atan2(v, u))) % 360
 
     @classmethod
     def luv_to_rgb(cls, l: float, u: float, v: float) -> tuple[float, float, float]:
@@ -470,7 +459,7 @@ class ConvertColour:
     @staticmethod
     def lch_uv_to_luv(l: float, c: float, h: float) -> tuple[float, float, float]:
         # http://www.brucelindbloom.com/index.html?Eqn_LCH_to_Luv.html
-        hr = h * math.pi/180
+        hr = h * math.pi / 180
         return l, math.cos(hr) * c, math.sin(hr) * c
 
     @classmethod

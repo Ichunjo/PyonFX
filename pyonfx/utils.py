@@ -32,18 +32,15 @@ if TYPE_CHECKING:
 
 
 @overload
-def interpolate(val1: Nb, val2: Nb, pct: float = 0.5, acc: float = 1.0) -> Nb:
-    ...
+def interpolate(val1: Nb, val2: Nb, pct: float = 0.5, acc: float = 1.0) -> Nb: ...
 
 
 @overload
-def interpolate(val1: _ColourSpaceT, val2: _ColourSpaceT, pct: float = 0.5, acc: float = 1.0) -> _ColourSpaceT:
-    ...
+def interpolate(val1: _ColourSpaceT, val2: _ColourSpaceT, pct: float = 0.5, acc: float = 1.0) -> _ColourSpaceT: ...
 
 
 @overload
-def interpolate(val1: list[Point], val2: None = ..., pct: float = 0.5, acc: float = 1.0) -> PointCartesian3D:
-    ...
+def interpolate(val1: list[Point], val2: None = ..., pct: float = 0.5, acc: float = 1.0) -> PointCartesian3D: ...
 
 
 @logger.catch
@@ -57,7 +54,7 @@ def interpolate(val1: object, val2: Any | None = None, pct: float = 0.5, acc: fl
     :param acc:         Optional acceleration, defaults to 1.0
     :return:            Interpolated value of val1 and val2
     """
-    pct = pct ** acc
+    pct = pct**acc
 
     if isinstance(val1, (float, int)) and isinstance(val2, (float, int)):
         return val1 * (1 - pct) + val2 * pct
@@ -87,12 +84,12 @@ class Utils:
     #     return pct ** accelerator
 
 
-
 NTSC_24P_MS_FROM_FRAME: Final[float] = 1 / (24000 / 1001)
 
 
 class Frame(NamedTuple):
     """Simple NamedTuple depicting a frame"""
+
     start: float
     """Start time in seconds"""
     end: float
@@ -105,6 +102,7 @@ class Frame(NamedTuple):
 
 class FrameUtility(Iterable[Frame]):
     """Helper class for frame-per-frame calculation"""
+
     start_time: float
     end_time: float
     frame_dur: float
@@ -122,10 +120,7 @@ class FrameUtility(Iterable[Frame]):
                     print(f"Frame {i}/{n}: {round(s, 3)} - {round(e, 3)}")
 
                 for frame in FrameUtility(0, 0.250):
-                    print(
-                        f"Frame {frame.i}/{frame.n}: "
-                        f'{round(frame.start, 3)} - {round(frame.end, 3)}'
-                    )
+                    print(f"Frame {frame.i}/{frame.n}: {round(frame.start, 3)} - {round(frame.end, 3)}")
 
             >>> Frame 0/6: 0.0 - 0.042
             >>> Frame 1/6: 0.042 - 0.083
@@ -156,7 +151,6 @@ class FrameUtility(Iterable[Frame]):
 
         self.current_time = self.start_time
 
-
     def add(self, start_time: float, end_time: float, end_value: float, acc: float = 1.0) -> float:
         """
         This function makes a lot easier the calculation of tags value.
@@ -168,12 +162,12 @@ class FrameUtility(Iterable[Frame]):
 
                 for frame in (fu := FrameUtility(0, 0.230)):
                     fsc = 100
-                    fsc += fu.add(0., 0.075, 50)
+                    fsc += fu.add(0.0, 0.075, 50)
                     fsc += fu.add(0.075, 0.175, -50)
                     print(
                         f"Frame {frame.index}/{frame.total}: "
-                        f'{round(frame.start, 3)} - {round(frame.end, 3)}'
-                        f' | fsc: {round(fsc, 3)}'
+                        f"{round(frame.start, 3)} - {round(frame.end, 3)}"
+                        f" | fsc: {round(fsc, 3)}"
                     )
 
             >>> Frame 0/6: 0.0 - 0.042 | fsc: 100.0
@@ -190,7 +184,7 @@ class FrameUtility(Iterable[Frame]):
         :return:                Interpolated value
         """
         if self.current_time < start_time:
-            return 0.
+            return 0.0
         if self.current_time > end_time:
             return end_value
 
@@ -247,7 +241,7 @@ class ColorUtility:
             # Parsing all the lines in the file
             CU = ColorUtility(lines)
             # Parsing just a single line (the first in this case) in the file
-            CU = ColorUtility([ line[0] ])
+            CU = ColorUtility([line[0]])
     """
 
     color_changes: list[dict[str, Any]]
@@ -315,7 +309,7 @@ class ColorUtility:
                 for t in ts:
                     # Parsing start, end, optional acceleration and colors
                     start, end, acc_colors = int(t[0]), int(t[1]), t[2].split(",")
-                    acc, c1, c3, c4 = 1., None, None, None
+                    acc, c1, c3, c4 = 1.0, None, None, None
 
                     # Do we have also acceleration?
                     if len(acc_colors) == 1:
@@ -359,7 +353,9 @@ class ColorUtility:
                     )
 
     @logger.catch
-    def get_color_change(self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None) -> str:
+    def get_color_change(
+        self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None
+    ) -> str:
         """Returns all the color_changes in the object that fit (in terms of time) between line.start_time and line.end_time.
 
         Parameters:
@@ -382,10 +378,13 @@ class ColorUtility:
                 # Assume that we have l as a copy of line and we're iterating over all the syl in the current line
                 # All the fun stuff of the effect creation...
                 l.start_time = line.start_time + syl.start_time
-                l.end_time   = line.start_time + syl.end_time
+                l.end_time = line.start_time + syl.end_time
 
                 l.text = "{\\\\an5\\\\pos(%.3f,%.3f)\\\\fscx120\\\\fscy120%s}%s" % (
-                    syl.center, syl.middle, CU.get_color_change(l), syl.text
+                    syl.center,
+                    syl.middle,
+                    CU.get_color_change(l),
+                    syl.text,
                 )
         """
         transform = ""
@@ -448,7 +447,9 @@ class ColorUtility:
         return transform
 
     @logger.catch
-    def get_fr_color_change(self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None) -> str:
+    def get_fr_color_change(
+        self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None
+    ) -> str:
         """Returns the single color(s) in the color_changes that fit the current frame (line.start_time) in your frame loop.
 
         Note:
@@ -470,10 +471,13 @@ class ColorUtility:
                 # Assume that we have l as a copy of line and we're iterating over all the syl in the current line
                 # and we're iterating over the frames
                 l.start_time = s
-                l.end_time   = e
+                l.end_time = e
 
                 l.text = "{\\\\an5\\\\pos(%.3f,%.3f)\\\\fscx120\\\\fscy120%s}%s" % (
-                    syl.center, syl.middle, CU.get_fr_color_change(l), syl.text
+                    syl.center,
+                    syl.middle,
+                    CU.get_fr_color_change(l),
+                    syl.text,
                 )
         """
         # If we don't have user's settings, we set c values
@@ -522,10 +526,7 @@ class ColorUtility:
 
         # Else, interpolate the latest color change
         start = current_time - self.color_changes[latest_index]["start"]
-        end = (
-            self.color_changes[latest_index]["end"]
-            - self.color_changes[latest_index]["start"]
-        )
+        end = self.color_changes[latest_index]["end"] - self.color_changes[latest_index]["start"]
         pct = start / end
 
         # If we're in the first color_change, interpolate with base colors

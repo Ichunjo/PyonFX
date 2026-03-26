@@ -315,1862 +315,1792 @@ __all__ = [
 ]
 """A module, encapsulating the Microsoft Foundation Classes."""
 
-
 def AddToRecentFileList(fileName: str) -> None:
     """
-    Adds an entry to the applications Recent File List.
+        Adds an entry to the applications Recent File List.
 
-Args:
+    Args:
 
-      fileName(str):The file name to be added to the list.MFC References
+          fileName(str):The file name to be added to the list.MFC References
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def ComparePath(path1: str, path2: str) -> typing.Any:
     """
-    Compares 2 paths.
+        Compares 2 paths.
 
-Args:
+    Args:
 
-      path1(str):The path name.
-      path2(str):The path name.
+          path1(str):The path name.
+          path2(str):The path name.
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def CreateMDIFrame() -> win32typing.PyCMDIFrameWnd:
     """
-    Creates an MDI Frame window.
+        Creates an MDI Frame window.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCMDIFrameWnd:win32ui.CreateMDIFrame
-PyCMDIFrameWnd = CreateMDIFrame()Creates an MDI Frame window.
-Comments
+          win32typing.PyCMDIFrameWnd:win32ui.CreateMDIFrame
+    PyCMDIFrameWnd = CreateMDIFrame()Creates an MDI Frame window.
+    Comments
 
-An MDI Frame Window is usually the main application window. 
+    An MDI Frame Window is usually the main application window.
 
-Therefore there is uaually only one of these windows per application.
+    Therefore there is uaually only one of these windows per application.
 
-An application can only hae one main window.  This method will fail if the application 
+    An application can only hae one main window.  This method will fail if the application
 
-window already exists.
-Return ValueThe window object created.  An exception is raised if an error occurs.
+    window already exists.
+    Return ValueThe window object created.  An exception is raised if an error occurs.
 
 
     """
-
 
 def CreateMDIChild() -> win32typing.PyCMDIChildWnd:
     """
-    Creates an MDI Child window.
+        Creates an MDI Child window.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCMDIChildWnd:win32ui.CreateMDIChild
-PyCMDIChildWnd = CreateMDIChild()Creates an MDI Child window.
-Return ValueThe window object created.  An exception is raised if an error occurs.
+          win32typing.PyCMDIChildWnd:win32ui.CreateMDIChild
+    PyCMDIChildWnd = CreateMDIChild()Creates an MDI Child window.
+    Return ValueThe window object created.  An exception is raised if an error occurs.
 
 
     """
-
 
 def CreateBitmap() -> typing.Any:
     """
-    Creates a bitmap object.
+        Creates a bitmap object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def CreateBitmapFromHandle() -> typing.Any:
     """
-    Creates a bitmap object from a HBITMAP.
+        Creates a bitmap object from a HBITMAP.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def CreateBrush() -> win32typing.PyCBrush:
     """
-    Creates a new brush object.
+        Creates a new brush object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCBrush
+          win32typing.PyCBrush
 
     """
-
 
 def CreateButton() -> win32typing.PyCButton:
     """
-    None
+        None
 
-Args:
-
-
-
-Returns:
-
-      win32typing.PyCButton
-
-    """
+    Args:
 
 
-def CreateColorDialog(initColor: typing.Any = 0, flags: typing.Any = 0, parent: win32typing.PyCWnd = None) -> win32typing.PyCColorDialog:
-    """
-    Creates a color selection dialog box. 
 
-self*/, PyObject *args)
+    Returns:
 
-Args:
-
-      initColor(typing.Any):The initial color.
-      flags(typing.Any):The choose-color flags to use.
-      parent(win32typing.PyCWnd):The parent or owner window of the dialog.
-
-Returns:
-
-      win32typing.PyCColorDialog
+          win32typing.PyCButton
 
     """
 
-
-def CreateControl(classId: str, windowName: str, style: typing.Any, rect: tuple[typing.Any, typing.Any, typing.Any, typing.Any], parent: win32typing.PyCWnd, _id: typing.Any, bStorage: typing.Any, obPersist: typing.Any = None, licKey: str = None) -> win32typing.PyCWnd:
+def CreateColorDialog(
+    initColor: typing.Any = 0, flags: typing.Any = 0, parent: win32typing.PyCWnd = None
+) -> win32typing.PyCColorDialog:
     """
-    Creates an OLE control.
+        Creates a color selection dialog box.
 
-Args:
+    self*/, PyObject *args)
 
-      classId(str):The class ID for the window.
-      windowName(str):The title for the window.
-      style(typing.Any):The style for the control.
-      rect(typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]):The default position of the window.
-      parent(win32typing.PyCWnd):The parent window
-      _id(typing.Any):The child ID for the view
-      bStorage(typing.Any):Not used.
-      obPersist(typing.Any):Place holder for future support.
-      licKey(str):The licence key for the control.Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+    Args:
 
-Returns:
+          initColor(typing.Any):The initial color.
+          flags(typing.Any):The choose-color flags to use.
+          parent(win32typing.PyCWnd):The parent or owner window of the dialog.
 
-      win32typing.PyCWnd:The licence key for the control.
-Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+    Returns:
 
+          win32typing.PyCColorDialog
 
     """
 
+def CreateControl(
+    classId: str,
+    windowName: str,
+    style: typing.Any,
+    rect: tuple[typing.Any, typing.Any, typing.Any, typing.Any],
+    parent: win32typing.PyCWnd,
+    _id: typing.Any,
+    bStorage: typing.Any,
+    obPersist: typing.Any = None,
+    licKey: str = None,
+) -> win32typing.PyCWnd:
+    """
+        Creates an OLE control.
+
+    Args:
+
+          classId(str):The class ID for the window.
+          windowName(str):The title for the window.
+          style(typing.Any):The style for the control.
+          rect(typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]):The default position of the window.
+          parent(win32typing.PyCWnd):The parent window
+          _id(typing.Any):The child ID for the view
+          bStorage(typing.Any):Not used.
+          obPersist(typing.Any):Place holder for future support.
+          licKey(str):The licence key for the control.Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+
+    Returns:
+
+          win32typing.PyCWnd:The licence key for the control.
+    Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+
+
+    """
 
 def CreateControlBar() -> win32typing.PyCControlBar:
     """
-    Creates a control bar object.
+        Creates a control bar object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCControlBar
+          win32typing.PyCControlBar
 
     """
-
 
 def CreateCtrlView(doc: win32typing.PyCDocument, className: str, style: typing.Any = 0) -> win32typing.PyCCtrlView:
     """
-    Creates a control view object.
+        Creates a control view object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document.
-      className(str):The class name of the control
-      style(typing.Any):Additional style bits
+          doc(win32typing.PyCDocument):The document.
+          className(str):The class name of the control
+          style(typing.Any):Additional style bits
 
-Returns:
+    Returns:
 
-      win32typing.PyCCtrlView
+          win32typing.PyCCtrlView
 
     """
-
 
 def CreateDC() -> None:
     """
-    Creates an uninitialised device context.
+        Creates an uninitialised device context.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def CreateDCFromHandle() -> None:
     """
-    Creates a DC object from an integer handle.
+        Creates a DC object from an integer handle.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def CreateDialog(idRes: typing.Any, dll: win32typing.PyDLL = None) -> win32typing.PyCDialog:
     """
-    Creates a dialog object.
+        Creates a dialog object.
 
-Args:
+    Args:
 
-      idRes(typing.Any):The ID of the dialog resource to load.
-      dll(win32typing.PyDLL):The DLL object to load the dialog from.
+          idRes(typing.Any):The ID of the dialog resource to load.
+          dll(win32typing.PyDLL):The DLL object to load the dialog from.
 
-Returns:
+    Returns:
 
-      win32typing.PyCDialog
+          win32typing.PyCDialog
 
     """
-
 
 def CreateDialogBar() -> win32typing.PyCDialogBar:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCDialogBar
+          win32typing.PyCDialogBar
 
     """
-
 
 def CreateDialogIndirect(obList: typing.Any) -> win32typing.PyCDialog:
     """
-    Creates a dialog object from a template.
+        Creates a dialog object from a template.
 
-Args:
+    Args:
 
-      obList(typing.Any):A list of [PyDLGTEMPLATE, PyDLGITEMTEMPLATE, ...], which describe the dialog to be created.
+          obList(typing.Any):A list of [PyDLGTEMPLATE, PyDLGITEMTEMPLATE, ...], which describe the dialog to be created.
 
-Returns:
+    Returns:
 
-      win32typing.PyCDialog
-
-    """
-
-
-def CreatePrintDialog(idRes: typing.Any, bPrintSetupOnly: typing.Any, dwFlags: typing.Any, parent: win32typing.PyCWnd = None, dll: win32typing.PyDLL = None) -> win32typing.PyCPrintDialog:
-    """
-    Creates a print dialog object.
-
-Args:
-
-      idRes(typing.Any):The ID of the dialog resource to load.
-      bPrintSetupOnly(typing.Any):Specifies whether the standard Windows Print dialog box or Print Setup dialog box is displayed.
-      dwFlags(typing.Any):One or more flags you can use to customize the settings of the dialog box, combined using the bitwise OR operator.
-      parent(win32typing.PyCWnd):A pointer to the dialog box parent or owner window.
-      dll(win32typing.PyDLL):The DLL object to load the dialog from.
-
-Returns:
-
-      win32typing.PyCPrintDialog
+          win32typing.PyCDialog
 
     """
 
+def CreatePrintDialog(
+    idRes: typing.Any,
+    bPrintSetupOnly: typing.Any,
+    dwFlags: typing.Any,
+    parent: win32typing.PyCWnd = None,
+    dll: win32typing.PyDLL = None,
+) -> win32typing.PyCPrintDialog:
+    """
+        Creates a print dialog object.
+
+    Args:
+
+          idRes(typing.Any):The ID of the dialog resource to load.
+          bPrintSetupOnly(typing.Any):Specifies whether the standard Windows Print dialog box or Print Setup dialog box is displayed.
+          dwFlags(typing.Any):One or more flags you can use to customize the settings of the dialog box, combined using the bitwise OR operator.
+          parent(win32typing.PyCWnd):A pointer to the dialog box parent or owner window.
+          dll(win32typing.PyDLL):The DLL object to load the dialog from.
+
+    Returns:
+
+          win32typing.PyCPrintDialog
+
+    """
 
 def CreateDocTemplate(idRes: typing.Any) -> win32typing.PyCDocTemplate:
     """
-    Creates a document template object.
+        Creates a document template object.
 
-Args:
+    Args:
 
-      idRes(typing.Any):The ID for resources for documents of this type.
+          idRes(typing.Any):The ID for resources for documents of this type.
 
-Returns:
+    Returns:
 
-      win32typing.PyCDocTemplate
+          win32typing.PyCDocTemplate
 
     """
-
 
 def CreateEdit() -> win32typing.PyCEdit:
     """
-    None
+        None
 
-Args:
-
-
-
-Returns:
-
-      win32typing.PyCEdit
-
-    """
+    Args:
 
 
-def CreateFileDialog(bFileOpen: typing.Any, arg: typing.Any, defExt: str = None, fileName: str = None, _filter: str = None, parent: win32typing.PyCWnd = None) -> win32typing.PyCFileDialog:
-    """
-    Creates a File Open/Save/etc Common Dialog. 
 
-self*/, PyObject *args)
+    Returns:
 
-Args:
-
-      bFileOpen(typing.Any):A flag indicating if the Dialog is a FileOpen or FileSave dialog.
-      arg(typing.Any):The flags for the dialog.  See the API documentation for full details.
-      defExt(str):The default file extension for saved files. If None, no extension is supplied.
-      fileName(str):The initial filename that appears in the filename edit box. If None, no filename initially appears.
-      _filter(str):A series of string pairs that specify filters you can apply to the file. If you specify file filters, only selected files will appear in the Files list box. The first string in the string pair describes the filter; the second string indicates the file extension to use. Multiple extensions may be specified using ';' as the delimiter. The string ends with two '|' characters.  May be None.
-      parent(win32typing.PyCWnd):The parent or owner window of the dialog.
-
-Returns:
-
-      win32typing.PyCFileDialog
+          win32typing.PyCEdit
 
     """
 
-
-def CreateFontDialog(arg: typing.Any, font: typing.Any = None, dcPrinter: win32typing.PyCDC = None, parent: win32typing.PyCWnd = None) -> win32typing.PyCFontDialog:
+def CreateFileDialog(
+    bFileOpen: typing.Any,
+    arg: typing.Any,
+    defExt: str = None,
+    fileName: str = None,
+    _filter: str = None,
+    parent: win32typing.PyCWnd = None,
+) -> win32typing.PyCFileDialog:
     """
-    Creates a font selection dialog box. 
+        Creates a File Open/Save/etc Common Dialog.
 
-self*/, PyObject *args)
+    self*/, PyObject *args)
 
-Args:
+    Args:
 
-      arg(typing.Any):The choose-font flags to use.
-      font(typing.Union[typing.Any]):A dictionary describing a LOGFONT, or a tuple describing a CHARFORMAT.
-      dcPrinter(win32typing.PyCDC):Show fonts available for the specified device.
-      parent(win32typing.PyCWnd):The parent or owner window of the dialog.
+          bFileOpen(typing.Any):A flag indicating if the Dialog is a FileOpen or FileSave dialog.
+          arg(typing.Any):The flags for the dialog.  See the API documentation for full details.
+          defExt(str):The default file extension for saved files. If None, no extension is supplied.
+          fileName(str):The initial filename that appears in the filename edit box. If None, no filename initially appears.
+          _filter(str):A series of string pairs that specify filters you can apply to the file. If you specify file filters, only selected files will appear in the Files list box. The first string in the string pair describes the filter; the second string indicates the file extension to use. Multiple extensions may be specified using ';' as the delimiter. The string ends with two '|' characters.  May be None.
+          parent(win32typing.PyCWnd):The parent or owner window of the dialog.
 
-Returns:
+    Returns:
 
-      win32typing.PyCFontDialog
+          win32typing.PyCFileDialog
 
     """
 
+def CreateFontDialog(
+    arg: typing.Any, font: typing.Any = None, dcPrinter: win32typing.PyCDC = None, parent: win32typing.PyCWnd = None
+) -> win32typing.PyCFontDialog:
+    """
+        Creates a font selection dialog box.
+
+    self*/, PyObject *args)
+
+    Args:
+
+          arg(typing.Any):The choose-font flags to use.
+          font(typing.Union[typing.Any]):A dictionary describing a LOGFONT, or a tuple describing a CHARFORMAT.
+          dcPrinter(win32typing.PyCDC):Show fonts available for the specified device.
+          parent(win32typing.PyCWnd):The parent or owner window of the dialog.
+
+    Returns:
+
+          win32typing.PyCFontDialog
+
+    """
 
 def CreateFormView(doc: win32typing.PyCDocument, Template: typing.Any) -> win32typing.PyCFormView:
     """
-    Creates a form view object.
+        Creates a form view object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document to use with the view.
-      Template(typing.Union[typing.Any]):Name or ID of the dialog template resource
+          doc(win32typing.PyCDocument):The document to use with the view.
+          Template(typing.Union[typing.Any]):Name or ID of the dialog template resource
 
-Returns:
+    Returns:
 
-      win32typing.PyCFormView
+          win32typing.PyCFormView
 
     """
-
 
 def CreateFrame() -> typing.Any:
     """
-    Creates a Frame window.
+        Creates a Frame window.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any:win32ui.CreateFrame
-PyFrameWnd
+          typing.Any:win32ui.CreateFrame
+    PyFrameWnd
 
- = CreateFrame()Creates a Frame window.
-Return ValueThe window object (not the OS window) created.  An exception is raised if an error occurs.
+     = CreateFrame()Creates a Frame window.
+    Return ValueThe window object (not the OS window) created.  An exception is raised if an error occurs.
 
 
     """
 
-
-def CreateImageList(cx: typing.Any, cy: typing.Any, mask: typing.Any, initial: typing.Any, grow: typing.Any, bitmapId: typing.Any, cx1: typing.Any, grow1: typing.Any, crMask: typing.Any) -> typing.Any:
+def CreateImageList(
+    cx: typing.Any,
+    cy: typing.Any,
+    mask: typing.Any,
+    initial: typing.Any,
+    grow: typing.Any,
+    bitmapId: typing.Any,
+    cx1: typing.Any,
+    grow1: typing.Any,
+    crMask: typing.Any,
+) -> typing.Any:
     """
-    Creates an image list.
+        Creates an image list.
 
-Args:
+    Args:
 
-      cx(typing.Any):Dimension of each image, in pixels.
-      cy(typing.Any):Dimension of each image, in pixels.
-      mask(typing.Any):TRUE if the image contains a mask; otherwise FALSE.
-      initial(typing.Any):Number of images that the image list initially contains.
-      grow(typing.Any):Number of images by which the image list can grow when the system needs to resize the list to make room for new images. This parameter represents the number of new images the resized image list can contain.Alternative Parameters
-      bitmapId(typing.Any):Resource name or ID of the bitmap to be associated with the image list.
-      cx1(typing.Any):Dimension of each image, in pixels.
-      grow1(typing.Any):Number of images by which the image list can grow when the system needs to resize the list to make room for new images. This parameter represents the number of new images the resized image list can contain.
-      crMask(typing.Any):Color used to generate a mask. Each pixel of this color in the specified bitmap is changed to black, and the corresponding bit in the mask is set to one.
+          cx(typing.Any):Dimension of each image, in pixels.
+          cy(typing.Any):Dimension of each image, in pixels.
+          mask(typing.Any):TRUE if the image contains a mask; otherwise FALSE.
+          initial(typing.Any):Number of images that the image list initially contains.
+          grow(typing.Any):Number of images by which the image list can grow when the system needs to resize the list to make room for new images. This parameter represents the number of new images the resized image list can contain.Alternative Parameters
+          bitmapId(typing.Any):Resource name or ID of the bitmap to be associated with the image list.
+          cx1(typing.Any):Dimension of each image, in pixels.
+          grow1(typing.Any):Number of images by which the image list can grow when the system needs to resize the list to make room for new images. This parameter represents the number of new images the resized image list can contain.
+          crMask(typing.Any):Color used to generate a mask. Each pixel of this color in the specified bitmap is changed to black, and the corresponding bit in the mask is set to one.
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def CreateListCtrl() -> win32typing.PyCListCtrl:
     """
-    Creates a list control.
+        Creates a list control.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCListCtrl
+          win32typing.PyCListCtrl
 
     """
-
 
 def CreateListView(doc: win32typing.PyCDocument) -> win32typing.PyCListView:
     """
-    Creates a PyCListView object.
+        Creates a PyCListView object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document to use with the view.
+          doc(win32typing.PyCDocument):The document to use with the view.
 
-Returns:
+    Returns:
 
-      win32typing.PyCListView
+          win32typing.PyCListView
 
     """
-
 
 def CreateTreeCtrl() -> win32typing.PyCTreeCtrl:
     """
-    Creates a tree control.
+        Creates a tree control.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCTreeCtrl
+          win32typing.PyCTreeCtrl
 
     """
-
 
 def CreateTreeView(doc: win32typing.PyCDocument) -> win32typing.PyCTreeView:
     """
-    Creates a PyCTreeView object.
+        Creates a PyCTreeView object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document to use with the view.
+          doc(win32typing.PyCDocument):The document to use with the view.
 
-Returns:
+    Returns:
 
-      win32typing.PyCTreeView
+          win32typing.PyCTreeView
 
     """
-
 
 def CreatePalette(lp: typing.Any) -> typing.Any:
     """
-    Creates a HPALETTE
+        Creates a HPALETTE
 
-Args:
+    Args:
 
-      lp(typing.Any):The entries for the palette.
+          lp(typing.Any):The entries for the palette.
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def CreatePopupMenu() -> win32typing.PyCMenu:
     """
-    Creates a popup menu object.
+        Creates a popup menu object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCMenu
+          win32typing.PyCMenu
 
     """
-
 
 def CreateMenu() -> win32typing.PyCMenu:
     """
-    Creates a menu object.
+        Creates a menu object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCMenu
+          win32typing.PyCMenu
 
     """
-
 
 def CreatePen(style: typing.Any, width: typing.Any, color: typing.Any) -> typing.Any:
     """
-    None
+        None
 
-Args:
+    Args:
 
-      style(typing.Any):The pen style.
-      width(typing.Any):The pen width.
-      color(typing.Any):The pen color.
+          style(typing.Any):The pen style.
+          width(typing.Any):The pen width.
+          color(typing.Any):The pen color.
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def CreateProgressCtrl() -> win32typing.PyCProgressCtrl:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCProgressCtrl
+          win32typing.PyCProgressCtrl
 
     """
-
 
 def CreatePropertyPage(resource: win32typing.PyResourceId, caption: typing.Any = 0) -> win32typing.PyCPropertyPage:
     """
-    Creates a property page object.
+        Creates a property page object.
 
-Args:
+    Args:
 
-      resource(win32typing.PyResourceId):String template name or inteter resource ID to use for the page.
-      caption(typing.Any):The ID if the string resource to use for the caption.
+          resource(win32typing.PyResourceId):String template name or inteter resource ID to use for the page.
+          caption(typing.Any):The ID if the string resource to use for the caption.
 
-Returns:
+    Returns:
 
-      win32typing.PyCPropertyPage
-
-    """
-
-
-def CreatePropertyPageIndirect(resourceList: win32typing.PyDialogTemplate, caption: typing.Any = 0) -> win32typing.PyCPropertyPage:
-    """
-    Creates a property page object from a template.
-
-Args:
-
-      resourceList(win32typing.PyDialogTemplate):Definition of the page to be created.
-      caption(typing.Any):The ID if the string resource to use for the caption.
-
-Returns:
-
-      win32typing.PyCPropertyPage
+          win32typing.PyCPropertyPage
 
     """
 
-
-def CreatePropertySheet(caption: win32typing.PyResourceId, parent: win32typing.PyCWnd = None, select: typing.Any = 0) -> win32typing.PyCPropertySheet:
+def CreatePropertyPageIndirect(
+    resourceList: win32typing.PyDialogTemplate, caption: typing.Any = 0
+) -> win32typing.PyCPropertyPage:
     """
-    Creates a property sheet object.
+        Creates a property page object from a template.
 
-Args:
+    Args:
 
-      caption(win32typing.PyResourceId):The caption for the property sheet, or id of the caption
-      parent(win32typing.PyCWnd):The parent window of the property sheet.
-      select(typing.Any):The index of the first page to be selected.
+          resourceList(win32typing.PyDialogTemplate):Definition of the page to be created.
+          caption(typing.Any):The ID if the string resource to use for the caption.
 
-Returns:
+    Returns:
 
-      win32typing.PyCPropertySheet
+          win32typing.PyCPropertyPage
 
     """
 
+def CreatePropertySheet(
+    caption: win32typing.PyResourceId, parent: win32typing.PyCWnd = None, select: typing.Any = 0
+) -> win32typing.PyCPropertySheet:
+    """
+        Creates a property sheet object.
+
+    Args:
+
+          caption(win32typing.PyResourceId):The caption for the property sheet, or id of the caption
+          parent(win32typing.PyCWnd):The parent window of the property sheet.
+          select(typing.Any):The index of the first page to be selected.
+
+    Returns:
+
+          win32typing.PyCPropertySheet
+
+    """
 
 def CreateRgn() -> win32typing.PyCRgn:
     """
-    Creates a new rgn object. 
+        Creates a new rgn object.
 
-Return Values: a PyCRgn object
+    Return Values: a PyCRgn object
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCRgn
+          win32typing.PyCRgn
 
     """
-
 
 def CreateRichEditCtrl() -> win32typing.PyCRichEditCtrl:
     """
-    Creates a rich edit control.
+        Creates a rich edit control.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCRichEditCtrl
+          win32typing.PyCRichEditCtrl
 
     """
-
 
 def CreateRichEditDocTemplate(idRes: typing.Any) -> win32typing.PyCRichEditDocTemplate:
     """
-    Creates a document template object.
+        Creates a document template object.
 
-Args:
+    Args:
 
-      idRes(typing.Any):The ID for resources for documents of this type.
+          idRes(typing.Any):The ID for resources for documents of this type.
 
-Returns:
+    Returns:
 
-      win32typing.PyCRichEditDocTemplate
+          win32typing.PyCRichEditDocTemplate
 
     """
-
 
 def CreateRichEditView(doc: win32typing.PyCDocument = None) -> win32typing.PyCRichEditView:
     """
-    Creates a PyRichEditView object.
+        Creates a PyRichEditView object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document to use with the view, or None for NULL.
+          doc(win32typing.PyCDocument):The document to use with the view, or None for NULL.
 
-Returns:
+    Returns:
 
-      win32typing.PyCRichEditView
+          win32typing.PyCRichEditView
 
     """
-
 
 def CreateSliderCtrl() -> win32typing.PyCSliderCtrl:
     """
-    Creates a Slider control object.
+        Creates a Slider control object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCSliderCtrl
+          win32typing.PyCSliderCtrl
 
     """
-
 
 def CreateSplitter() -> win32typing.PyCSplitterWnd:
     """
-    Creates a splitter window object.
+        Creates a splitter window object.
 
-Args:
-
-
-
-Returns:
-
-      win32typing.PyCSplitterWnd
-
-    """
+    Args:
 
 
-def CreateStatusBar(parent: win32typing.PyCWnd, arg: typing.Any, arg1: typing.Any, ctrlStype: typing.Any = 0) -> win32typing.PyCStatusBar:
-    """
-    Creates a statusbar object.
 
-Args:
+    Returns:
 
-      parent(win32typing.PyCWnd):The parent window for the status bar.
-      arg(typing.Any):The style for the status bar.
-      arg1(typing.Any):The child window ID.
-      ctrlStype(typing.Any):Additional styles for the creation of the embedded PyCStatusBarCtrl object. Status bar styles supported are:commctrl.SBARS_SIZEGRIP - The status bar control includes a sizing grip at the right end of the status bar. A sizing grip is similar to a sizing border; it is a rectangular area that the user can click and drag to resize the parent window. commctrl.SBT_TOOLTIPS - The status bar supports tooltips.CommentsYou must ensure no 2 status bars share the same ID.MFC References
-
-Returns:
-
-      win32typing.PyCStatusBar
+          win32typing.PyCSplitterWnd
 
     """
 
+def CreateStatusBar(
+    parent: win32typing.PyCWnd, arg: typing.Any, arg1: typing.Any, ctrlStype: typing.Any = 0
+) -> win32typing.PyCStatusBar:
+    """
+        Creates a statusbar object.
+
+    Args:
+
+          parent(win32typing.PyCWnd):The parent window for the status bar.
+          arg(typing.Any):The style for the status bar.
+          arg1(typing.Any):The child window ID.
+          ctrlStype(typing.Any):Additional styles for the creation of the embedded PyCStatusBarCtrl object. Status bar styles supported are:commctrl.SBARS_SIZEGRIP - The status bar control includes a sizing grip at the right end of the status bar. A sizing grip is similar to a sizing border; it is a rectangular area that the user can click and drag to resize the parent window. commctrl.SBT_TOOLTIPS - The status bar supports tooltips.CommentsYou must ensure no 2 status bars share the same ID.MFC References
+
+    Returns:
+
+          win32typing.PyCStatusBar
+
+    """
 
 def CreateStatusBarCtrl() -> win32typing.PyCStatusBarCtrl:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCStatusBarCtrl
+          win32typing.PyCStatusBarCtrl
 
     """
-
 
 def CreateFont(properties: typing.Any) -> win32typing.PyCFont:
     """
-    None
+        None
 
-Args:
+    Args:
 
-      properties(typing.Any):A dictionary containing the font properties.  Valid dictionary keys are: height width escapement orientation weight italic underline strike out charset out precision clip precision quality pitch and family nameCommentsThe code for the PyCFont was contributed by Dave Brennan (Last known address is brennan@hal.com, but I hear he is now at Microsoft) args contains a dict of font properties
+          properties(typing.Any):A dictionary containing the font properties.  Valid dictionary keys are: height width escapement orientation weight italic underline strike out charset out precision clip precision quality pitch and family nameCommentsThe code for the PyCFont was contributed by Dave Brennan (Last known address is brennan@hal.com, but I hear he is now at Microsoft) args contains a dict of font properties
 
-Returns:
+    Returns:
 
-      win32typing.PyCFont
+          win32typing.PyCFont
 
     """
-
 
 def CreateToolBar(parent: win32typing.PyCWnd, style: typing.Any, arg: typing.Any) -> win32typing.PyCToolBar:
     """
-    Creates a toolbar object.
+        Creates a toolbar object.
 
-Args:
+    Args:
 
-      parent(win32typing.PyCWnd):The parent window for the toolbar.
-      style(typing.Any):The style for the toolbar.
-      arg(typing.Any):The child window ID.CommentsYou must ensure no 2 toolbars share the same ID.
+          parent(win32typing.PyCWnd):The parent window for the toolbar.
+          style(typing.Any):The style for the toolbar.
+          arg(typing.Any):The child window ID.CommentsYou must ensure no 2 toolbars share the same ID.
 
-Returns:
+    Returns:
 
-      win32typing.PyCToolBar
+          win32typing.PyCToolBar
 
     """
-
 
 def CreateToolBarCtrl() -> win32typing.PyCToolBarCtrl:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCToolBarCtrl
+          win32typing.PyCToolBarCtrl
 
     """
-
 
 def CreateToolTipCtrl() -> win32typing.PyCToolTipCtrl:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCToolTipCtrl
+          win32typing.PyCToolTipCtrl
 
     """
-
 
 def CreateThread() -> win32typing.PyCWinThread:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWinThread
+          win32typing.PyCWinThread
 
     """
-
 
 def CreateView(doc: win32typing.PyCDocument) -> win32typing.PyCScrollView:
     """
-    Creates a generic view object.
+        Creates a generic view object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document to use with the view.
+          doc(win32typing.PyCDocument):The document to use with the view.
 
-Returns:
+    Returns:
 
-      win32typing.PyCScrollView
+          win32typing.PyCScrollView
 
     """
-
 
 def CreateEditView(doc: win32typing.PyCDocument) -> win32typing.PyCEditView:
     """
-    Creates a PyEditView object.
+        Creates a PyEditView object.
 
-Args:
+    Args:
 
-      doc(win32typing.PyCDocument):The document to use with the view.
+          doc(win32typing.PyCDocument):The document to use with the view.
 
-Returns:
+    Returns:
 
-      win32typing.PyCEditView
+          win32typing.PyCEditView
 
     """
-
 
 def CreateDebuggerThread() -> None:
     """
-    Starts a debugging thread (ie, creates the "break" button).
+        Starts a debugging thread (ie, creates the "break" button).
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def CreateWindowFromHandle(hwnd: typing.Any) -> win32typing.PyCWnd:
     """
-    None
+        None
 
-Args:
+    Args:
 
-      hwnd(typing.Any):The window handle.Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          hwnd(typing.Any):The window handle.Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd:The window handle.Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          win32typing.PyCWnd:The window handle.Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
 
     """
-
 
 def CreateWnd() -> win32typing.PyCWnd:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd
+          win32typing.PyCWnd
 
     """
-
 
 def DestroyDebuggerThread() -> None:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def DoWaitCursor(code: typing.Any) -> None:
     """
-    Dispay a wait cursor.
+        Dispay a wait cursor.
 
-Args:
+    Args:
 
-      code(typing.Any):If this parameter is 0, the original cursor is restored. If 1, a wait cursor appears. If -1, the wait cursor ends.
+          code(typing.Any):If this parameter is 0, the original cursor is restored. If 1, a wait cursor appears. If -1, the wait cursor ends.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def DisplayTraceback() -> None:
     """
-    Displays a traceback in a dialog box.
+        Displays a traceback in a dialog box.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def Enable3dControls() -> typing.Any:
     """
-    Enables 3d controls for the application.
+        Enables 3d controls for the application.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any:win32ui.Enable3dControls
+          typing.Any:win32ui.Enable3dControls
 
-int = Enable3dControls()Enables 3d controls for the application.
-Return ValueTrue if 3d controls could be enabled, false otherwise.
+    int = Enable3dControls()Enables 3d controls for the application.
+    Return ValueTrue if 3d controls could be enabled, false otherwise.
 
 
     """
-
 
 def FindWindow(className: str, windowName: str) -> win32typing.PyCWnd:
     """
-    Searches for the specified top-level window
+        Searches for the specified top-level window
 
-Args:
+    Args:
 
-      className(str):The window class name to find, else None
-      windowName(str):The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          className(str):The window class name to find, else None
+          windowName(str):The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd:The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
-
-
-    """
-
-
-def FindWindowEx(parentWindow: win32typing.PyCWnd, childAfter: win32typing.PyCWnd, className: str, windowName: str) -> win32typing.PyCWnd:
-    """
-    Searches for the specified top-level or child window
-
-Args:
-
-      parentWindow(win32typing.PyCWnd):The parent whose children will be searched. If None, the desktops window will be used.
-      childAfter(win32typing.PyCWnd):The search begins with the next window in the Z order.  If None, all children are searched.
-      className(str):The window class name to find, else None
-      windowName(str):The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
-
-Returns:
-
-      win32typing.PyCWnd:The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          win32typing.PyCWnd:The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
 
     """
 
+def FindWindowEx(
+    parentWindow: win32typing.PyCWnd, childAfter: win32typing.PyCWnd, className: str, windowName: str
+) -> win32typing.PyCWnd:
+    """
+        Searches for the specified top-level or child window
+
+    Args:
+
+          parentWindow(win32typing.PyCWnd):The parent whose children will be searched. If None, the desktops window will be used.
+          childAfter(win32typing.PyCWnd):The search begins with the next window in the Z order.  If None, all children are searched.
+          className(str):The window class name to find, else None
+          windowName(str):The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+
+    Returns:
+
+          win32typing.PyCWnd:The window name (ie, title) to find, else NoneReturn ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+
+
+    """
 
 def FullPath(path: str) -> str:
     """
-    Return the fully qualified path of a file name.
+        Return the fully qualified path of a file name.
 
-Args:
+    Args:
 
-      path(str):The path name.
+          path(str):The path name.
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def GetActiveWindow() -> win32typing.PyCWnd:
     """
-    Retrieves the active window.
+        Retrieves the active window.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd:win32ui.GetActiveWindow
-PyCWnd = GetActiveWindow()Retrieves the active window.
-Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          win32typing.PyCWnd:win32ui.GetActiveWindow
+    PyCWnd = GetActiveWindow()Retrieves the active window.
+    Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
 
     """
-
 
 def GetApp() -> win32typing.PyCWinApp:
     """
-    Retrieves the application object.
+        Retrieves the application object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWinApp
+          win32typing.PyCWinApp
 
     """
-
 
 def GetAppName() -> typing.Any:
     """
-    Returns the application name.
+        Returns the application name.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def GetAppRegistryKey() -> None:
     """
-    Returns the registry key for the application.
+        Returns the registry key for the application.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def GetBytes(address: typing.Any, size: typing.Any) -> str:
     """
-    Gets raw bytes from memory
+        Gets raw bytes from memory
 
-Args:
+    Args:
 
-      address(typing.Any):The memory address
-      size(typing.Any):The size to get.CommentsThis method is useful to help decode unknown notify messages. You must be very carefull when using this method.Return ValueThe result is a string with a length of size.
+          address(typing.Any):The memory address
+          size(typing.Any):The size to get.CommentsThis method is useful to help decode unknown notify messages. You must be very carefull when using this method.Return ValueThe result is a string with a length of size.
 
-Returns:
+    Returns:
 
-      str:The size to get.Comments
+          str:The size to get.Comments
 
-This method is useful to help decode unknown notify messages. 
+    This method is useful to help decode unknown notify messages.
 
-You must be very carefull when using this method.
-Return ValueThe result is a string with a length of size.
+    You must be very carefull when using this method.
+    Return ValueThe result is a string with a length of size.
 
 
     """
-
 
 def GetCommandLine() -> str:
     """
-    Returns the application's command line.
+        Returns the application's command line.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def GetDeviceCaps(hdc: typing.Any, index: typing.Any) -> typing.Any:
     """
-    None
+        None
 
-Args:
+    Args:
 
-      hdc(typing.Any):
-      index(typing.Any):
+          hdc(typing.Any):
+          index(typing.Any):
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def GetFileTitle(fileName: str) -> str:
     """
-    Given a file name, return its title
+        Given a file name, return its title
 
-Args:
+    Args:
 
-      fileName(str):The file name.
+          fileName(str):The file name.
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def GetFocus() -> win32typing.PyCWnd:
     """
-    Retrieves the window with the focus.
+        Retrieves the window with the focus.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd:win32ui.GetFocus
-PyCWnd = GetFocus()Retrieves the window with the focus.
-Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          win32typing.PyCWnd:win32ui.GetFocus
+    PyCWnd = GetFocus()Retrieves the window with the focus.
+    Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
 
     """
-
 
 def GetForegroundWindow() -> win32typing.PyCWnd:
     """
-    Retrieves the foreground window.
+        Retrieves the foreground window.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd:win32ui.GetForegroundWindow
-PyCWnd = GetForegroundWindow()Retrieves the foreground window.
-Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
+          win32typing.PyCWnd:win32ui.GetForegroundWindow
+    PyCWnd = GetForegroundWindow()Retrieves the foreground window.
+    Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error exception is raised.
 
 
     """
-
 
 def GetHalftoneBrush() -> win32typing.PyCBrush:
     """
-    Creates a new halftone brush object.
+        Creates a new halftone brush object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCBrush
+          win32typing.PyCBrush
 
     """
-
 
 def GetInitialStateRequest() -> typing.Any:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def GetMainFrame() -> win32typing.PyCWnd:
     """
-    Returns a window object for the main application frame.
+        Returns a window object for the main application frame.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWnd
+          win32typing.PyCWnd
 
     """
-
 
 def GetName() -> str:
     """
-    Returns the name of the current executable.
+        Returns the name of the current executable.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def GetProfileFileName() -> str:
     """
-    Returns the name of the INI file used by the application.
+        Returns the name of the INI file used by the application.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def GetProfileVal(section: str, entry: str, defValue: str | typing.Any) -> str | typing.Any:
     """
-    Returns a value from the application's INI file.
+        Returns a value from the application's INI file.
 
-Args:
+    Args:
 
-      section(str):The section in the INI file to read from.
-      entry(str):The entry within the section in the INI file to read.
-      defValue(typing.Union[str, typing.Any]):The default value.  The type of this parameter determines the method's return type.
+          section(str):The section in the INI file to read from.
+          entry(str):The entry within the section in the INI file to read.
+          defValue(typing.Union[str, typing.Any]):The default value.  The type of this parameter determines the method's return type.
 
-Returns:
+    Returns:
 
-      typing.Union[str, typing.Any]
+          typing.Union[str, typing.Any]
 
     """
-
 
 def GetRecentFileList() -> typing.Any:
     """
-    Returns the entries in the applications Recent File List.
+        Returns the entries in the applications Recent File List.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any:win32ui.GetRecentFileList
+          typing.Any:win32ui.GetRecentFileList
 
-list = GetRecentFileList()Returns the entries in the applications Recent File List.
-Return ValueA list of strings containing the fully qualified file names.
+    list = GetRecentFileList()Returns the entries in the applications Recent File List.
+    Return ValueA list of strings containing the fully qualified file names.
 
 
     """
-
 
 def GetResource() -> win32typing.PyDLL:
     """
-    Retrieve the object associated with the applications resources.
+        Retrieve the object associated with the applications resources.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyDLL
+          win32typing.PyDLL
 
     """
-
 
 def GetThread() -> win32typing.PyCWinApp:
     """
-    Retrieves the current thread object.
+        Retrieves the current thread object.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      win32typing.PyCWinApp
+          win32typing.PyCWinApp
 
     """
-
 
 def GetType() -> typing.Any:
     """
-    Retrieves a Python Type object given its name
+        Retrieves a Python Type object given its name
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def InitRichEdit() -> str:
     """
-    Initializes the rich edit framework.
+        Initializes the rich edit framework.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def InstallCallbackCaller() -> typing.Any:
     """
-    Install a Python method which will dispatch all callbacks into Python.
+        Install a Python method which will dispatch all callbacks into Python.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any:win32ui.InstallCallBackCaller
+          typing.Any:win32ui.InstallCallBackCaller
 
-object = InstallCallBackCaller()Install a Python method which will dispatch all callbacks into Python.
-Return ValueThe previous callback caller.
+    object = InstallCallBackCaller()Install a Python method which will dispatch all callbacks into Python.
+    Return ValueThe previous callback caller.
 
 
     """
-
 
 def IsDebug() -> typing.Any:
     """
-    Returns a flag indicating if the current win32ui build is a DEBUG build.
+        Returns a flag indicating if the current win32ui build is a DEBUG build.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def IsWin32s() -> typing.Any:
     """
-    Determines if the application is running under Win32s.
+        Determines if the application is running under Win32s.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def IsObject(o: typing.Any) -> typing.Any:
     """
-    Determines if the passed object is a win32ui object.
+        Determines if the passed object is a win32ui object.
 
-Args:
+    Args:
 
-      o(typing.Any):The object to check.
+          o(typing.Any):The object to check.
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def LoadDialogResource(idRes: typing.Any, dll: win32typing.PyDLL = None) -> typing.Any:
     """
-    Loads a dialog resource, and returns a list detailing the objects.
+        Loads a dialog resource, and returns a list detailing the objects.
 
-Args:
+    Args:
 
-      idRes(typing.Any):The ID of the dialog resource to load.
-      dll(win32typing.PyDLL):The DLL object to load the dialog from.
+          idRes(typing.Any):The ID of the dialog resource to load.
+          dll(win32typing.PyDLL):The DLL object to load the dialog from.
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def LoadLibrary(fileName: str) -> win32typing.PyDLL:
     """
-    Creates a DLL object, and loads a Windows DLL into the object.
+        Creates a DLL object, and loads a Windows DLL into the object.
 
-Args:
+    Args:
 
-      fileName(str):The name of the DLL file to load.
+          fileName(str):The name of the DLL file to load.
 
-Returns:
+    Returns:
 
-      win32typing.PyDLL
+          win32typing.PyDLL
 
     """
-
 
 def LoadMenu(_id: typing.Any, dll: win32typing.PyDLL = None) -> win32typing.PyCMenu:
     """
-    Creates and loads a menu resource from a DLL.
+        Creates and loads a menu resource from a DLL.
 
-Args:
+    Args:
 
-      _id(typing.Any):The Id of the menu to load.
-      dll(win32typing.PyDLL):The DLL to load from.
+          _id(typing.Any):The Id of the menu to load.
+          dll(win32typing.PyDLL):The DLL to load from.
 
-Returns:
+    Returns:
 
-      win32typing.PyCMenu
+          win32typing.PyCMenu
 
     """
-
 
 def LoadStdProfileSettings(maxFiles: typing.Any) -> None:
     """
-    Loads MFC standard settings from the applications INI file.  This includes 
+        Loads MFC standard settings from the applications INI file.  This includes
 
-the Recent File List, etc.
+    the Recent File List, etc.
 
-Args:
+    Args:
 
-      maxFiles(typing.Any):The maximum number of files to maintain on the Recently Used File list.CommentsThis function can only be called once in an applications lifetime, else an exception is raised.
+          maxFiles(typing.Any):The maximum number of files to maintain on the Recently Used File list.CommentsThis function can only be called once in an applications lifetime, else an exception is raised.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def LoadString(stringId: typing.Any) -> str:
     """
-    Loads a string from a resource file.
+        Loads a string from a resource file.
 
-Args:
+    Args:
 
-      stringId(typing.Any):The ID of the string to load.
+          stringId(typing.Any):The ID of the string to load.
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def MessageBox(message: str, arg: typing.Any, title: str | typing.Any = None) -> typing.Any:
     """
-    Display a message box.
+        Display a message box.
 
-Args:
+    Args:
 
-      message(str):The message to be displayed in the message box.
-      arg(typing.Any):The style of the message box.Return ValueAn integer identifying the button pressed to dismiss the dialog.
-      title(typing.Union[str, typing.Any]):The title for the message box.  If None, the applications title will be used.
+          message(str):The message to be displayed in the message box.
+          arg(typing.Any):The style of the message box.Return ValueAn integer identifying the button pressed to dismiss the dialog.
+          title(typing.Union[str, typing.Any]):The title for the message box.  If None, the applications title will be used.
 
-Returns:
+    Returns:
 
-      typing.Any:The style of the message box.
-Return ValueAn integer identifying the button pressed to dismiss the dialog.
+          typing.Any:The style of the message box.
+    Return ValueAn integer identifying the button pressed to dismiss the dialog.
 
 
     """
-
 
 def OutputDebugString(msg: str) -> None:
     """
-    Sends a string to the Windows debugging device.
+        Sends a string to the Windows debugging device.
 
-Args:
+    Args:
 
-      msg(str):The string to write.
+          msg(str):The string to write.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def EnableControlContainer() -> typing.Any:
     """
-    Enables support for containment of OLE controls.
+        Enables support for containment of OLE controls.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def PrintTraceback(tb: typing.Any, output: typing.Any) -> None:
     """
-    Prints a traceback using the internal Python mechanism.
+        Prints a traceback using the internal Python mechanism.
 
-Args:
+    Args:
 
-      tb(typing.Any):The traceback to print.
-      output(typing.Any):The object to write the traceback to.
+          tb(typing.Any):The traceback to print.
+          output(typing.Any):The object to write the traceback to.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def PumpWaitingMessages(firstMessage: typing.Any, lastMessage: typing.Any) -> typing.Any:
     """
-    Recursively start a new message dispatching loop while any message remain 
+        Recursively start a new message dispatching loop while any message remain
 
-in the queue.
+    in the queue.
 
-Args:
+    Args:
 
-      firstMessage(typing.Any):The lowest message ID to retrieve
-      lastMessage(typing.Any):The highest message ID to retrieveCommentsThis allows an application which is performing a long operation to dispatch paint messages during the operation.Return ValueThe result is 1 if a WM_QUIT message was processed, otherwise 0.
+          firstMessage(typing.Any):The lowest message ID to retrieve
+          lastMessage(typing.Any):The highest message ID to retrieveCommentsThis allows an application which is performing a long operation to dispatch paint messages during the operation.Return ValueThe result is 1 if a WM_QUIT message was processed, otherwise 0.
 
-Returns:
+    Returns:
 
-      typing.Any:The highest message ID to retrieve
-Comments
+          typing.Any:The highest message ID to retrieve
+    Comments
 
-This allows an application which is performing a long operation to dispatch paint messages during the 
+    This allows an application which is performing a long operation to dispatch paint messages during the
 
-operation.
-Return ValueThe result is 1 if a WM_QUIT message was processed, otherwise 0.
+    operation.
+    Return ValueThe result is 1 if a WM_QUIT message was processed, otherwise 0.
 
 
     """
-
 
 def RegisterWndClass(style: typing.Any, hCursor: typing.Any = 0, hBrush: typing.Any = 0, hIcon: typing.Any = 0) -> str:
     """
-    Registers a window class
+        Registers a window class
 
-Args:
+    Args:
 
-      style(typing.Any):Specifies the Windows class style or combination of styles
-      hCursor(typing.Any):
-      hBrush(typing.Any):
-      hIcon(typing.Any):CommentsThe Microsoft Foundation Class Library automatically registers several standard window classes for you. Call this function if you want to register your own window classes.
+          style(typing.Any):Specifies the Windows class style or combination of styles
+          hCursor(typing.Any):
+          hBrush(typing.Any):
+          hIcon(typing.Any):CommentsThe Microsoft Foundation Class Library automatically registers several standard window classes for you. Call this function if you want to register your own window classes.
 
-Returns:
+    Returns:
 
-      str
+          str
 
     """
-
 
 def RemoveRecentFile(index: typing.Any = 0) -> None:
     """
-    Removes the entry in the applications Recent File List at index.
+        Removes the entry in the applications Recent File List at index.
 
-Args:
+    Args:
 
-      index(typing.Any):Zero-based index of the file to be removed from the MRU (most recently used) file list.
+          index(typing.Any):Zero-based index of the file to be removed from the MRU (most recently used) file list.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def SetAppHelpPath() -> typing.Any:
     """
-    Set the pApp-&gtm_pszHelpFilePath variable.
+        Set the pApp-&gtm_pszHelpFilePath variable.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def SetAppName(appName: str) -> typing.Any:
     """
-    Sets the name of the application.
+        Sets the name of the application.
 
-Args:
+    Args:
 
-      appName(str):The new name for the application.  This is used for the default registry key, and the title bar of the application.MFC References
+          appName(str):The new name for the application.  This is used for the default registry key, and the title bar of the application.MFC References
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def SetCurrentInstanceHandle(newVal: typing.Any) -> typing.Any:
     """
-    Sets the MFC variable afxCurrentInstanceHandle
+        Sets the MFC variable afxCurrentInstanceHandle
 
-Args:
+    Args:
 
-      newVal(typing.Any):The new value for afxCurrentInstanceHandleReturn ValueThe result is the previous value of afxCurrentInstanceHandle
+          newVal(typing.Any):The new value for afxCurrentInstanceHandleReturn ValueThe result is the previous value of afxCurrentInstanceHandle
 
-Returns:
+    Returns:
 
-      typing.Any:The new value for afxCurrentInstanceHandleReturn ValueThe result is the previous value of afxCurrentInstanceHandle
+          typing.Any:The new value for afxCurrentInstanceHandleReturn ValueThe result is the previous value of afxCurrentInstanceHandle
 
 
     """
-
 
 def SetCurrentResourceHandle(newVal: typing.Any) -> typing.Any:
     """
-    Sets the MFC variable afxCurrentResourceHandle
+        Sets the MFC variable afxCurrentResourceHandle
 
-Args:
+    Args:
 
-      newVal(typing.Any):The new value for afxCurrentResourceHandleReturn ValueThe result is the previous value of afxCurrentResourceHandle
+          newVal(typing.Any):The new value for afxCurrentResourceHandleReturn ValueThe result is the previous value of afxCurrentResourceHandle
 
-Returns:
+    Returns:
 
-      typing.Any:The new value for afxCurrentResourceHandleReturn ValueThe result is the previous value of afxCurrentResourceHandle
+          typing.Any:The new value for afxCurrentResourceHandleReturn ValueThe result is the previous value of afxCurrentResourceHandle
 
 
     """
-
 
 def SetDialogBkColor(arg: typing.Any, arg1: typing.Any) -> typing.Any:
     """
-    Sets the default background and text color for dialog boxes and message boxes 
+        Sets the default background and text color for dialog boxes and message boxes
 
-within the application.
+    within the application.
 
-Args:
+    Args:
 
-      arg(typing.Any):The color for the controls background.
-      arg1(typing.Any):The color for the controls text.MFC References
+          arg(typing.Any):The color for the controls background.
+          arg1(typing.Any):The color for the controls text.MFC References
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def SetProfileFileName(filename: str) -> None:
     """
-    Sets the name of the INI file used by the application.
+        Sets the name of the INI file used by the application.
 
-Args:
+    Args:
 
-      filename(str):The name of the ini file.
+          filename(str):The name of the ini file.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def SetRegistryKey(key: str) -> None:
     """
-    Causes application settings to be stored in the registry instead of INI files.
+        Causes application settings to be stored in the registry instead of INI files.
 
-Args:
+    Args:
 
-      key(str):A string containing the name of the key.CommentsCauses application settings to be stored in the registry instead of INI files. This function sets m_pszRegistryKey, which is then used by the GetProfileXXX and WriteProfileXXX member functions of CWinApp. If this function has been called, the list of most recently-used (MRU) files is also stored in the registry. The registry key is usually the name of a company. It is stored in a key of the following form: HKEY_CURRENT_USER\\Software\\&ltcompany name&gt\\&ltapplication name&gt\\&ltsection name&gt\\&ltvalue name&gt.
+          key(str):A string containing the name of the key.CommentsCauses application settings to be stored in the registry instead of INI files. This function sets m_pszRegistryKey, which is then used by the GetProfileXXX and WriteProfileXXX member functions of CWinApp. If this function has been called, the list of most recently-used (MRU) files is also stored in the registry. The registry key is usually the name of a company. It is stored in a key of the following form: HKEY_CURRENT_USER\\Software\\&ltcompany name&gt\\&ltapplication name&gt\\&ltsection name&gt\\&ltvalue name&gt.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def SetResource(dll: typing.Any) -> win32typing.PyDLL:
     """
-    Specifies the default DLL object for application resources.
+        Specifies the default DLL object for application resources.
 
-Args:
+    Args:
 
-      dll(typing.Any):The dll object to use for default resources.Return ValueThe previous default DLL object.
+          dll(typing.Any):The dll object to use for default resources.Return ValueThe previous default DLL object.
 
-Returns:
+    Returns:
 
-      win32typing.PyDLL:The dll object to use for default resources.Return ValueThe previous default DLL object.
+          win32typing.PyDLL:The dll object to use for default resources.Return ValueThe previous default DLL object.
 
 
     """
-
 
 def SetStatusText(msg: str, bForce: typing.Any = 0) -> None:
     """
-    Sets the text in the status bar of the application.
+        Sets the text in the status bar of the application.
 
-Args:
+    Args:
 
-      msg(str):The message to write to the status bar.
-      bForce(typing.Any):A flag indicating if the message should be forced to the status bar, or written in idle time.
+          msg(str):The message to write to the status bar.
+          bForce(typing.Any):A flag indicating if the message should be forced to the status bar, or written in idle time.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def StartDebuggerPump() -> None:
     """
-    Starts a recursive message loop, waiting for an application close message.
+        Starts a recursive message loop, waiting for an application close message.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def StopDebuggerPump() -> None:
     """
-    None
+        None
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def TranslateMessage() -> typing.Any:
     """
-    Calls the API version of TranslateMessage.
+        Calls the API version of TranslateMessage.
 
-Args:
+    Args:
 
 
 
-Returns:
+    Returns:
 
-      typing.Any
+          typing.Any
 
     """
-
 
 def TranslateVirtualKey(vk: typing.Any) -> str | typing.Any:
     """
-    None
+        None
 
-Args:
+    Args:
 
-      vk(typing.Any):The key to translate
+          vk(typing.Any):The key to translate
 
-Returns:
+    Returns:
 
-      typing.Union[str, typing.Any]
+          typing.Union[str, typing.Any]
 
     """
-
 
 def WinHelp(arg: typing.Any, data: str | typing.Any) -> None:
     """
-    Invokes the Windows Help system.
+        Invokes the Windows Help system.
 
-Args:
+    Args:
 
-      arg(typing.Any):The type of help.  See the api for full details.
-      data(typing.Union[str, typing.Any]):Additional data specific to the help call.
+          arg(typing.Any):The type of help.  See the api for full details.
+          data(typing.Union[str, typing.Any]):Additional data specific to the help call.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 def WriteProfileVal(section: str, entry: str, value: str | typing.Any) -> None:
     """
-    Writes a value to the application's INI file.
+        Writes a value to the application's INI file.
 
-Args:
+    Args:
 
-      section(str):The section in the INI file to write to.
-      entry(str):The entry within the section in the INI file to write to.
-      value(typing.Union[str, typing.Any]):The value to write. The type of this parameter determines the method's return type.
+          section(str):The section in the INI file to write to.
+          entry(str):The entry within the section in the INI file to write to.
+          value(typing.Union[str, typing.Any]):The value to write. The type of this parameter determines the method's return type.
 
-Returns:
+    Returns:
 
-      None
+          None
 
     """
-
 
 AFX_IDW_PANE_FIRST = ...
 AFX_IDW_PANE_LAST = ...

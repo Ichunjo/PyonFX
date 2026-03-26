@@ -35,24 +35,19 @@ class Point(Coordinates, ABC, empty_slots=True):
         ...
 
     @abstractmethod
-    def to_2d(self) -> PointCartesian2D:
-        ...
+    def to_2d(self) -> PointCartesian2D: ...
 
     @abstractmethod
-    def to_3d(self) -> PointCartesian3D:
-        ...
+    def to_3d(self) -> PointCartesian3D: ...
 
     @abstractmethod
-    def to_polar(self) -> PointPolar:
-        ...
+    def to_polar(self) -> PointPolar: ...
 
     @abstractmethod
-    def to_cylindrical(self) -> PointCylindrical:
-        ...
+    def to_cylindrical(self) -> PointCylindrical: ...
 
     @abstractmethod
-    def to_spherical(self) -> PointSpherical:
-        ...
+    def to_spherical(self) -> PointSpherical: ...
 
 
 class PointCartesian2D(Cartesian2D, Point):
@@ -65,7 +60,7 @@ class PointCartesian2D(Cartesian2D, Point):
         return self
 
     def to_3d(self) -> PointCartesian3D:
-        return PointCartesian3D(self.x, self.y, 0.)
+        return PointCartesian3D(self.x, self.y, 0.0)
 
     def to_polar(self) -> PointPolar:
         return PointPolar(*polar(complex(*self)))
@@ -99,7 +94,7 @@ class PointCartesian3D(Cartesian3D, Point):
         return PointCylindrical(*polar(complex(self.x, self.y)), z=self.z)
 
     def to_spherical(self) -> PointSpherical:
-        r, theta = polar(complex(self.x ** 2 + self.y ** 2, self.z))
+        r, theta = polar(complex(self.x**2 + self.y**2, self.z))
         return PointSpherical(r, phase(complex(self.y, self.x)), theta)
 
     def as_vector(self, *, cast: bool = False) -> VectorCartesian3D:
@@ -115,6 +110,7 @@ class PointCartesian3D(Cartesian3D, Point):
         # https://docs.opencv.org/4.5.3/d9/d0c/group__calib3d.html#ga1019495a2c8d1743ed5cc23fa0daff8c
         # Length of the camera seems to be 312 according to my tests
         import cv2  # type: ignore
+
         img_pts, _ = cv2.projectPoints(
             objectPoints=np.array(self, np.float64),
             rvec=np.zeros(3, np.float64),
@@ -131,8 +127,8 @@ class PointPolar(Polar, Point):
 
     def __vector__(self, p: PointPolar) -> VectorPolar:
         return VectorPolar(
-            sqrt(self.r ** 2 + p.r ** 2 - 2 * self.r * p.r * cos(p.phi - self.phi)),
-            self.phi - atan2(p.phi * sin(p.phi - self.phi), self.phi - p.phi * cos(p.phi - self.phi))
+            sqrt(self.r**2 + p.r**2 - 2 * self.r * p.r * cos(p.phi - self.phi)),
+            self.phi - atan2(p.phi * sin(p.phi - self.phi), self.phi - p.phi * cos(p.phi - self.phi)),
         )
 
     def to_2d(self) -> PointCartesian2D:
@@ -149,7 +145,7 @@ class PointPolar(Polar, Point):
         return PointCylindrical(self.r, self.phi, 0)
 
     def to_spherical(self) -> PointSpherical:
-        return PointSpherical(self.r, self.phi, radians(90.))
+        return PointSpherical(self.r, self.phi, radians(90.0))
 
 
 class PointCylindrical(Cylindrical, Point):
@@ -157,9 +153,9 @@ class PointCylindrical(Cylindrical, Point):
 
     def __vector__(self, p: PointCylindrical) -> VectorCylindrical:
         return VectorCylindrical(
-            sqrt(self.r ** 2 + p.r ** 2 - 2 * self.r * p.r * cos(p.phi - self.phi)),
+            sqrt(self.r**2 + p.r**2 - 2 * self.r * p.r * cos(p.phi - self.phi)),
             self.phi - atan2(p.phi * sin(p.phi - self.phi), self.phi - p.phi * cos(p.phi - self.phi)),
-            self.z - p.z
+            self.z - p.z,
         )
 
     def to_2d(self) -> PointCartesian2D:
@@ -192,9 +188,7 @@ class PointSpherical(Spherical, Point):
 
     def to_3d(self) -> PointCartesian3D:
         return PointCartesian3D(
-            self.r * sin(self.theta) * cos(self.phi),
-            self.r * sin(self.theta) * sin(self.phi),
-            self.r * cos(self.theta)
+            self.r * sin(self.theta) * cos(self.phi), self.r * sin(self.theta) * sin(self.phi), self.r * cos(self.theta)
         )
 
     def to_polar(self) -> PointPolar:
@@ -204,11 +198,7 @@ class PointSpherical(Spherical, Point):
         )
 
     def to_cylindrical(self) -> PointCylindrical:
-        return PointCylindrical(
-            self.r * sin(self.theta),
-            self.phi,
-            self.r * cos(self.theta)
-        )
+        return PointCylindrical(self.r * sin(self.theta), self.phi, self.r * cos(self.theta))
 
     def to_spherical(self) -> PointSpherical:
         return self
