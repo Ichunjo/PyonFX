@@ -3,7 +3,7 @@ from __future__ import annotations
 __all__ = ["Image"]
 
 from pathlib import Path
-from typing import NoReturn
+from typing import NoReturn, cast
 
 from ._logging import logger
 from .colourspace import ASSColor, Opacity
@@ -33,15 +33,29 @@ class Image:
 
         :return:            List of Pixel
         """
-        import cv2  # type: ignore
+        from skimage.io import imread as skimage_imread
 
-        img_bgr = cv2.imread(str(self.path))
-        rows, columns, channels = img_bgr.shape
+        img_rgb = skimage_imread(str(self.path))
+        rows, columns = img_rgb.shape[:2]
+        # Handle grayscale vs color
+        if img_rgb.ndim == 2:
+            return [
+                Pixel(
+                    PointCartesian2D(float(co), float(ro)),
+                    Opacity(1.0),
+                    ASSColor(cast(tuple[str, str, str], (int(img_rgb[ro, co]),) * 3)),
+                )
+                for ro in range(rows)
+                for co in range(columns)
+            ]
+
+        # Handle RGB/RGBA
         return [
             Pixel(
-                PointCartesian2D(co, ro),
+                PointCartesian2D(float(co), float(ro)),
                 Opacity(1.0),
-                ASSColor(tuple(map(int, (img_bgr[ro, co, ch] for ch in range(channels))))),  # type: ignore
+                # skimage returns RGB, ASSColor expects (B,G,R) or similar based on existing cv2 usage
+                ASSColor((int(img_rgb[ro, co, 2]), int(img_rgb[ro, co, 1]), int(img_rgb[ro, co, 0]))),
             )
             for ro in range(rows)
             for co in range(columns)

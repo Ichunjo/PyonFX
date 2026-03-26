@@ -8,9 +8,6 @@ from math import atan2, cos, radians, sin, sqrt
 from typing import TypeVar
 from typing import cast as typing_cast
 
-import numpy as np
-from numpy.typing import NDArray
-
 from .._logging import logger
 from ..ptypes import View
 from .cartesian import Cartesian2D, Cartesian3D
@@ -107,19 +104,28 @@ class PointCartesian3D(Cartesian3D, Point):
 
         :return:                Projected Point
         """
+        # Manual implementation of cv2.projectPoints with:
+        # rvec = [0, 0, 0]
+        # tvec = [0, 0, -312]
+        # cameraMatrix = [[-312, 0, 0], [0, -312, 0], [0, 0, 1]]
+        # distCoeffs = [0, 0, 0, 0]
+        #
+        # Following the formula from:
         # https://docs.opencv.org/4.5.3/d9/d0c/group__calib3d.html#ga1019495a2c8d1743ed5cc23fa0daff8c
-        # Length of the camera seems to be 312 according to my tests
-        import cv2  # type: ignore
+        # u = fx * (x / z) + cx
+        # v = fy * (y / z) + cy
+        # With:
+        # x_cam = x
+        # y_cam = y
+        # z_cam = z - 312
+        #
+        # Length of the camera seems to be 312 according to tests
 
-        img_pts, _ = cv2.projectPoints(
-            objectPoints=np.array(self, np.float64),
-            rvec=np.zeros(3, np.float64),
-            tvec=np.array((0, 0, -312), np.float64),
-            cameraMatrix=np.array([(-312, 0, 0), (0, -312, 0), (0, 0, 1)], np.float64),
-            distCoeffs=np.zeros((4, 1), np.float64),
-        )
-        img_pts = typing_cast(NDArray[np.float32], img_pts)
-        return PointCartesian2D(*map(float, img_pts.flatten()))
+        denominator = self.z - 312
+        if denominator == 0:
+            denominator = 1e-6
+
+        return PointCartesian2D((-312 * self.x) / denominator, (-312 * self.y) / denominator)
 
 
 class PointPolar(Polar, Point):
