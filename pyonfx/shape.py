@@ -322,12 +322,14 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
 
     @logger.catch
     def __setitem__(self, index: SupportsIndex | slice, value: DrawingCommand | Iterable[DrawingCommand]) -> None:
-        if (isinstance(index, SupportsIndex) and isinstance(value, DrawingCommand)) or (
-            isinstance(index, slice) and not isinstance(value, DrawingCommand)
-        ):
+        if isinstance(index, slice):
+            if isinstance(value, DrawingCommand):
+                raise TypeError(f"{self.__class__.__name__}: can only assign an iterable to a slice")
             self._commands[index] = value
         else:
-            raise NotImplementedError(f"{self.__class__.__name__}: not supported")
+            if not isinstance(value, DrawingCommand):
+                raise TypeError(f"{self.__class__.__name__}: can only assign a DrawingCommand to an index")
+            self._commands[index] = value
 
     def __delitem__(self, index: SupportsIndex | slice) -> None:
         del self._commands[index]
@@ -347,7 +349,9 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, (Shape, str)):
             return NotImplemented
-        return str(self) == o or self.to_str() == o if isinstance(o, str) else all(scmd == so for scmd, so in zip(self, o))
+        return (
+            str(self) == o or self.to_str() == o if isinstance(o, str) else all(scmd == so for scmd, so in zip(self, o))
+        )
 
     def __add__(self, other: Iterable[DrawingCommand]) -> Shape:
         self_cmds = self._commands.copy()
@@ -355,7 +359,7 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
         return Shape(self_cmds, copy_cmds=False)
 
     def __iadd__(self, x: Iterable[DrawingCommand]) -> Self:
-        return self.__add__(x)
+        return cast(Self, self.__add__(x))
 
     def __str__(self) -> str:
         return self.to_str()
@@ -652,7 +656,10 @@ class Shape(_AbstractShape):
                 flatten_cmds.extendleft(
                     DrawingCommand(l, co, unsafe=True)
                     for co in Geometry.curve4_to_lines(
-                        (cmd1[-1].to_2d(), *(c.to_2d() for c in cmd0)),
+                        cast(
+                            tuple[PointCartesian2D, PointCartesian2D, PointCartesian2D, PointCartesian2D],
+                            (cmd1[-1].to_2d(), *(c.to_2d() for c in cmd0)),
+                        ),
                         tolerance,
                     )
                 )
@@ -1206,8 +1213,8 @@ class Shape(_AbstractShape):
         :param anti_aliasing:       Downscale with anti_aliasing or not, default to True
         :return:                    List of Pixel
         """
-        from skimage.draw import polygon as skimage_polygon  # type: ignore
-        from skimage.transform import rescale as skimage_rescale  # type: ignore
+        from skimage.draw import polygon as skimage_polygon
+        from skimage.transform import rescale as skimage_rescale
 
         ss = supersampling
         # Copy current shape object
@@ -1236,7 +1243,7 @@ class Shape(_AbstractShape):
         # Build rows and columns from coordinates
         rows, columns = np.fromiter(ys, np.float32), np.fromiter(xs, np.float32)
         # Get polygons coordinates
-        rr, cc = skimage_polygon(rows, columns, shape=(height, width))
+        rr, cc = skimage_polygon(rows, columns, shape=(height, width))  # type: ignore[no-untyped-call]
         # Fill the image from the polygon coordinates
         image[rr, cc] = 255
         # Downscale while avoiding aliasing

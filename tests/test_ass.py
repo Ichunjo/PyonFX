@@ -23,7 +23,7 @@ def time_convert(ts: str, is_start: bool) -> float:
     return round(s, 4)
 
 
-def test_meta_values():
+def test_meta_values() -> None:
     # Tests if all the meta values are taken correctly
     # check.equal(meta.wrap_style, 0)                     # -> not in this .ass, so let's comment this
     # check.equal(meta.scaled_border_and_shadow, True)  # -> not in this .ass, so let's comment this

@@ -48,7 +48,7 @@ class Font(_AbstractFont):
             "out precision": win32con.OUT_TT_PRECIS,
             "clip precision": win32con.CLIP_DEFAULT_PRECIS,
             "quality": win32con.ANTIALIASED_QUALITY,
-            "pitch and family": win32con.DEFAULT_PITCH + win32con.FF_DONTCARE,
+            "pitch and family": int(win32con.DEFAULT_PITCH + win32con.FF_DONTCARE),  # type: ignore[operator]
             "name": self.style.fontname,
         }
         self.pycfont = win32ui.CreateFont(font_spec)
