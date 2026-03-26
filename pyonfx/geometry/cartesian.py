@@ -68,9 +68,7 @@ class Cartesian3D(Cartesian2D, ABC, empty_slots=True):
         # Faster access than using super()
         NamedMutableSequence.__init__(self, x=x, y=y, z=z)
 
-    def __rotate__(
-        self, rot: float, axis: CartesianAxis = CartesianAxis.Z, zp: tuple[float, ...] = (0.0, 0.0, 0.0)
-    ) -> None:
+    def __rotate__(self, rot: float, axis: CartesianAxis = CartesianAxis.Z, zp: tuple[float, ...] = (0.0, 0.0, 0.0)) -> None:
         """
         Rotate on given axis
 

@@ -654,9 +654,7 @@ def SetWindowLong(hwnd: int, index: typing.Any, value: typing.Any) -> typing.Any
 
     """
 
-def CallWindowProc(
-    wndproc: typing.Any, hwnd: int, msg: typing.Any, wparam: typing.Any, lparam: typing.Any
-) -> typing.Any:
+def CallWindowProc(wndproc: typing.Any, hwnd: int, msg: typing.Any, wparam: typing.Any, lparam: typing.Any) -> typing.Any:
     """
         None
 
@@ -674,9 +672,7 @@ def CallWindowProc(
 
     """
 
-def SendMessage(
-    hwnd: typing.Any, message: typing.Any, wparam: typing.Any = None, lparam: typing.Any = None
-) -> typing.Any:
+def SendMessage(hwnd: typing.Any, message: typing.Any, wparam: typing.Any = None, lparam: typing.Any = None) -> typing.Any:
     """
         Sends a message to the window.
 
@@ -1533,9 +1529,7 @@ def StretchBlt(
 
     """
 
-def PatBlt(
-    hdc: int, XLeft: typing.Any, YLeft: typing.Any, Width: typing.Any, Height: typing.Any, Rop: typing.Any
-) -> None:
+def PatBlt(hdc: int, XLeft: typing.Any, YLeft: typing.Any, Width: typing.Any, Height: typing.Any, Rop: typing.Any) -> None:
     """
         Paints a rectangle by combining the current brush with existing colors
 
@@ -2510,9 +2504,7 @@ def WaitMessage() -> None:
 
     """
 
-def SetWindowPos(
-    hWnd: int, InsertAfter: int, X: typing.Any, Y: typing.Any, cx: typing.Any, cy: typing.Any, Flags: typing.Any
-) -> None:
+def SetWindowPos(hWnd: int, InsertAfter: int, X: typing.Any, Y: typing.Any, cx: typing.Any, cy: typing.Any, Flags: typing.Any) -> None:
     """
         Sets the position and size of a window
 
@@ -2703,9 +2695,7 @@ def TranslateAccelerator(hwnd: typing.Any, haccel: typing.Any, msg: typing.Any) 
 
     """
 
-def PeekMessage(
-    hwnd: typing.Any, filterMin: typing.Any, filterMax: typing.Any, removalOptions: typing.Any
-) -> typing.Any:
+def PeekMessage(hwnd: typing.Any, filterMin: typing.Any, filterMax: typing.Any, removalOptions: typing.Any) -> typing.Any:
     """
         None
 
@@ -2767,9 +2757,7 @@ def DrawMenuBar(hwnd: typing.Any) -> None:
 
     """
 
-def MoveWindow(
-    hwnd: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, bRepaint: typing.Any
-) -> None:
+def MoveWindow(hwnd: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, bRepaint: typing.Any) -> None:
     """
         None
 
@@ -3466,9 +3454,7 @@ def SetViewportExtEx(hdc: int, XExtent: typing.Any, YExtent: typing.Any) -> tupl
 
     """
 
-def GradientFill(
-    hdc: typing.Any, Vertex: tuple[win32typing.PyTRIVERTEX, ...], Mesh: typing.Any, Mode: typing.Any
-) -> None:
+def GradientFill(hdc: typing.Any, Vertex: tuple[win32typing.PyTRIVERTEX, ...], Mesh: typing.Any, Mode: typing.Any) -> None:
     """
         Shades triangles or rectangles by interpolating between vertex colors
 
@@ -3570,9 +3556,7 @@ def GetMenuItemCount(hMenu: typing.Any) -> typing.Any:
 
     """
 
-def GetMenuItemRect(
-    hWnd: typing.Any, hMenu: typing.Any, uItem: typing.Any
-) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
+def GetMenuItemRect(hWnd: typing.Any, hMenu: typing.Any, uItem: typing.Any) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     """
         None
 
@@ -3707,9 +3691,7 @@ def GetSubMenu(hMenu: typing.Any, nPos: typing.Any) -> typing.Any:
 
     """
 
-def ModifyMenu(
-    hMnu: typing.Any, uPosition: typing.Any, uFlags: typing.Any, uIDNewItem: typing.Any, newItem: str
-) -> None:
+def ModifyMenu(hMnu: typing.Any, uPosition: typing.Any, uFlags: typing.Any, uIDNewItem: typing.Any, newItem: str) -> None:
     """
         Changes an existing menu item. This function is used to specify the content, appearance, and behavior of the menu item.
 
@@ -3766,9 +3748,7 @@ def SetMenuItemBitmaps(
 
     """
 
-def CheckMenuRadioItem(
-    hMenu: typing.Any, idFirst: typing.Any, idLast: typing.Any, idCheck: typing.Any, uFlags: typing.Any
-) -> None:
+def CheckMenuRadioItem(hMenu: typing.Any, idFirst: typing.Any, idLast: typing.Any, idCheck: typing.Any, uFlags: typing.Any) -> None:
     """
         Checks a specified menu item and makes it a
 
@@ -4575,9 +4555,7 @@ def PtInRegion(hrgn: typing.Any, X: typing.Any, Y: typing.Any) -> typing.Any:
 
     """
 
-def PtInRect(
-    rect: tuple[typing.Any, typing.Any, typing.Any, typing.Any], point: tuple[typing.Any, typing.Any]
-) -> typing.Any:
+def PtInRect(rect: tuple[typing.Any, typing.Any, typing.Any, typing.Any], point: tuple[typing.Any, typing.Any]) -> typing.Any:
     """
         Determines if a rectangle contains a point
 
@@ -4607,9 +4585,7 @@ def RectInRegion(hrgn: typing.Any, rc: win32typing.PyRECT) -> typing.Any:
 
     """
 
-def SetRectRgn(
-    hrgn: typing.Any, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any
-) -> None:
+def SetRectRgn(hrgn: typing.Any, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any) -> None:
     """
         Makes an existing region rectangular
 
@@ -4645,9 +4621,7 @@ def CombineRgn(Dest: typing.Any, Src1: typing.Any, Src2: typing.Any, CombineMode
 
     """
 
-def DrawAnimatedRects(
-    hwnd: typing.Any, idAni: typing.Any, minCoords: win32typing.PyRECT, restCoords: win32typing.PyRECT
-) -> None:
+def DrawAnimatedRects(hwnd: typing.Any, idAni: typing.Any, minCoords: win32typing.PyRECT, restCoords: win32typing.PyRECT) -> None:
     """
         Animates a rectangle in the manner of minimizing, mazimizing, or opening
 
@@ -4943,9 +4917,7 @@ def OffsetRgn(hrgn: win32typing.PyGdiHANDLE, XOffset: typing.Any, YOffset: typin
 
     """
 
-def Rectangle(
-    hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any
-) -> None:
+def Rectangle(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any) -> None:
     """
         Creates a solid rectangle using currently selected pen and brush
 
@@ -5559,9 +5531,7 @@ def ScrollWindowEx(
 
     """
 
-def SetScrollInfo(
-    hwnd: typing.Any, nBar: typing.Any, scollInfo: win32typing.PySCROLLINFO, bRedraw: typing.Any = 1
-) -> None:
+def SetScrollInfo(hwnd: typing.Any, nBar: typing.Any, scollInfo: win32typing.PySCROLLINFO, bRedraw: typing.Any = 1) -> None:
     """
         Sets information about a scroll-bar
 
@@ -6103,9 +6073,7 @@ def CreateBrushIndirect(lb: win32typing.PyLOGBRUSH) -> win32typing.PyGdiHANDLE:
 
     """
 
-def ExtCreatePen(
-    PenStyle: typing.Any, Width: typing.Any, lb: win32typing.PyLOGBRUSH, Style: tuple[typing.Any, ...] = None
-) -> int:
+def ExtCreatePen(PenStyle: typing.Any, Width: typing.Any, lb: win32typing.PyLOGBRUSH, Style: tuple[typing.Any, ...] = None) -> int:
     """
         Creates a GDI pen object
 

@@ -443,9 +443,7 @@ def CreateButton() -> win32typing.PyCButton:
 
     """
 
-def CreateColorDialog(
-    initColor: typing.Any = 0, flags: typing.Any = 0, parent: win32typing.PyCWnd = None
-) -> win32typing.PyCColorDialog:
+def CreateColorDialog(initColor: typing.Any = 0, flags: typing.Any = 0, parent: win32typing.PyCWnd = None) -> win32typing.PyCColorDialog:
     """
         Creates a color selection dialog box.
 
@@ -908,9 +906,7 @@ def CreatePropertyPage(resource: win32typing.PyResourceId, caption: typing.Any =
 
     """
 
-def CreatePropertyPageIndirect(
-    resourceList: win32typing.PyDialogTemplate, caption: typing.Any = 0
-) -> win32typing.PyCPropertyPage:
+def CreatePropertyPageIndirect(resourceList: win32typing.PyDialogTemplate, caption: typing.Any = 0) -> win32typing.PyCPropertyPage:
     """
         Creates a property page object from a template.
 
@@ -1029,9 +1025,7 @@ def CreateSplitter() -> win32typing.PyCSplitterWnd:
 
     """
 
-def CreateStatusBar(
-    parent: win32typing.PyCWnd, arg: typing.Any, arg1: typing.Any, ctrlStype: typing.Any = 0
-) -> win32typing.PyCStatusBar:
+def CreateStatusBar(parent: win32typing.PyCWnd, arg: typing.Any, arg1: typing.Any, ctrlStype: typing.Any = 0) -> win32typing.PyCStatusBar:
     """
         Creates a statusbar object.
 
@@ -1281,9 +1275,7 @@ def FindWindow(className: str, windowName: str) -> win32typing.PyCWnd:
 
     """
 
-def FindWindowEx(
-    parentWindow: win32typing.PyCWnd, childAfter: win32typing.PyCWnd, className: str, windowName: str
-) -> win32typing.PyCWnd:
+def FindWindowEx(parentWindow: win32typing.PyCWnd, childAfter: win32typing.PyCWnd, className: str, windowName: str) -> win32typing.PyCWnd:
     """
         Searches for the specified top-level or child window
 

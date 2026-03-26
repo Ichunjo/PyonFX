@@ -98,9 +98,7 @@ class Font(_AbstractFont):
 
         # Checking for errors
         if len(points) == 0 or len(points) != len(type_points):
-            raise RuntimeError(
-                f"{self.__class__.__name__}: no points detected or mismatch length between points and type_points"
-            )
+            raise RuntimeError(f"{self.__class__.__name__}: no points detected or mismatch length between points and type_points")
 
         # Defining variables
         PT_MOVE, PT_LINE, PT_BÉZIER = win32con.PT_MOVETO, win32con.PT_LINETO, win32con.PT_BEZIERTO

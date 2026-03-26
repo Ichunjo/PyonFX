@@ -158,9 +158,7 @@ class AutoSlotsMeta(ABCMeta):
         abases = tuple(reversed(OrderedSet(b for base in bases for b in base.__mro__)))
 
         # Get all possible values to put in __slots__
-        _slots_inherited = OrderedSet(
-            banno for base in abases if hasattr(base, "__annotations__") for banno in base.__annotations__
-        )
+        _slots_inherited = OrderedSet(banno for base in abases if hasattr(base, "__annotations__") for banno in base.__annotations__)
 
         # __annotations__ and __slots__ from the current class
         _slots: OrderedSet[str] = OrderedSet(namespace["__slots__"])
@@ -175,9 +173,7 @@ class AutoSlotsMeta(ABCMeta):
             for k, v in attrs.items()
             if not k.startswith("__")
             and not k.endswith("__")
-            and not isinstance(
-                v, (FunctionType, classmethod, staticmethod, MethodType, MemberDescriptorType, _lru_cache_wrapper)
-            )
+            and not isinstance(v, (FunctionType, classmethod, staticmethod, MethodType, MemberDescriptorType, _lru_cache_wrapper))
             and k not in {"_abc_impl", "_is_protocol"}
         }
 

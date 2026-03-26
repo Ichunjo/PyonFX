@@ -64,18 +64,9 @@ class Pixel(NamedTuple):
         :return:                Pixel in ASS format
         """
         self.pos.round(round_digits)
-        alpha = (
-            (f"\\alpha{self.opacity}" if self.opacity.ass_hex not in {"&HFF&", "&H00&"} else "")
-            if self.opacity is not None
-            else ""
-        )
+        alpha = (f"\\alpha{self.opacity}" if self.opacity.ass_hex not in {"&HFF&", "&H00&"} else "") if self.opacity is not None else ""
         colour = f"\\c{self.colour}" if self.colour is not None else ""
-        return (
-            f"{{\\p1\\pos({self.pos.x + shift_x},{self.pos.y + shift_y})"
-            + alpha
-            + colour
-            + f"}}{Shape.square(1.5).to_str()}"
-        )
+        return f"{{\\p1\\pos({self.pos.x + shift_x},{self.pos.y + shift_y})" + alpha + colour + f"}}{Shape.square(1.5).to_str()}"
 
 
 class OutlineMode(Enum):
@@ -258,8 +249,7 @@ class DrawingCommand(_AbstractDrawingCommand):
             raise NotImplementedError(f'{self.__class__.__name__}: "{self._prop}" is an undefined DrawingProp!')
         if not check_len:
             raise ValueError(
-                f'{self.__class__.__name__}: "{self._prop}" does not correspond to the length of the coordinates'
-                + "".join(map(str, self))
+                f'{self.__class__.__name__}: "{self._prop}" does not correspond to the length of the coordinates' + "".join(map(str, self))
             )
 
     def to_str(self, round_digits: int = 3, optimise: bool = True) -> str:
@@ -349,9 +339,7 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, (Shape, str)):
             return NotImplemented
-        return (
-            str(self) == o or self.to_str() == o if isinstance(o, str) else all(scmd == so for scmd, so in zip(self, o))
-        )
+        return str(self) == o or self.to_str() == o if isinstance(o, str) else all(scmd == so for scmd, so in zip(self, o))
 
     def __add__(self, other: Iterable[DrawingCommand]) -> Shape:
         self_cmds = self._commands.copy()
@@ -442,9 +430,7 @@ class Shape(_AbstractShape):
     def map(self, func: Callable[[float, float], Point], /, *, unsafe: bool = False) -> None: ...
 
     @overload
-    def map(
-        self, func: Callable[[float, float, float], tuple[float, float, float]], /, *, unsafe: bool = False
-    ) -> None: ...
+    def map(self, func: Callable[[float, float, float], tuple[float, float, float]], /, *, unsafe: bool = False) -> None: ...
 
     @overload
     def map(self, func: Callable[[float, float, float], Point], /, *, unsafe: bool = False) -> None: ...
@@ -483,10 +469,7 @@ class Shape(_AbstractShape):
             # a basic Point
             return f(p)
 
-        self._commands = [
-            DrawingCommand(cmd.prop, *[_wraps(p, func) for p in cmd._coordinates], unsafe=unsafe)
-            for cmd in self.__iter__()
-        ]
+        self._commands = [DrawingCommand(cmd.prop, *[_wraps(p, func) for p in cmd._coordinates], unsafe=unsafe) for cmd in self.__iter__()]
 
     def move(self, _x: float = 0.0, _y: float = 0.0, /) -> None:
         """
@@ -698,9 +681,7 @@ class Shape(_AbstractShape):
                 # Get the new points
                 assert cmd1
                 splitted_cmds: deque[DrawingCommand] = deque()
-                splitted_cmds.extendleft(
-                    DrawingCommand(l, c) for c in Geometry.split_line(cmd1[-1].to_2d(), cmd0[0].to_2d(), max_length)
-                )
+                splitted_cmds.extendleft(DrawingCommand(l, c) for c in Geometry.split_line(cmd1[-1].to_2d(), cmd0[0].to_2d(), max_length))
                 ncmds.extend(splitted_cmds)
             else:
                 raise NotImplementedError(f'{self.__class__.__name__}: drawing property not recognised! "{cmd0._prop}"')
@@ -735,9 +716,7 @@ class Shape(_AbstractShape):
 
             for pre, curr, post in zip(pres, shape, posts):
                 if curr.prop in {m, n, l}:
-                    curve = Geometry.round_vertex(
-                        pre[-1].to_2d(), curr[0].to_2d(), post[0].to_2d(), deviation, tolerance, tension
-                    )
+                    curve = Geometry.round_vertex(pre[-1].to_2d(), curr[0].to_2d(), post[0].to_2d(), deviation, tolerance, tension)
                     ncmds.append(DrawingCommand(curr.prop, curve.pop(0)))
                     if curve:
                         ncmds.append(DrawingCommand(b, *curve))
@@ -851,9 +830,7 @@ class Shape(_AbstractShape):
         return cls.parallelogram(w, h, 90, c_xy, clockwise)
 
     @classmethod
-    def diamond(
-        cls, length: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True
-    ) -> Shape:
+    def diamond(cls, length: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True) -> Shape:
         """
         Make a diamond Shape object with given length and angle, centered around (c_xy)
 
@@ -866,9 +843,7 @@ class Shape(_AbstractShape):
         return cls.parallelogram(length, length / cos(radians(90 - angle)), angle, c_xy, clockwise)
 
     @classmethod
-    def parallelogram(
-        cls, w: float, h: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True
-    ) -> Shape:
+    def parallelogram(cls, w: float, h: float, angle: float, c_xy: tuple[float, float] = (0.0, 0.0), /, clockwise: bool = True) -> Shape:
         """
         Make a parallelogram Shape object with given width, height and angle, centered around (c_xy)
 
@@ -1053,9 +1028,7 @@ class Shape(_AbstractShape):
         return cls.stellation(edges, inner_size, outer_size, DrawingProp.LINE, c_xy)
 
     @classmethod
-    def starfish(
-        cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0.0, 0.0)
-    ) -> Shape:
+    def starfish(cls, edges: int, inner_size: float, outer_size: float, c_xy: tuple[float, float] = (0.0, 0.0)) -> Shape:
         """
         Make a starfish Shape object with given number of outer edges and sizes, centered around (c_xy).
         Use DrawingProp.CUBIC_BSPLINE
@@ -1151,21 +1124,15 @@ class Shape(_AbstractShape):
             sdraw = draw.split()
             lendraw = len(sdraw)
             if sdraw[0].startswith(("m", "n")) and lendraw == 3:
-                cmds.append(
-                    DC(_dp_value2member_map[sdraw.pop(0)], (float(sdraw.pop(0)), float(sdraw.pop(0))), unsafe=unsafe)
-                )
+                cmds.append(DC(_dp_value2member_map[sdraw.pop(0)], (float(sdraw.pop(0)), float(sdraw.pop(0))), unsafe=unsafe))
             elif sdraw[0].startswith(("l", "p")) and lendraw >= 3:
                 p = sdraw.pop(0)
                 cmds.extend(
-                    DC(_dp_value2member_map[p], (float(x), float(y)), unsafe=unsafe)
-                    for x, y in sliced(sdraw, 2, strict=not unsafe)
+                    DC(_dp_value2member_map[p], (float(x), float(y)), unsafe=unsafe) for x, y in sliced(sdraw, 2, strict=not unsafe)
                 )
             elif sdraw[0].startswith("b") and (lendraw - 1) / 2 % 3 == 0.0:
                 sdraw.remove("b")
-                cmds.extend(
-                    DC(DP.CUBIC_BÉZIER_CURVE, *coords, unsafe=unsafe)
-                    for coords in chunk(chunk(map(float, sdraw), 2), 3)
-                )
+                cmds.extend(DC(DP.CUBIC_BÉZIER_CURVE, *coords, unsafe=unsafe) for coords in chunk(chunk(map(float, sdraw), 2), 3))
             elif sdraw[0].startswith("s") and (lendraw - 1) % 2 == 0.0:
                 sdraw.remove("s")
                 cmds.append(DC(DP.CUBIC_BSPLINE, *chunk(map(float, sdraw), 2), unsafe=unsafe))

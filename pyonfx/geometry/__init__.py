@@ -520,9 +520,7 @@ class Geometry:
         return PointCartesian2D(p0.x + factor * (p1.x - p0.x), p0.y + factor * (p1.y - p0.y))
 
     @staticmethod
-    def point_on_bézier_curve(
-        curv: Sequence[Point], factor: float = 0.5, *, use_fsum: bool = False
-    ) -> PointCartesian3D:
+    def point_on_bézier_curve(curv: Sequence[Point], factor: float = 0.5, *, use_fsum: bool = False) -> PointCartesian3D:
         """
         Calculate the coordinates of a point on a Bézier curve
 
@@ -539,9 +537,7 @@ class Geometry:
         def _sum(_seq: Iterable[float]) -> float:
             return fsum(_seq) if use_fsum else sum(_seq)
 
-        return PointCartesian3D(
-            *[_sum(calc_c(v, i) for i, v in enumerate(coord_zip)) for coord_zip in zip(*(p.to_3d() for p in curv))]
-        )
+        return PointCartesian3D(*[_sum(calc_c(v, i) for i, v in enumerate(coord_zip)) for coord_zip in zip(*(p.to_3d() for p in curv))])
 
     @classmethod
     def round_vertex(
@@ -684,9 +680,7 @@ class Geometry:
             x1, y1 = ab, 0
             x2, y2 = x1 - bc * cos(Br), bc * sin(Br)
         else:
-            raise ValueError(
-                f"{cls.__name__}: possibles values are one side and two angles " + "or two sides and one angle"
-            )
+            raise ValueError(f"{cls.__name__}: possibles values are one side and two angles " + "or two sides and one angle")
 
         return (
             P((x0 + cx) * cl, y0 + cy),

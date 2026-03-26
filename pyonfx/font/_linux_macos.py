@@ -1,24 +1,31 @@
 import html
+import sys
 from functools import cache, cached_property, lru_cache
 from typing import TYPE_CHECKING, Any
 
-import cairo  # pyright: ignore[reportMissingImports]
-import gi  # pyright: ignore[reportMissingImports]
+if sys.platform != "win32":
+    import cairo
+    import gi
 
-gi.require_version("Pango", "1.0")
-gi.require_version("PangoCairo", "1.0")
+    gi.require_version("Pango", "1.0")
+    gi.require_version("PangoCairo", "1.0")
 
-from gi.repository import Pango, PangoCairo  # type: ignore # noqa E402
+    from gi.repository import Pango, PangoCairo
+else:
+    cairo: Any = None
+    gi: Any = None
+    Pango: Any = None
+    PangoCairo: Any = None
 
-from .._logging import logger  # noqa E402
-from ..shape import DrawingCommand, DrawingProp, Shape  # noqa E402
+from .._logging import logger
+from ..shape import DrawingCommand, DrawingProp, Shape
 
 if TYPE_CHECKING:
     from ..core import Style
 else:
     Style = Any
 
-from ._abstract import _AbstractFont, _Metrics, _TextExtents  # noqa E402
+from ._abstract import _AbstractFont, _Metrics, _TextExtents
 
 LIBASS_FONTHACK = True
 """Scale font data to fontsize?"""
@@ -131,9 +138,7 @@ class Font(_AbstractFont):
                 elif ptype == 1:
                     cmds.append(DC(l, (ppath[0] + x_add, ppath[1])))
                 elif ptype == 2:
-                    cmds.append(
-                        DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5]))
-                    )
+                    cmds.append(DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5])))
 
             self.context.new_path()
             curr_width += self.text_extents(char)[0]

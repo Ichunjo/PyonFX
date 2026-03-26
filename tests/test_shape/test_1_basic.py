@@ -105,9 +105,7 @@ def test_align1() -> None:
 
 def test_align2() -> None:
     original = Shape.from_ass_string("m 58.67 77.33 l 66.67 352 888 370.67 826.67 152 640 74.67 338.67 272")
-    dest = Shape.from_ass_string(
-        "m -414.665 -293.34 l -406.665 -18.67 414.665 0 353.335 -218.67 166.665 -296 -134.665 -98.67"
-    )
+    dest = Shape.from_ass_string("m -414.665 -293.34 l -406.665 -18.67 414.665 0 353.335 -218.67 166.665 -296 -134.665 -98.67")
     original.align(2)
     original.round()
     check.equal(str(original), str(dest))
@@ -131,9 +129,7 @@ def test_align4() -> None:
 
 def test_align5() -> None:
     original = Shape.from_ass_string("m 58.67 77.33 l 66.67 352 888 370.67 826.67 152 640 74.67 338.67 272")
-    dest = Shape.from_ass_string(
-        "m -414.665 -145.34 l -406.665 129.33 414.665 148 353.335 -70.67 166.665 -148 -134.665 49.33"
-    )
+    dest = Shape.from_ass_string("m -414.665 -145.34 l -406.665 129.33 414.665 148 353.335 -70.67 166.665 -148 -134.665 49.33")
     original.align(5)
     original.round()
     check.equal(str(original), str(dest))
@@ -157,9 +153,7 @@ def test_align7() -> None:
 
 def test_align8() -> None:
     original = Shape.from_ass_string("m 58.67 77.33 l 66.67 352 888 370.67 826.67 152 640 74.67 338.67 272")
-    dest = Shape.from_ass_string(
-        "m -414.665 2.66 l -406.665 277.33 414.665 296 353.335 77.33 166.665 0 -134.665 197.33"
-    )
+    dest = Shape.from_ass_string("m -414.665 2.66 l -406.665 277.33 414.665 296 353.335 77.33 166.665 0 -134.665 197.33")
     original.align(8)
     original.round()
     check.equal(str(original), str(dest))

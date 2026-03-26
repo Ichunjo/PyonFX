@@ -164,11 +164,7 @@ class FrameUtility(Iterable[Frame]):
                     fsc = 100
                     fsc += fu.add(0.0, 0.075, 50)
                     fsc += fu.add(0.075, 0.175, -50)
-                    print(
-                        f"Frame {frame.index}/{frame.total}: "
-                        f"{round(frame.start, 3)} - {round(frame.end, 3)}"
-                        f" | fsc: {round(fsc, 3)}"
-                    )
+                    print(f"Frame {frame.index}/{frame.total}: {round(frame.start, 3)} - {round(frame.end, 3)} | fsc: {round(fsc, 3)}")
 
             >>> Frame 0/6: 0.0 - 0.042 | fsc: 100.0
             >>> Frame 1/6: 0.042 - 0.083 | fsc: 127.806
@@ -354,9 +350,7 @@ class ColorUtility:
                     )
 
     @logger.catch
-    def get_color_change(
-        self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None
-    ) -> str:
+    def get_color_change(self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None) -> str:
         """Returns all the color_changes in the object that fit (in terms of time)
         between line.start_time and line.end_time.
 
@@ -449,9 +443,7 @@ class ColorUtility:
         return transform
 
     @logger.catch
-    def get_fr_color_change(
-        self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None
-    ) -> str:
+    def get_fr_color_change(self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None) -> str:
         """Returns the single color(s) in the color_changes that fit the current frame (line.start_time)
         in your frame loop.
 

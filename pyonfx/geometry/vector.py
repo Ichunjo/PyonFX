@@ -104,9 +104,7 @@ class VectorCartesian3D(Vector, Cartesian3D):
         return hypot(*self)
 
     def cross(self, v1: VectorCartesian3D) -> VectorCartesian3D:
-        return VectorCartesian3D(
-            self.y * v1.z - self.z * v1.y, self.z * v1.x - self.x * v1.z, self.x * v1.y - self.y * v1.x
-        )
+        return VectorCartesian3D(self.y * v1.z - self.z * v1.y, self.z * v1.x - self.x * v1.z, self.x * v1.y - self.y * v1.x)
 
     def __angle__(self, v: VectorCartesian3D) -> float:
         norm0, norm1 = self.norm, v.norm
