@@ -1,7 +1,7 @@
 __all__ = ["Font", "get_font"]
 
 import sys
-from functools import cache, lru_cache
+from functools import cache
 from typing import TYPE_CHECKING, Any
 
 if sys.platform == "win32":

@@ -7,7 +7,7 @@ from abc import ABC, ABCMeta
 from collections.abc import Callable
 from enum import IntEnum
 from threading import Lock
-from typing import Any, NoReturn, TypeVar, overload
+from typing import Any, ClassVar, NoReturn, TypeVar, overload
 
 import loguru
 
@@ -36,12 +36,13 @@ def _loguru_format(record: loguru.Record) -> str:
     return (
         "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
         "<level>{level.name: <12}</level> | "
-        "<cyan>{name}</cyan>:<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>\n{exception}"
+        "<cyan>{name}</cyan>:<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+        "<level>{message}</level>\n{exception}"
     )
 
 
 class SingletonMeta(ABCMeta):
-    _instances: dict[object, Any] = {}
+    _instances: ClassVar[dict[object, Any]] = {}
     _lock: Lock = Lock()
 
     def __call__(cls, *args: Any, **kwargs: Any) -> Any:
@@ -74,7 +75,7 @@ class Logger(Singleton):
                 {"name": "USER WARNING", "no": LogLevel.USER_WARNING, "color": "<yellow><bold>"},
                 {"name": "USER INFO", "no": LogLevel.USER_INFO, "color": "<white><bold>"},
             ],
-            extra=dict(user=False, level=self.__level),
+            extra={"user": False, "level": self.__level},
         )
         self.__id = ids_.pop(0)
 

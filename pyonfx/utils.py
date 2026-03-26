@@ -1,4 +1,4 @@
-# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).
+# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).  # noqa: E501
 # Copyright (C) 2019 Antonio Strippoli (CoffeeStraw/YellowFlash)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -223,7 +223,8 @@ class ColorUtility:
         but thinking about your generated lines, **the majority** will have **start_time and end_time different**
         from the ones of your original file.
 
-        Treating transformations as if they were continous, **ColorUtility will always know the right colors** to pick for you.
+        Treating transformations as if they were continous, **ColorUtility will always know the right colors**
+        to pick for you.
         Also, remember that even if you can't always see them directly on Aegisub, you can use transformations
         with negative times or with times that exceed line total duration.
 
@@ -242,7 +243,7 @@ class ColorUtility:
             CU = ColorUtility(lines)
             # Parsing just a single line (the first in this case) in the file
             CU = ColorUtility([line[0]])
-    """
+    """  # noqa: E501
 
     color_changes: list[dict[str, Any]]
     c1_req: bool
@@ -356,7 +357,8 @@ class ColorUtility:
     def get_color_change(
         self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None
     ) -> str:
-        """Returns all the color_changes in the object that fit (in terms of time) between line.start_time and line.end_time.
+        """Returns all the color_changes in the object that fit (in terms of time)
+        between line.start_time and line.end_time.
 
         Parameters:
             line (Line object): The line of which you want to get the color changes
@@ -422,7 +424,7 @@ class ColorUtility:
                 start_time = 1 if start_time == 0 else start_time
                 end_time = 1 if end_time == 0 else end_time
 
-                transform += "\\t(%d,%d," % (start_time, end_time)
+                transform += f"\\t({start_time},{end_time},"
 
                 if color_change["acc"] != 1:
                     transform += str(color_change["acc"])
@@ -450,10 +452,12 @@ class ColorUtility:
     def get_fr_color_change(
         self, line: Line, c1: bool | None = None, c3: bool | None = None, c4: bool | None = None
     ) -> str:
-        """Returns the single color(s) in the color_changes that fit the current frame (line.start_time) in your frame loop.
+        """Returns the single color(s) in the color_changes that fit the current frame (line.start_time)
+        in your frame loop.
 
         Note:
-            If you get errors, try either modifying your \\\\t values or set your **fr parameter** in FU object to **10**.
+            If you get errors, try either modifying your \\\\t values or set your **fr parameter**
+            in FU object to **10**.
 
         Parameters:
             line (Line object): The line of which you want to get the color changes

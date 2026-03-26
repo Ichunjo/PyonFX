@@ -20,7 +20,7 @@ from .misc import cround
 class Time(float):
     """Time interface"""
 
-    def __new__(cls, seconds: ConvertibleToFloat) -> Time:
+    def __new__(cls, seconds: ConvertibleToFloat) -> Self:
         """
         Make a new Time object
 
@@ -29,41 +29,41 @@ class Time(float):
         """
         return super().__new__(cls, seconds)
 
-    def __add__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__add__(float(__x)))
+    def __add__(self: Self, x: float) -> Self:
+        return self.__class__(super().__add__(float(x)))
 
-    def __sub__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__sub__(float(__x)))
+    def __sub__(self: Self, x: float) -> Self:
+        return self.__class__(super().__sub__(float(x)))
 
-    def __mul__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__mul__(float(__x)))
+    def __mul__(self: Self, x: float) -> Self:
+        return self.__class__(super().__mul__(float(x)))
 
-    def __floordiv__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__floordiv__(float(__x)))
+    def __floordiv__(self: Self, x: float) -> Self:
+        return self.__class__(super().__floordiv__(float(x)))
 
-    def __truediv__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__truediv__(float(__x)))
+    def __truediv__(self: Self, x: float) -> Self:
+        return self.__class__(super().__truediv__(float(x)))
 
-    def __mod__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__mod__(float(__x)))
+    def __mod__(self: Self, x: float) -> Self:
+        return self.__class__(super().__mod__(float(x)))
 
-    def __radd__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__radd__(float(__x)))
+    def __radd__(self: Self, x: float) -> Self:
+        return self.__class__(super().__radd__(float(x)))
 
-    def __rsub__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__rsub__(float(__x)))
+    def __rsub__(self: Self, x: float) -> Self:
+        return self.__class__(super().__rsub__(float(x)))
 
-    def __rmul__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__rmul__(float(__x)))
+    def __rmul__(self: Self, x: float) -> Self:
+        return self.__class__(super().__rmul__(float(x)))
 
-    def __rfloordiv__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__rfloordiv__(float(__x)))
+    def __rfloordiv__(self: Self, x: float) -> Self:
+        return self.__class__(super().__rfloordiv__(float(x)))
 
-    def __rtruediv__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__rtruediv__(float(__x)))
+    def __rtruediv__(self: Self, x: float) -> Self:
+        return self.__class__(super().__rtruediv__(float(x)))
 
-    def __rmod__(self: Self, __x: float) -> Self:
-        return self.__class__(super().__rmod__(float(__x)))
+    def __rmod__(self: Self, x: float) -> Self:
+        return self.__class__(super().__rmod__(float(x)))
 
     def __neg__(self: Self) -> Self:
         return self.__class__(super().__neg__())

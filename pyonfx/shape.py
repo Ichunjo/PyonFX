@@ -1,4 +1,4 @@
-# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).
+# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).  # noqa: E501
 # Copyright (C) 2019 Antonio Strippoli (CoffeeStraw/YellowFlash)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,22 +20,13 @@ from __future__ import annotations
 __all__ = ["DrawingCommand", "DrawingProp", "OutlineMode", "Pixel", "Shape"]
 import inspect
 import re
-import sys
 from abc import ABC, abstractmethod
 from collections import deque
-from copy import deepcopy
-from enum import Enum, auto
-
-if sys.version_info >= (3, 11):
-    from enum import StrEnum
-else:
-
-    class StrEnum(str, Enum): ...
-
-
 from collections.abc import Callable, Iterable, MutableSequence, Sequence
+from copy import deepcopy
+from enum import Enum, StrEnum, auto
 from math import atan, ceil, cos, degrees, isfinite, radians, sqrt
-from typing import Any, NamedTuple, SupportsIndex, cast, overload
+from typing import Any, NamedTuple, Self, SupportsIndex, cast, overload
 
 import numpy as np
 from more_itertools import flatten, sliced, unzip, zip_offset
@@ -356,18 +347,14 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, (Shape, str)):
             return NotImplemented
-        if isinstance(o, str):
-            response = str(self) == o or self.to_str() == o
-        else:
-            response = all(scmd == so for scmd, so in zip(self, o))
-        return response
+        return str(self) == o or self.to_str() == o if isinstance(o, str) else all(scmd == so for scmd, so in zip(self, o))
 
     def __add__(self, other: Iterable[DrawingCommand]) -> Shape:
         self_cmds = self._commands.copy()
         self_cmds.extend(other)
         return Shape(self_cmds, copy_cmds=False)
 
-    def __iadd__(self, x: Iterable[DrawingCommand]) -> Shape:
+    def __iadd__(self, x: Iterable[DrawingCommand]) -> Self:
         return self.__add__(x)
 
     def __str__(self) -> str:
@@ -666,7 +653,7 @@ class Shape(_AbstractShape):
                     DrawingCommand(l, co, unsafe=True)
                     for co in Geometry.curve4_to_lines(
                         (cmd1[-1].to_2d(), *(c.to_2d() for c in cmd0)),
-                        tolerance,  # type: ignore[arg-type]
+                        tolerance,
                     )
                 )
                 ncmds.extend(flatten_cmds)

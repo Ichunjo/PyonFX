@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
 from functools import reduce
-from itertools import chain
+from itertools import chain, pairwise
 from math import asin, ceil, comb, cos, degrees, dist, fsum, inf, radians, sin, sqrt
-from typing import Any, Tuple, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 from .._logging import logger
 from ..misc import chunk, clamp_value, frange
@@ -492,10 +492,7 @@ class Geometry:
             # vecsp = [el for el in vecs if not (el[0] == 0 and el[1] == 0)]
 
             # Check flatness on vectors
-            for v0, v1 in zip(vecsp, vecsp[1:]):
-                if abs(cls.angle(V(*v0), V(*v1))) > tolerance:
-                    return False
-            return True
+            return all(abs(cls.angle(V(*v0), V(*v1))) <= tolerance for v0, v1 in pairwise(vecsp))
 
         def _convert_recursive(b_coord: _BézierCurve, /) -> None:
             """Conversion in recursive processing"""

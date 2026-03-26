@@ -6,15 +6,13 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable
 from enum import IntEnum
 from math import ceil, floor, trunc
-from typing import Any, NoReturn, Self, TypeVar
+from typing import Any, NoReturn, Self
 
 import numpy as np
 from numpy.typing import DTypeLike, NDArray
 
 from .._logging import logger
 from ..ptypes import NamedMutableSequence, SomeArrayLike
-
-_CT = TypeVar("_CT", bound="Coordinates")
 
 
 class Coordinates(NamedMutableSequence[float], ABC, empty_slots=True):
@@ -72,10 +70,10 @@ class Coordinates(NamedMutableSequence[float], ABC, empty_slots=True):
         for attr, value in zip(self.__slots__, (func(x) for x in self)):
             setattr(self, attr, value)
 
-    def __eq__(self, __o: object) -> bool:
-        if not isinstance(__o, Coordinates):
+    def __eq__(self, o: object) -> bool:
+        if not isinstance(o, Coordinates):
             return NotImplemented
-        return __o._asdict() == self._asdict()
+        return o._asdict() == self._asdict()
 
     def round(self, ndigits: int = 3) -> None:
         """

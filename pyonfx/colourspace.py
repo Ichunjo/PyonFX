@@ -36,7 +36,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Self, TypeGuard, TypeVar, cast, overload
 
 from ._logging import logger
-from .convert import ConvertColour as CC
+from .convert import ConvertColour as CC  # noqa: N817
 from .misc import clamp_value
 from .ptypes import ACV, NamedMutableSequence, Nb, Nb8bit, Pct, TCV_co, Tup4
 
@@ -44,13 +44,10 @@ _T1 = TypeVar("_T1")
 _T2 = TypeVar("_T2")
 
 _ColourSpaceT = TypeVar("_ColourSpaceT", bound="ColourSpace[TCV_co]")  # type: ignore
-_NumBasedT = TypeVar("_NumBasedT", bound="_NumBased[Nb]")  # type: ignore
 _RGB_T = TypeVar("_RGB_T", bound="_BaseRGB[Nb]")  # type: ignore
-_HueSaturationBasedT = TypeVar("_HueSaturationBasedT", bound="_HueSaturationBased")
-_OpacityT = TypeVar("_OpacityT", bound="Opacity")
 
 
-class ColourSpace(NamedMutableSequence[TCV_co], ABC, empty_slots=True):
+class ColourSpace[T](NamedMutableSequence[T], ABC, empty_slots=True):
     """Base class for colourspace interface"""
 
     @abstractmethod
@@ -71,8 +68,8 @@ class ColourSpace(NamedMutableSequence[TCV_co], ABC, empty_slots=True):
 
     def __str__(self) -> str:
         clsname = self.__class__.__name__
-        values = ", ".join("%s=%r" % (k, self.__getattribute__(k)) for k in self.__slots__ if not k.startswith("_"))
-        return "%s(%s)" % (clsname, values)
+        values = ", ".join(f"{k}={self.__getattribute__(k)!r}" for k in self.__slots__ if not k.startswith("_"))
+        return f"{clsname}({values})"
 
     def __repr__(self) -> str:
         return super().__str__()
@@ -310,7 +307,7 @@ class _BaseRGB(ColourSpace[Nb], ABC, empty_slots=True):
         return HTML((r, g, b))
 
     def to_ass_color(self) -> ASSColor:
-        return ASSColor("&H" + "".join(hex(x)[2:].zfill(2) for x in reversed(self.to_rgb(RGB))) + "&")
+        return ASSColor("&H" + "".join(f"{x:x}"[2:].zfill(2) for x in reversed(self.to_rgb(RGB))) + "&")
 
 
 class _RGBNoAlpha(_BaseRGB[Nb], ABC, empty_slots=True):
@@ -579,7 +576,7 @@ class HSL(_HueSaturationBased):
         :param _x:          Tuple of three numbers H, S and L values
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> HSL:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_hsl() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -635,7 +632,7 @@ class HSV(_HueSaturationBased):
         :param _x:          Tuple of three numbers H, S and V values
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> HSV:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_hsv() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -824,7 +821,7 @@ class _HexBased(ColourSpace[str], ABC, empty_slots=True):
         return int(h, 16)
 
 
-def _istup3(tup: tuple[_T1, _T1, _T1], t: type[_T2]) -> TypeGuard[tuple[_T2, _T2, _T2]]:
+def _istup3[T1, T2](tup: tuple[_T1, _T1, _T1], t: type[_T2]) -> TypeGuard[tuple[_T2, _T2, _T2]]:
     return all(isinstance(x, t) for x in tup)
 
 
@@ -866,7 +863,7 @@ class HTML(_HexBased):
         :param _x:      Colourspace object
         """
 
-    def __new__(cls, _x: str | tuple[str, str, str] | tuple[int, int, int] | ColourSpace[TCV_co]) -> HTML:
+    def __new__(cls, _x: str | tuple[str, str, str] | tuple[int, int, int] | ColourSpace[TCV_co]) -> Self:
         return _x.to_html() if not isinstance(_x, (str, tuple)) else super().__new__(cls)
 
     @overload
@@ -918,7 +915,7 @@ class HTML(_HexBased):
             self._rgb = RGB((r, g, b))
         elif _istup3(_x, int):
             self._rgb = RGB(_x)
-            seq = "".join(hex(x)[2:].zfill(2) for x in self._rgb)
+            seq = "".join(f"{x:x}".zfill(2) for x in self._rgb)
         elif _istup3(_x, str):
             r, g, b = map(self.hex_to_int, _x)
             self._rgb = RGB((r, g, b))
@@ -953,7 +950,7 @@ class ASSColor(_HexBased):
     @overload
     def __new__(cls, _x: ColourSpace[TCV_co]) -> ASSColor: ...
 
-    def __new__(cls, _x: str | tuple[str, str, str] | tuple[int, int, int] | ColourSpace[TCV_co]) -> ASSColor:
+    def __new__(cls, _x: str | tuple[str, str, str] | tuple[int, int, int] | ColourSpace[TCV_co]) -> Self:
         return _x.to_ass_color() if not isinstance(_x, (str, tuple)) else super().__new__(cls)
 
     @overload
@@ -1014,7 +1011,7 @@ class ASSColor(_HexBased):
             self._rgb = RGB((r, g, b))
         elif _istup3(_x, int):
             self._rgb = RGB(_x[::-1])
-            seq = "".join(hex(x)[2:].zfill(2) for x in _x)
+            seq = "".join(f"{x:x}".zfill(2) for x in _x)
         elif _istup3(_x, str):
             r, g, b = map(self.hex_to_int, _x)
             self._rgb = RGB((r, g, b))
@@ -1076,7 +1073,7 @@ class XYZ(XYZBased):
         :param _x:      A tuple of three values in the range 0.0 - 1.0
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> XYZ:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_xyz() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -1122,7 +1119,7 @@ class XYZ(XYZBased):
         return LCHuv(CC.xyz_to_lch_uv(*self))
 
 
-class xyY(XYZBased):
+class xyY(XYZBased):  # noqa: N801
     """xyY colourspace object"""
 
     x: float
@@ -1147,7 +1144,7 @@ class xyY(XYZBased):
         :param _x:      A tuple of three values in the range 0.0 - 1.0
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> xyY:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_xyy() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -1227,7 +1224,7 @@ class Lab(XYZBased):
         :param _x:      A tuple of three values
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Lab:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_lab() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -1306,7 +1303,7 @@ class LCHab(XYZBased):
         :param _x:      A tuple of three values
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> LCHab:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_lch_ab() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -1378,7 +1375,7 @@ class Luv(XYZBased):
         :param _x:      A tuple of three values
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Luv:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_luv() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload
@@ -1457,7 +1454,7 @@ class LCHuv(XYZBased):
         :param _x:      A tuple of three values
         """
 
-    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> LCHuv:
+    def __new__(cls, _x: ColourSpace[TCV_co] | tuple[float, float, float]) -> Self:
         return _x.to_lch_uv() if not isinstance(_x, tuple) else super().__new__(cls)
 
     @overload

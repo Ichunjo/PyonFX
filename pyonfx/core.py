@@ -1,4 +1,4 @@
-# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).
+# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).  # noqa: E501
 # Copyright (C) 2019 Antonio Strippoli (CoffeeStraw/YellowFlash)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -32,6 +32,7 @@ __all__ = [
     "Word",
 ]
 
+import contextlib
 import copy
 import os
 import re
@@ -69,7 +70,6 @@ from .ptypes import (
 from .shape import Pixel, Shape
 
 _AssTextT = TypeVar("_AssTextT", bound="_AssText")
-_MetaDataT = TypeVar("_MetaDataT", bound="_MetaData")
 
 
 class Ass(AutoSlots):
@@ -285,7 +285,8 @@ class Ass(AutoSlots):
 
         :param lines:               Additional Line objects to be written
         :param comment_original:    If True, will comment the original lines
-        :param fix_timestamps:      If True, will fix the timestamps of the additional lines on their real start and end time.
+        :param fix_timestamps:      If True, will fix the timestamps of the additional lines on their real start
+                                    and end time.
                                     If False, start and end times will just be the raw timestamps.
         """
         if not self._output:
@@ -450,10 +451,8 @@ class _DataCore(AutoSlots, Iterable[tuple[str, Any]], ABC, empty_slots=True):
 
     def __iter__(self) -> Iterator[tuple[str, Any]]:
         for name in self.__all_slots__:
-            try:
+            with contextlib.suppress(AttributeError):
                 yield name, getattr(self, name)
-            except AttributeError:
-                pass
 
     def __str__(self) -> str:
         try:
@@ -469,10 +468,7 @@ class _DataCore(AutoSlots, Iterable[tuple[str, Any]], ABC, empty_slots=True):
 
     @cache
     def _pretty_print(self, obj: _DataCore, indent: int = 0, name: str | None = None) -> str:
-        if not name:
-            out = " " * indent + f"{obj.__class__.__name__}:\n"
-        else:
-            out = " " * indent + f"{name}: ({obj.__class__.__name__}):\n"
+        out = " " * indent + f"{obj.__class__.__name__}:\n" if not name else " " * indent + f"{name}: ({obj.__class__.__name__}):\n"
 
         indent += 4
         for k, v in obj:
@@ -1078,10 +1074,7 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
         :return:            Shape object, representing the text
         """
         # Obtaining information and editing values of style if requested
-        if copy:
-            obj = self.deep_copy()
-        else:
-            obj = self
+        obj = self.deep_copy() if copy else self
 
         # Editing temporary the style to properly get the shape
         if fscx is not None:
@@ -1114,10 +1107,7 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
         :param fscy:        The scale_y value for the shape, default to current scale_y object
         :return:            A Shape object, representing the text with the style format values of the object
         """
-        if copy:
-            obj = self.deep_copy()
-        else:
-            obj = self
+        obj = self.deep_copy() if copy else self
 
         # Setting default values
         if fscx is None:

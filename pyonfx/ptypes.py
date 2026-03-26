@@ -2,22 +2,29 @@
 
 from __future__ import annotations
 
+import contextlib
 from abc import ABC, ABCMeta, abstractmethod
 from collections import OrderedDict
-from collections.abc import Callable, Collection, Iterable, Iterator, MutableMapping, MutableSet, Reversible, Sequence
+from collections.abc import (
+    Callable,
+    Collection,
+    Iterable,
+    Iterator,
+    MutableMapping,
+    MutableSet,
+    Reversible,
+    Sequence,
+)
 from functools import _lru_cache_wrapper, wraps
 from os import PathLike
 from types import FunctionType, MemberDescriptorType, MethodType
 from typing import (
-    AbstractSet,
     Annotated,
     Any,
-    Generic,
     Literal,
     NamedTuple,
     Self,
     TypeVar,
-    Union,
     cast,
     final,
     get_args,
@@ -29,22 +36,21 @@ from numpy.typing import NDArray
 from typing_extensions import get_type_hints
 
 T = TypeVar("T")
-_T = TypeVar("_T")
 S = TypeVar("S")
 T_co = TypeVar("T_co", covariant=True)
 F = TypeVar("F", bound=Callable[..., Any])
 TCV_co = TypeVar("TCV_co", bound=float | int | str, covariant=True)  # Type Color Value covariant
 TCV_inv = TypeVar("TCV_inv", bound=float | int | str)  # Type Color Value invariant
-ACV = Union[float, int, str]
+ACV = float | int | str
 Nb = TypeVar("Nb", bound=float | int)  # Number
 Tup3 = tuple[Nb, Nb, Nb]
 Tup4 = tuple[Nb, Nb, Nb, Nb]
 Tup3Str = tuple[str, str, str]
-AnyPath = Union[PathLike[str], str]
-SomeArrayLike = Union[Sequence[float], NDArray[Any]]
+AnyPath = PathLike[str] | str
+SomeArrayLike = Sequence[float] | NDArray[Any]
 
 
-class CheckAnnotated(Generic[T], ABC):
+class CheckAnnotated[T](ABC):
     @abstractmethod
     def check(self, val: T | Iterable[T], param_name: str) -> None: ...
 
@@ -80,7 +86,7 @@ Pct = Annotated[float, ValueRangeIncInc(0.0, 1.0)]
 Alignment = Literal[1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 
-def check_annotations(func: F, /) -> F:
+def check_annotations[F: Callable[..., Any]](func: F, /) -> F:
 
     def _check_hint(hint: Any, value: Any, param_name: str) -> None:
         if get_origin(hint) is Annotated:
@@ -108,12 +114,12 @@ class View(Reversible[T], Collection[T]):
 
     __slots__ = "__x"
 
-    def __init__(self, __x: Collection[T]) -> None:
-        self.__x = __x
+    def __init__(self, x: Collection[T]) -> None:
+        self.__x = x
         super().__init__()
 
-    def __contains__(self, __x: object) -> bool:
-        return __x in self.__x
+    def __contains__(self, x: object) -> bool:
+        return x in self.__x
 
     def __iter__(self) -> Iterator[T]:
         return iter(self.__x)
@@ -132,7 +138,7 @@ class View(Reversible[T], Collection[T]):
 
 class AutoSlotsMeta(ABCMeta):
     @classmethod
-    def __prepare__(cls, __name: str, __bases: tuple[type, ...], **kwargs: Any) -> MutableMapping[str, object]:
+    def __prepare__(cls, name: str, bases: tuple[type, ...], /, **kwargs: Any) -> MutableMapping[str, object]:
         return {"__slots__": (), "__slots_ex__": ()}
 
     def __new__(
@@ -195,13 +201,11 @@ class AutoSlots(ABC, empty_slots=True, metaclass=AutoSlotsMeta):
 
     def __delattrs__(self) -> None:
         for k in self.__all_slots__:
-            try:
+            with contextlib.suppress(AttributeError):
                 super().__delattr__(k)
-            except AttributeError:
-                pass
 
 
-class NamedMutableSequence(AutoSlots, Sequence[T_co], Generic[T_co], ABC, empty_slots=True):
+class NamedMutableSequence[T_co](AutoSlots, Sequence[T_co], ABC, empty_slots=True):
     def __init__(self, *args: T_co, **kwargs: T_co) -> None:
         for k, v in kwargs.items():
             self.__setattr__(k, v)
@@ -211,16 +215,16 @@ class NamedMutableSequence(AutoSlots, Sequence[T_co], Generic[T_co], ABC, empty_
 
     def __str__(self) -> str:
         clsname = self.__class__.__name__
-        values = ", ".join("%s=%r" % (k, self.__getattribute__(k)) for k in self.__slots__)
-        return "%s(%s)" % (clsname, values)
+        values = ", ".join(f"{k}={self.__getattribute__(k)!r}" for k in self.__slots__)
+        return f"{clsname}({values})"
 
     def __repr__(self) -> str:
         return self.__str__()
 
-    def __eq__(self, __o: object) -> bool:
-        if not isinstance(__o, self.__class__):
+    def __eq__(self, o: object) -> bool:
+        if not isinstance(o, self.__class__):
             return NotImplemented
-        return type(self) is type(__o) and tuple(self) is tuple(__o)
+        return type(self) is type(o) and tuple(self) is tuple(o)
 
     @overload
     def __getitem__(self, index: int) -> T_co: ...
@@ -240,10 +244,10 @@ class NamedMutableSequence(AutoSlots, Sequence[T_co], Generic[T_co], ABC, empty_
         return self.__slots__.__len__()
 
     def _asdict(self) -> dict[str, T_co]:
-        return {k: v for k, v in zip(self.__slots__, self)}
+        return dict(zip(self.__slots__, self))
 
 
-class OrderedSet(MutableSet[T], Generic[T], ABC):
+class OrderedSet[T](MutableSet[T], ABC):
     __slots__ = "__odict"
     __odict: OrderedDict[T, Any | None]
 
@@ -254,7 +258,7 @@ class OrderedSet(MutableSet[T], Generic[T], ABC):
             self.__odict = OrderedDict()
 
     def __str__(self) -> str:
-        return "%s(%s)" % (self.__class__.__name__, ", ".join(str(v) for v in self))
+        return "{}({})".format(self.__class__.__name__, ", ".join(str(v) for v in self))
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -272,135 +276,26 @@ class OrderedSet(MutableSet[T], Generic[T], ABC):
     def __len__(self) -> int:
         return self.__odict.__len__()
 
-    def add(self, __element: T, /) -> None:
+    def add(self, value: T) -> None:
         """
         Add an element to a set.
 
         This has no effect if the element is already present.
 
-        :param __element:       Element to add
+        :param value:       Element to add
         """
-        self.__odict[__element] = None
+        self.__odict[value] = None
 
-    def discard(self, __element: T, /) -> None:
+    def discard(self, value: T) -> None:
         """
         Remove an element from a set if it is a member.
 
         If the element is not a member, do nothing.
 
-        :param __element:       Element to remove
+        :param value:       Element to remove
         """
-        try:
-            del self.__odict[__element]
-        except KeyError:
-            pass
-
-    # Redefining methods for return types because they're just wrong
-    def __and__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__and__(s)  # type: ignore[return-value]
-
-    def __iand__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__iand__(s)  # type: ignore[return-value]
-
-    def __or__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__or__(s)  # type: ignore[return-value]
-
-    def __ior__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__ior__(s)  # type: ignore
-
-    def __sub__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__sub__(s)  # type: ignore[return-value]
-
-    def __isub__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__isub__(s)  # type: ignore[return-value]
-
-    def __xor__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__xor__(s)  # type: ignore[return-value]
-
-    def __ixor__(self, s: AbstractSet[_T]) -> OrderedSet[_T | T]:
-        return super().__ixor__(s)  # type: ignore
-
-    # Set methods
-    def copy(self) -> OrderedSet[T]:
-        """
-        Return a shallow copy of a set
-        """
-        return OrderedSet(self.__odict.keys())
-
-    def difference(self, *s: Iterable[S]) -> OrderedSet[S | T]:
-        """
-        Return the difference of two or more sets as a new set.
-
-        (i.e. all elements that are in this set but not the others.)
-
-        :param s:               Positional argument of Iterables
-        :return:                OrderedSet of differences
-        """
-        return self - set(el for it in s for el in it)
-
-    def difference_update(self, *s: Iterable[Any]) -> None:
-        """
-        Remove all elements of another set from this set.
-
-        :param s:               Positional argument of Iterables
-        """
-        for el in set(el for it in s for el in it):
-            self.discard(el)
-
-    def intersection(self, *s: Iterable[S]) -> OrderedSet[S | T]:
-        """
-        Return the intersection of two sets as a new set.
-
-        (i.e. all elements that are in both sets.)
-
-        :param s:               Positional argument of Iterables
-        :return:                OrderedSet of intersections
-        """
-        return self & set(el for it in s for el in it)
-
-    def intersection_update(self, *s: Iterable[Any]) -> None:
-        """
-        Update a set with the intersection of itself and another.
-
-        :param s:               Positional argument of Iterables
-        """
-        other = set(el for it in s for el in it)
-        for element in self.__odict.copy():
-            if element not in other:
-                self.discard(element)
-
-    def symmetric_difference(self, __s: Iterable[T], /) -> OrderedSet[T]:
-        """
-        Return the symmetric difference of two sets as a new set.
-
-        (i.e. all elements that are in exactly one of the sets.)
-
-        :param s:               An Iterable
-        :return:                OrderedSet of symmetric differences
-        """
-        return self ^ set(__s)
-
-    def symmetric_difference_update(self, __s: Iterable[T], /) -> None:
-        """
-        Update a set with the symmetric difference of itself and another.
-
-        :param __s:             An Iterable
-        """
-        other = set(__s)
-        for element in self.__odict.copy():
-            if element in self.__odict and element in other:
-                self.remove(element)
-
-    def union(self, *s: Iterable[S]) -> OrderedSet[S | T]:
-        """
-        Return the union of sets as a new set.
-
-        (i.e. all elements that are in either set.)
-
-        :param s:               Positional argument of Iterables
-        :return:                OrderedSet of unions
-        """
-        return self | set(el for it in s for el in it)
+        with contextlib.suppress(KeyError):
+            del self.__odict[value]
 
     def update(self, *s: Iterable[T]) -> None:
         """
@@ -409,9 +304,6 @@ class OrderedSet(MutableSet[T], Generic[T], ABC):
         :param s:               Positional argument of Iterables
         """
         self.__odict.update((el, None) for it in s for el in it)
-
-
-_CustomBoolT = TypeVar("_CustomBoolT", bound="CustomBool")
 
 
 class CustomBool(int):

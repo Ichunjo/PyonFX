@@ -1,4 +1,4 @@
-# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).
+# PyonFX: An easy way to create KFX (Karaoke Effects) and complex typesetting using the ASS format (Advanced Substation Alpha).  # noqa: E501
 # Copyright (C) 2019 Antonio Strippoli (CoffeeStraw/YellowFlash)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -58,8 +58,7 @@ class ConvertTime:
             return 0.0
 
         t = round(float(10**9 * f * fps**-1))
-        s = t / 10**9
-        return s
+        return t / 10**9
 
     # Seconds | ASS frame
     # Heavily inspired from https://github.com/CoffeeStraw/PyonFX/pull/37
@@ -79,21 +78,18 @@ class ConvertTime:
         else:
             next_ms = cls.f2seconds(f + 1, fps) * 1000
             ms = math.floor(curr_ms + int((next_ms - curr_ms + 1) / 2) + 1e-6)
-        s = ms / 1000
-        return s
+        return ms / 1000
 
     # Frame | Timestamp
     @classmethod
     def f2ts(cls, f: int, fps: float, /, *, precision: int = 3) -> str:
         s = cls.f2seconds(f, fps)
-        ts = cls.seconds2ts(s, precision=precision)
-        return ts
+        return cls.seconds2ts(s, precision=precision)
 
     @classmethod
     def ts2f(cls, ts: str, fps: float, /) -> int:
         s = cls.ts2seconds(ts)
-        f = cls.seconds2f(s, fps)
-        return f
+        return cls.seconds2f(s, fps)
 
     # Ass Timestamp | Seconds
     @classmethod
@@ -216,10 +212,10 @@ class ConvertColour:
         # http://www.brucelindbloom.com/index.html?Eqn_XYZ_to_xyY.html
         if not x == y == z == 0.0:
             Y = y
-            x, y = map(lambda a: a / (x + y + z), (x, y))
+            x, y = (a / (x + y + z) for a in (x, y))
         else:
             Y = 0.0
-            x, y = map(lambda a: a / sum(cls.D65_XYZ_TRISTIMULUS_10), (x, y))
+            x, y = (a / sum(cls.D65_XYZ_TRISTIMULUS_10) for a in (x, y))
         return x, y, Y
 
     @classmethod
@@ -273,7 +269,7 @@ class ConvertColour:
         )
         linear_rgb = np.dot(conv_mat, xyz_mat)
         srgb_comp = np.where(linear_rgb <= 0.0031308, linear_rgb * 12.92, 1.055 * linear_rgb ** (1 / 2.4) - 0.055)
-        return tuple(map(lambda a: clamp_value(a, 0.0, 1.0), srgb_comp))
+        return tuple(clamp_value(a, 0.0, 1.0) for a in srgb_comp)
 
     # -------------------------------------------------------------------------
     # ---------------------------- xyY Conversions ----------------------------
@@ -325,7 +321,7 @@ class ConvertColour:
         fz = fy - b / 200
 
         yr = fy**3 if l > cls.ϵ * cls.κ else l / cls.κ
-        xr, zr = map(lambda n: n**3 if n**3 > cls.ϵ else (116 * n - 16) / cls.κ, (fx, fz))
+        xr, zr = (n**3 if n**3 > cls.ϵ else (116 * n - 16) / cls.κ for n in (fx, fz))
         return tuple(n * m for n, m in zip((xr, yr, zr), cls.D65_XYZ_TRISTIMULUS_10))  # type: ignore
 
     @classmethod

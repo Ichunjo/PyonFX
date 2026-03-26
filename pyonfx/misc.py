@@ -58,9 +58,7 @@ def frange(start: float, stop: float, step: float) -> Iterator[float]:
     # from more_itertools import numeric_range
     # return iter(numeric_range(start, stop, step))
     return iter(
-        map(
-            lambda x: float(x), np.linspace(start, stop, round((stop - start) / step), endpoint=False, dtype=np.float64)
-        )
+        float(x) for x in np.linspace(start, stop, round((stop - start) / step), endpoint=False, dtype=np.float64)
     )
 
 
