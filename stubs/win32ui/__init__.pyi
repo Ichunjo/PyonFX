@@ -1,7 +1,318 @@
-from win32helper import win32typing
 import typing
-__all__ = ['', 'AddToRecentFileList', 'ComparePath', 'CreateMDIFrame', 'CreateMDIChild', 'CreateBitmap', 'CreateBitmapFromHandle', 'CreateBrush', 'CreateButton', 'CreateColorDialog', 'CreateControl', 'CreateControlBar', 'CreateCtrlView', 'CreateDC', 'CreateDCFromHandle', 'CreateDialog', 'CreateDialogBar', 'CreateDialogIndirect', 'CreatePrintDialog', 'CreateDocTemplate', 'CreateEdit', 'CreateFileDialog', 'CreateFontDialog', 'CreateFormView', 'CreateFrame', 'CreateImageList', 'CreateListCtrl', 'CreateListView', 'CreateTreeCtrl', 'CreateTreeView', 'CreatePalette', 'CreatePopupMenu', 'CreateMenu', 'CreatePen', 'CreateProgressCtrl', 'CreatePropertyPage', 'CreatePropertyPageIndirect', 'CreatePropertySheet', 'CreateRgn', 'CreateRichEditCtrl', 'CreateRichEditDocTemplate', 'CreateRichEditView', 'CreateSliderCtrl', 'CreateSplitter', 'CreateStatusBar', 'CreateStatusBarCtrl', 'CreateFont', 'CreateToolBar', 'CreateToolBarCtrl', 'CreateToolTipCtrl', 'CreateThread', 'CreateView', 'CreateEditView', 'CreateDebuggerThread', 'CreateWindowFromHandle', 'CreateWnd', 'DestroyDebuggerThread', 'DoWaitCursor', 'DisplayTraceback', 'Enable3dControls', 'FindWindow', 'FindWindowEx', 'FullPath', 'GetActiveWindow', 'GetApp', 'GetAppName', 'GetAppRegistryKey', 'GetBytes', 'GetCommandLine', 'GetDeviceCaps', 'GetFileTitle', 'GetFocus', 'GetForegroundWindow', 'GetHalftoneBrush', 'GetInitialStateRequest', 'GetMainFrame', 'GetName', 'GetProfileFileName', 'GetProfileVal', 'GetRecentFileList', 'GetResource', 'GetThread', 'GetType', 'InitRichEdit', 'InstallCallbackCaller', 'IsDebug', 'IsWin32s', 'IsObject', 'LoadDialogResource', 'LoadLibrary', 'LoadMenu', 'LoadStdProfileSettings', 'LoadString', 'MessageBox', 'OutputDebugString', 'EnableControlContainer', 'PrintTraceback', 'PumpWaitingMessages', 'RegisterWndClass', 'RemoveRecentFile', 'SetAppHelpPath', 'SetAppName', 'SetCurrentInstanceHandle', 'SetCurrentResourceHandle', 'SetDialogBkColor', 'SetProfileFileName', 'SetRegistryKey', 'SetResource', 'SetStatusText', 'StartDebuggerPump', 'StopDebuggerPump', 'TranslateMessage', 'TranslateVirtualKey', 'WinHelp', 'WriteProfileVal', 'AFX_IDW_PANE_FIRST', 'AFX_IDW_PANE_LAST', 'AFX_WS_DEFAULT_VIEW', 'CDocTemplate_Confidence_maybeAttemptForeign', 'CDocTemplate_Confidence_maybeAttemptNative', 'CDocTemplate_Confidence_noAttempt', 'CDocTemplate_Confidence_yesAlreadyOpen', 'CDocTemplate_Confidence_yesAttemptForeign', 'CDocTemplate_Confidence_yesAttemptNative', 'CDocTemplate_docName', 'CDocTemplate_fileNewName', 'CDocTemplate_filterExt', 'CDocTemplate_filterName', 'CDocTemplate_regFileTypeId', 'CDocTemplate_regFileTypeName', 'CDocTemplate_windowTitle', 'CRichEditView_WrapNone', 'CRichEditView_WrapToTargetDevice', 'CRichEditView_WrapToWindow', 'debug', 'FWS_ADDTOTITLE', 'FWS_PREFIXTITLE', 'FWS_SNAPTOBARS', 'ID_APP_ABOUT', 'ID_APP_EXIT', 'ID_EDIT_CLEAR', 'ID_EDIT_CLEAR_ALL', 'ID_EDIT_COPY', 'ID_EDIT_CUT', 'ID_EDIT_FIND', 'ID_EDIT_GOTO_LINE', 'ID_EDIT_PASTE', 'ID_EDIT_REDO', 'ID_EDIT_REPEAT',
-           'ID_EDIT_REPLACE', 'ID_EDIT_SELECT_ALL', 'ID_EDIT_SELECT_BLOCK', 'ID_EDIT_UNDO', 'ID_FILE_CHECK', 'ID_FILE_CLOSE', 'ID_FILE_IMPORT', 'ID_FILE_LOCATE', 'ID_FILE_MRU_FILE1', 'ID_FILE_MRU_FILE2', 'ID_FILE_MRU_FILE3', 'ID_FILE_MRU_FILE4', 'ID_FILE_NEW', 'ID_FILE_OPEN', 'ID_FILE_PAGE_SETUP', 'ID_FILE_PRINT', 'ID_FILE_PRINT_PREVIEW', 'ID_FILE_PRINT_SETUP', 'ID_FILE_RUN', 'ID_FILE_SAVE', 'ID_FILE_SAVE_ALL', 'ID_FILE_SAVE_AS', 'ID_HELP_GUI_REF', 'ID_HELP_OTHER', 'ID_HELP_PYTHON', 'ID_INDICATOR_COLNUM', 'ID_INDICATOR_LINENUM', 'ID_NEXT_PANE', 'ID_PREV_PANE', 'ID_SEPARATOR', 'ID_VIEW_BROWSE', 'ID_VIEW_EOL', 'ID_VIEW_FIXED_FONT', 'ID_VIEW_FOLD_COLLAPSE', 'ID_VIEW_FOLD_COLLAPSE_ALL', 'ID_VIEW_FOLD_EXPAND', 'ID_VIEW_FOLD_EXPAND_ALL', 'ID_VIEW_FOLD_TOGGLE', 'ID_VIEW_INDENTATIONGUIDES', 'ID_VIEW_INTERACTIVE', 'ID_VIEW_OPTIONS', 'ID_VIEW_RIGHT_EDGE', 'ID_VIEW_STATUS_BAR', 'ID_VIEW_TOOLBAR', 'ID_VIEW_TOOLBAR_DBG', 'ID_VIEW_WHITESPACE', 'ID_WINDOW_ARRANGE', 'ID_WINDOW_CASCADE', 'ID_WINDOW_NEW', 'ID_WINDOW_SPLIT', 'ID_WINDOW_TILE_HORZ', 'ID_WINDOW_TILE_VERT', 'IDB_BROWSER_HIER', 'IDB_DEBUGGER_HIER', 'IDB_HIERFOLDERS', 'IDC_ABOUT_VERSION', 'IDC_AUTO_RELOAD', 'IDC_AUTOCOMPLETE', 'IDC_BUTTON1', 'IDC_BUTTON2', 'IDC_BUTTON3', 'IDC_BUTTON4', 'IDC_CALLTIPS', 'IDC_CHECK1', 'IDC_CHECK2', 'IDC_CHECK3', 'IDC_COMBO1', 'IDC_COMBO2', 'IDC_EDIT1', 'IDC_EDIT2', 'IDC_EDIT3', 'IDC_EDIT4', 'IDC_EDIT_COLOE', 'IDC_EDIT_TABS', 'IDC_INDENT_SIZE', 'IDC_KEYBOARD_CONFIG', 'IDC_LIST1', 'IDC_PROMPT1', 'IDC_PROMPT2', 'IDC_PROMPT3', 'IDC_PROMPT4', 'IDC_PROMPT_TABS', 'IDC_RADIO1', 'IDC_RADIO2', 'IDC_RIGHTEDGE_COLUMN', 'IDC_RIGHTEDGE_DEFINE', 'IDC_RIGHTEDGE_ENABLE', 'IDC_RIGHTEDGE_SAMPLE', 'IDC_SPIN1', 'IDC_SPIN2', 'IDC_SPIN3', 'IDC_TAB_SIZE', 'IDC_USE_SMART_TABS', 'IDC_USE_TABS', 'IDC_VIEW_WHITESPACE', 'IDC_VSS_INTEGRATE', 'IDD_ABOUTBOX', 'IDD_DUMMYPROPPAGE', 'IDD_GENERAL_STATUS', 'IDD_LARGE_EDIT', 'IDD_PP_DEBUGGER', 'IDD_PP_EDITOR', 'IDD_PP_FORMAT', 'IDD_PP_IDE', 'IDD_PP_TABS', 'IDD_PP_TOOLMENU', 'IDD_PROPDEMO1', 'IDD_PROPDEMO2', 'IDD_RUN_SCRIPT', 'IDD_SET_TABSTOPS', 'IDD_SIMPLE_INPUT', 'IDD_TREE', 'IDD_TREE_MB', 'IDR_CNTR_INPLACE', 'IDR_DEBUGGER', 'IDR_MAINFRAME', 'IDR_PYTHONCONTYPE', 'IDR_PYTHONTYPE', 'IDR_PYTHONTYPE_CNTR_IP', 'IDR_TEXTTYPE', 'LM_COMMIT', 'LM_HORZ', 'LM_HORZDOCK', 'LM_LENGTHY', 'LM_MRUWIDTH', 'LM_STRETCH', 'LM_VERTDOCK', 'MFS_4THICKFRAME', 'MFS_BLOCKSYSMENU', 'MFS_MOVEFRAME', 'MFS_SYNCACTIVE', 'MFS_THICKFRAME', 'PD_ALLPAGES', 'PD_COLLATE', 'PD_DISABLEPRINTTOFILE', 'PD_ENABLEPRINTHOOK', 'PD_ENABLEPRINTTEMPLATE', 'PD_ENABLEPRINTTEMPLATEHANDLE', 'PD_ENABLESETUPHOOK', 'PD_ENABLESETUPTEMPLATE', 'PD_ENABLESETUPTEMPLATEHANDLE', 'PD_HIDEPRINTTOFILE', 'PD_NONETWORKBUTTON', 'PD_NOPAGENUMS', 'PD_NOSELECTION', 'PD_NOWARNING', 'PD_PAGENUMS', 'PD_PRINTSETUP', 'PD_PRINTTOFILE', 'PD_RETURNDC', 'PD_RETURNDEFAULT', 'PD_RETURNIC', 'PD_SELECTION', 'PD_SHOWHELP', 'PD_USEDEVMODECOPIES', 'PD_USEDEVMODECOPIESANDCOLLATE', 'PSWIZB_BACK', 'PSWIZB_DISABLEDFINISH', 'PSWIZB_FINISH', 'PSWIZB_NEXT']
+
+from win32helper import win32typing
+
+__all__ = [
+    "AFX_IDW_PANE_FIRST",
+    "AFX_IDW_PANE_LAST",
+    "AFX_WS_DEFAULT_VIEW",
+    "FWS_ADDTOTITLE",
+    "FWS_PREFIXTITLE",
+    "FWS_SNAPTOBARS",
+    "IDB_BROWSER_HIER",
+    "IDB_DEBUGGER_HIER",
+    "IDB_HIERFOLDERS",
+    "IDC_ABOUT_VERSION",
+    "IDC_AUTOCOMPLETE",
+    "IDC_AUTO_RELOAD",
+    "IDC_BUTTON1",
+    "IDC_BUTTON2",
+    "IDC_BUTTON3",
+    "IDC_BUTTON4",
+    "IDC_CALLTIPS",
+    "IDC_CHECK1",
+    "IDC_CHECK2",
+    "IDC_CHECK3",
+    "IDC_COMBO1",
+    "IDC_COMBO2",
+    "IDC_EDIT1",
+    "IDC_EDIT2",
+    "IDC_EDIT3",
+    "IDC_EDIT4",
+    "IDC_EDIT_COLOE",
+    "IDC_EDIT_TABS",
+    "IDC_INDENT_SIZE",
+    "IDC_KEYBOARD_CONFIG",
+    "IDC_LIST1",
+    "IDC_PROMPT1",
+    "IDC_PROMPT2",
+    "IDC_PROMPT3",
+    "IDC_PROMPT4",
+    "IDC_PROMPT_TABS",
+    "IDC_RADIO1",
+    "IDC_RADIO2",
+    "IDC_RIGHTEDGE_COLUMN",
+    "IDC_RIGHTEDGE_DEFINE",
+    "IDC_RIGHTEDGE_ENABLE",
+    "IDC_RIGHTEDGE_SAMPLE",
+    "IDC_SPIN1",
+    "IDC_SPIN2",
+    "IDC_SPIN3",
+    "IDC_TAB_SIZE",
+    "IDC_USE_SMART_TABS",
+    "IDC_USE_TABS",
+    "IDC_VIEW_WHITESPACE",
+    "IDC_VSS_INTEGRATE",
+    "IDD_ABOUTBOX",
+    "IDD_DUMMYPROPPAGE",
+    "IDD_GENERAL_STATUS",
+    "IDD_LARGE_EDIT",
+    "IDD_PP_DEBUGGER",
+    "IDD_PP_EDITOR",
+    "IDD_PP_FORMAT",
+    "IDD_PP_IDE",
+    "IDD_PP_TABS",
+    "IDD_PP_TOOLMENU",
+    "IDD_PROPDEMO1",
+    "IDD_PROPDEMO2",
+    "IDD_RUN_SCRIPT",
+    "IDD_SET_TABSTOPS",
+    "IDD_SIMPLE_INPUT",
+    "IDD_TREE",
+    "IDD_TREE_MB",
+    "IDR_CNTR_INPLACE",
+    "IDR_DEBUGGER",
+    "IDR_MAINFRAME",
+    "IDR_PYTHONCONTYPE",
+    "IDR_PYTHONTYPE",
+    "IDR_PYTHONTYPE_CNTR_IP",
+    "IDR_TEXTTYPE",
+    "ID_APP_ABOUT",
+    "ID_APP_EXIT",
+    "ID_EDIT_CLEAR",
+    "ID_EDIT_CLEAR_ALL",
+    "ID_EDIT_COPY",
+    "ID_EDIT_CUT",
+    "ID_EDIT_FIND",
+    "ID_EDIT_GOTO_LINE",
+    "ID_EDIT_PASTE",
+    "ID_EDIT_REDO",
+    "ID_EDIT_REPEAT",
+    "ID_EDIT_REPLACE",
+    "ID_EDIT_SELECT_ALL",
+    "ID_EDIT_SELECT_BLOCK",
+    "ID_EDIT_UNDO",
+    "ID_FILE_CHECK",
+    "ID_FILE_CLOSE",
+    "ID_FILE_IMPORT",
+    "ID_FILE_LOCATE",
+    "ID_FILE_MRU_FILE1",
+    "ID_FILE_MRU_FILE2",
+    "ID_FILE_MRU_FILE3",
+    "ID_FILE_MRU_FILE4",
+    "ID_FILE_NEW",
+    "ID_FILE_OPEN",
+    "ID_FILE_PAGE_SETUP",
+    "ID_FILE_PRINT",
+    "ID_FILE_PRINT_PREVIEW",
+    "ID_FILE_PRINT_SETUP",
+    "ID_FILE_RUN",
+    "ID_FILE_SAVE",
+    "ID_FILE_SAVE_ALL",
+    "ID_FILE_SAVE_AS",
+    "ID_HELP_GUI_REF",
+    "ID_HELP_OTHER",
+    "ID_HELP_PYTHON",
+    "ID_INDICATOR_COLNUM",
+    "ID_INDICATOR_LINENUM",
+    "ID_NEXT_PANE",
+    "ID_PREV_PANE",
+    "ID_SEPARATOR",
+    "ID_VIEW_BROWSE",
+    "ID_VIEW_EOL",
+    "ID_VIEW_FIXED_FONT",
+    "ID_VIEW_FOLD_COLLAPSE",
+    "ID_VIEW_FOLD_COLLAPSE_ALL",
+    "ID_VIEW_FOLD_EXPAND",
+    "ID_VIEW_FOLD_EXPAND_ALL",
+    "ID_VIEW_FOLD_TOGGLE",
+    "ID_VIEW_INDENTATIONGUIDES",
+    "ID_VIEW_INTERACTIVE",
+    "ID_VIEW_OPTIONS",
+    "ID_VIEW_RIGHT_EDGE",
+    "ID_VIEW_STATUS_BAR",
+    "ID_VIEW_TOOLBAR",
+    "ID_VIEW_TOOLBAR_DBG",
+    "ID_VIEW_WHITESPACE",
+    "ID_WINDOW_ARRANGE",
+    "ID_WINDOW_CASCADE",
+    "ID_WINDOW_NEW",
+    "ID_WINDOW_SPLIT",
+    "ID_WINDOW_TILE_HORZ",
+    "ID_WINDOW_TILE_VERT",
+    "LM_COMMIT",
+    "LM_HORZ",
+    "LM_HORZDOCK",
+    "LM_LENGTHY",
+    "LM_MRUWIDTH",
+    "LM_STRETCH",
+    "LM_VERTDOCK",
+    "MFS_4THICKFRAME",
+    "MFS_BLOCKSYSMENU",
+    "MFS_MOVEFRAME",
+    "MFS_SYNCACTIVE",
+    "MFS_THICKFRAME",
+    "PD_ALLPAGES",
+    "PD_COLLATE",
+    "PD_DISABLEPRINTTOFILE",
+    "PD_ENABLEPRINTHOOK",
+    "PD_ENABLEPRINTTEMPLATE",
+    "PD_ENABLEPRINTTEMPLATEHANDLE",
+    "PD_ENABLESETUPHOOK",
+    "PD_ENABLESETUPTEMPLATE",
+    "PD_ENABLESETUPTEMPLATEHANDLE",
+    "PD_HIDEPRINTTOFILE",
+    "PD_NONETWORKBUTTON",
+    "PD_NOPAGENUMS",
+    "PD_NOSELECTION",
+    "PD_NOWARNING",
+    "PD_PAGENUMS",
+    "PD_PRINTSETUP",
+    "PD_PRINTTOFILE",
+    "PD_RETURNDC",
+    "PD_RETURNDEFAULT",
+    "PD_RETURNIC",
+    "PD_SELECTION",
+    "PD_SHOWHELP",
+    "PD_USEDEVMODECOPIES",
+    "PD_USEDEVMODECOPIESANDCOLLATE",
+    "PSWIZB_BACK",
+    "PSWIZB_DISABLEDFINISH",
+    "PSWIZB_FINISH",
+    "PSWIZB_NEXT",
+    "AddToRecentFileList",
+    "CDocTemplate_Confidence_maybeAttemptForeign",
+    "CDocTemplate_Confidence_maybeAttemptNative",
+    "CDocTemplate_Confidence_noAttempt",
+    "CDocTemplate_Confidence_yesAlreadyOpen",
+    "CDocTemplate_Confidence_yesAttemptForeign",
+    "CDocTemplate_Confidence_yesAttemptNative",
+    "CDocTemplate_docName",
+    "CDocTemplate_fileNewName",
+    "CDocTemplate_filterExt",
+    "CDocTemplate_filterName",
+    "CDocTemplate_regFileTypeId",
+    "CDocTemplate_regFileTypeName",
+    "CDocTemplate_windowTitle",
+    "CRichEditView_WrapNone",
+    "CRichEditView_WrapToTargetDevice",
+    "CRichEditView_WrapToWindow",
+    "ComparePath",
+    "CreateBitmap",
+    "CreateBitmapFromHandle",
+    "CreateBrush",
+    "CreateButton",
+    "CreateColorDialog",
+    "CreateControl",
+    "CreateControlBar",
+    "CreateCtrlView",
+    "CreateDC",
+    "CreateDCFromHandle",
+    "CreateDebuggerThread",
+    "CreateDialog",
+    "CreateDialogBar",
+    "CreateDialogIndirect",
+    "CreateDocTemplate",
+    "CreateEdit",
+    "CreateEditView",
+    "CreateFileDialog",
+    "CreateFont",
+    "CreateFontDialog",
+    "CreateFormView",
+    "CreateFrame",
+    "CreateImageList",
+    "CreateListCtrl",
+    "CreateListView",
+    "CreateMDIChild",
+    "CreateMDIFrame",
+    "CreateMenu",
+    "CreatePalette",
+    "CreatePen",
+    "CreatePopupMenu",
+    "CreatePrintDialog",
+    "CreateProgressCtrl",
+    "CreatePropertyPage",
+    "CreatePropertyPageIndirect",
+    "CreatePropertySheet",
+    "CreateRgn",
+    "CreateRichEditCtrl",
+    "CreateRichEditDocTemplate",
+    "CreateRichEditView",
+    "CreateSliderCtrl",
+    "CreateSplitter",
+    "CreateStatusBar",
+    "CreateStatusBarCtrl",
+    "CreateThread",
+    "CreateToolBar",
+    "CreateToolBarCtrl",
+    "CreateToolTipCtrl",
+    "CreateTreeCtrl",
+    "CreateTreeView",
+    "CreateView",
+    "CreateWindowFromHandle",
+    "CreateWnd",
+    "DestroyDebuggerThread",
+    "DisplayTraceback",
+    "DoWaitCursor",
+    "Enable3dControls",
+    "EnableControlContainer",
+    "FindWindow",
+    "FindWindowEx",
+    "FullPath",
+    "GetActiveWindow",
+    "GetApp",
+    "GetAppName",
+    "GetAppRegistryKey",
+    "GetBytes",
+    "GetCommandLine",
+    "GetDeviceCaps",
+    "GetFileTitle",
+    "GetFocus",
+    "GetForegroundWindow",
+    "GetHalftoneBrush",
+    "GetInitialStateRequest",
+    "GetMainFrame",
+    "GetName",
+    "GetProfileFileName",
+    "GetProfileVal",
+    "GetRecentFileList",
+    "GetResource",
+    "GetThread",
+    "GetType",
+    "InitRichEdit",
+    "InstallCallbackCaller",
+    "IsDebug",
+    "IsObject",
+    "IsWin32s",
+    "LoadDialogResource",
+    "LoadLibrary",
+    "LoadMenu",
+    "LoadStdProfileSettings",
+    "LoadString",
+    "MessageBox",
+    "OutputDebugString",
+    "PrintTraceback",
+    "PumpWaitingMessages",
+    "RegisterWndClass",
+    "RemoveRecentFile",
+    "SetAppHelpPath",
+    "SetAppName",
+    "SetCurrentInstanceHandle",
+    "SetCurrentResourceHandle",
+    "SetDialogBkColor",
+    "SetProfileFileName",
+    "SetRegistryKey",
+    "SetResource",
+    "SetStatusText",
+    "StartDebuggerPump",
+    "StopDebuggerPump",
+    "TranslateMessage",
+    "TranslateVirtualKey",
+    "WinHelp",
+    "WriteProfileVal",
+    "",
+    "debug",
+]
 """A module, encapsulating the Microsoft Foundation Classes."""
 
 
@@ -18,7 +329,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ComparePath(path1: str, path2: str) -> typing.Any:
@@ -35,10 +345,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateMDIFrame() -> 'win32typing.PyCMDIFrameWnd':
+def CreateMDIFrame() -> win32typing.PyCMDIFrameWnd:
     """
     Creates an MDI Frame window.
 
@@ -63,10 +372,9 @@ Return ValueThe window object created.  An exception is raised if an error occur
 
 
     """
-    pass
 
 
-def CreateMDIChild() -> 'win32typing.PyCMDIChildWnd':
+def CreateMDIChild() -> win32typing.PyCMDIChildWnd:
     """
     Creates an MDI Child window.
 
@@ -82,7 +390,6 @@ Return ValueThe window object created.  An exception is raised if an error occur
 
 
     """
-    pass
 
 
 def CreateBitmap() -> typing.Any:
@@ -98,7 +405,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def CreateBitmapFromHandle() -> typing.Any:
@@ -114,10 +420,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateBrush() -> 'win32typing.PyCBrush':
+def CreateBrush() -> win32typing.PyCBrush:
     """
     Creates a new brush object.
 
@@ -130,10 +435,9 @@ Returns:
       win32typing.PyCBrush
 
     """
-    pass
 
 
-def CreateButton() -> 'win32typing.PyCButton':
+def CreateButton() -> win32typing.PyCButton:
     """
     None
 
@@ -146,10 +450,9 @@ Returns:
       win32typing.PyCButton
 
     """
-    pass
 
 
-def CreateColorDialog(initColor: typing.Any = 0, flags: typing.Any = 0, parent: 'win32typing.PyCWnd' = None) -> 'win32typing.PyCColorDialog':
+def CreateColorDialog(initColor: typing.Any = 0, flags: typing.Any = 0, parent: win32typing.PyCWnd = None) -> win32typing.PyCColorDialog:
     """
     Creates a color selection dialog box. 
 
@@ -166,10 +469,9 @@ Returns:
       win32typing.PyCColorDialog
 
     """
-    pass
 
 
-def CreateControl(classId: str, windowName: str, style: typing.Any, rect: 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]', parent: 'win32typing.PyCWnd', _id: typing.Any, bStorage: typing.Any, obPersist: typing.Any = None, licKey: str = None) -> 'win32typing.PyCWnd':
+def CreateControl(classId: str, windowName: str, style: typing.Any, rect: tuple[typing.Any, typing.Any, typing.Any, typing.Any], parent: win32typing.PyCWnd, _id: typing.Any, bStorage: typing.Any, obPersist: typing.Any = None, licKey: str = None) -> win32typing.PyCWnd:
     """
     Creates an OLE control.
 
@@ -192,10 +494,9 @@ Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error excep
 
 
     """
-    pass
 
 
-def CreateControlBar() -> 'win32typing.PyCControlBar':
+def CreateControlBar() -> win32typing.PyCControlBar:
     """
     Creates a control bar object.
 
@@ -208,10 +509,9 @@ Returns:
       win32typing.PyCControlBar
 
     """
-    pass
 
 
-def CreateCtrlView(doc: 'win32typing.PyCDocument', className: str, style: typing.Any = 0) -> 'win32typing.PyCCtrlView':
+def CreateCtrlView(doc: win32typing.PyCDocument, className: str, style: typing.Any = 0) -> win32typing.PyCCtrlView:
     """
     Creates a control view object.
 
@@ -226,7 +526,6 @@ Returns:
       win32typing.PyCCtrlView
 
     """
-    pass
 
 
 def CreateDC() -> None:
@@ -242,7 +541,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CreateDCFromHandle() -> None:
@@ -258,10 +556,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateDialog(idRes: typing.Any, dll: 'win32typing.PyDLL' = None) -> 'win32typing.PyCDialog':
+def CreateDialog(idRes: typing.Any, dll: win32typing.PyDLL = None) -> win32typing.PyCDialog:
     """
     Creates a dialog object.
 
@@ -275,10 +572,9 @@ Returns:
       win32typing.PyCDialog
 
     """
-    pass
 
 
-def CreateDialogBar() -> 'win32typing.PyCDialogBar':
+def CreateDialogBar() -> win32typing.PyCDialogBar:
     """
     None
 
@@ -291,10 +587,9 @@ Returns:
       win32typing.PyCDialogBar
 
     """
-    pass
 
 
-def CreateDialogIndirect(obList: typing.Any) -> 'win32typing.PyCDialog':
+def CreateDialogIndirect(obList: typing.Any) -> win32typing.PyCDialog:
     """
     Creates a dialog object from a template.
 
@@ -307,10 +602,9 @@ Returns:
       win32typing.PyCDialog
 
     """
-    pass
 
 
-def CreatePrintDialog(idRes: typing.Any, bPrintSetupOnly: typing.Any, dwFlags: typing.Any, parent: 'win32typing.PyCWnd' = None, dll: 'win32typing.PyDLL' = None) -> 'win32typing.PyCPrintDialog':
+def CreatePrintDialog(idRes: typing.Any, bPrintSetupOnly: typing.Any, dwFlags: typing.Any, parent: win32typing.PyCWnd = None, dll: win32typing.PyDLL = None) -> win32typing.PyCPrintDialog:
     """
     Creates a print dialog object.
 
@@ -327,10 +621,9 @@ Returns:
       win32typing.PyCPrintDialog
 
     """
-    pass
 
 
-def CreateDocTemplate(idRes: typing.Any) -> 'win32typing.PyCDocTemplate':
+def CreateDocTemplate(idRes: typing.Any) -> win32typing.PyCDocTemplate:
     """
     Creates a document template object.
 
@@ -343,10 +636,9 @@ Returns:
       win32typing.PyCDocTemplate
 
     """
-    pass
 
 
-def CreateEdit() -> 'win32typing.PyCEdit':
+def CreateEdit() -> win32typing.PyCEdit:
     """
     None
 
@@ -359,10 +651,9 @@ Returns:
       win32typing.PyCEdit
 
     """
-    pass
 
 
-def CreateFileDialog(bFileOpen: typing.Any, arg: typing.Any, defExt: str = None, fileName: str = None, _filter: str = None, parent: 'win32typing.PyCWnd' = None) -> 'win32typing.PyCFileDialog':
+def CreateFileDialog(bFileOpen: typing.Any, arg: typing.Any, defExt: str = None, fileName: str = None, _filter: str = None, parent: win32typing.PyCWnd = None) -> win32typing.PyCFileDialog:
     """
     Creates a File Open/Save/etc Common Dialog. 
 
@@ -382,10 +673,9 @@ Returns:
       win32typing.PyCFileDialog
 
     """
-    pass
 
 
-def CreateFontDialog(arg: typing.Any, font: 'typing.Union[typing.Any]' = None, dcPrinter: 'win32typing.PyCDC' = None, parent: 'win32typing.PyCWnd' = None) -> 'win32typing.PyCFontDialog':
+def CreateFontDialog(arg: typing.Any, font: typing.Any = None, dcPrinter: win32typing.PyCDC = None, parent: win32typing.PyCWnd = None) -> win32typing.PyCFontDialog:
     """
     Creates a font selection dialog box. 
 
@@ -403,10 +693,9 @@ Returns:
       win32typing.PyCFontDialog
 
     """
-    pass
 
 
-def CreateFormView(doc: 'win32typing.PyCDocument', Template: 'typing.Union[typing.Any]') -> 'win32typing.PyCFormView':
+def CreateFormView(doc: win32typing.PyCDocument, Template: typing.Any) -> win32typing.PyCFormView:
     """
     Creates a form view object.
 
@@ -420,7 +709,6 @@ Returns:
       win32typing.PyCFormView
 
     """
-    pass
 
 
 def CreateFrame() -> typing.Any:
@@ -441,7 +729,6 @@ Return ValueThe window object (not the OS window) created.  An exception is rais
 
 
     """
-    pass
 
 
 def CreateImageList(cx: typing.Any, cy: typing.Any, mask: typing.Any, initial: typing.Any, grow: typing.Any, bitmapId: typing.Any, cx1: typing.Any, grow1: typing.Any, crMask: typing.Any) -> typing.Any:
@@ -465,10 +752,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateListCtrl() -> 'win32typing.PyCListCtrl':
+def CreateListCtrl() -> win32typing.PyCListCtrl:
     """
     Creates a list control.
 
@@ -481,10 +767,9 @@ Returns:
       win32typing.PyCListCtrl
 
     """
-    pass
 
 
-def CreateListView(doc: 'win32typing.PyCDocument') -> 'win32typing.PyCListView':
+def CreateListView(doc: win32typing.PyCDocument) -> win32typing.PyCListView:
     """
     Creates a PyCListView object.
 
@@ -497,10 +782,9 @@ Returns:
       win32typing.PyCListView
 
     """
-    pass
 
 
-def CreateTreeCtrl() -> 'win32typing.PyCTreeCtrl':
+def CreateTreeCtrl() -> win32typing.PyCTreeCtrl:
     """
     Creates a tree control.
 
@@ -513,10 +797,9 @@ Returns:
       win32typing.PyCTreeCtrl
 
     """
-    pass
 
 
-def CreateTreeView(doc: 'win32typing.PyCDocument') -> 'win32typing.PyCTreeView':
+def CreateTreeView(doc: win32typing.PyCDocument) -> win32typing.PyCTreeView:
     """
     Creates a PyCTreeView object.
 
@@ -529,7 +812,6 @@ Returns:
       win32typing.PyCTreeView
 
     """
-    pass
 
 
 def CreatePalette(lp: typing.Any) -> typing.Any:
@@ -545,10 +827,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreatePopupMenu() -> 'win32typing.PyCMenu':
+def CreatePopupMenu() -> win32typing.PyCMenu:
     """
     Creates a popup menu object.
 
@@ -561,10 +842,9 @@ Returns:
       win32typing.PyCMenu
 
     """
-    pass
 
 
-def CreateMenu() -> 'win32typing.PyCMenu':
+def CreateMenu() -> win32typing.PyCMenu:
     """
     Creates a menu object.
 
@@ -577,7 +857,6 @@ Returns:
       win32typing.PyCMenu
 
     """
-    pass
 
 
 def CreatePen(style: typing.Any, width: typing.Any, color: typing.Any) -> typing.Any:
@@ -595,10 +874,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateProgressCtrl() -> 'win32typing.PyCProgressCtrl':
+def CreateProgressCtrl() -> win32typing.PyCProgressCtrl:
     """
     None
 
@@ -611,10 +889,9 @@ Returns:
       win32typing.PyCProgressCtrl
 
     """
-    pass
 
 
-def CreatePropertyPage(resource: 'win32typing.PyResourceId', caption: typing.Any = 0) -> 'win32typing.PyCPropertyPage':
+def CreatePropertyPage(resource: win32typing.PyResourceId, caption: typing.Any = 0) -> win32typing.PyCPropertyPage:
     """
     Creates a property page object.
 
@@ -628,10 +905,9 @@ Returns:
       win32typing.PyCPropertyPage
 
     """
-    pass
 
 
-def CreatePropertyPageIndirect(resourceList: 'win32typing.PyDialogTemplate', caption: typing.Any = 0) -> 'win32typing.PyCPropertyPage':
+def CreatePropertyPageIndirect(resourceList: win32typing.PyDialogTemplate, caption: typing.Any = 0) -> win32typing.PyCPropertyPage:
     """
     Creates a property page object from a template.
 
@@ -645,10 +921,9 @@ Returns:
       win32typing.PyCPropertyPage
 
     """
-    pass
 
 
-def CreatePropertySheet(caption: 'win32typing.PyResourceId', parent: 'win32typing.PyCWnd' = None, select: typing.Any = 0) -> 'win32typing.PyCPropertySheet':
+def CreatePropertySheet(caption: win32typing.PyResourceId, parent: win32typing.PyCWnd = None, select: typing.Any = 0) -> win32typing.PyCPropertySheet:
     """
     Creates a property sheet object.
 
@@ -663,10 +938,9 @@ Returns:
       win32typing.PyCPropertySheet
 
     """
-    pass
 
 
-def CreateRgn() -> 'win32typing.PyCRgn':
+def CreateRgn() -> win32typing.PyCRgn:
     """
     Creates a new rgn object. 
 
@@ -681,10 +955,9 @@ Returns:
       win32typing.PyCRgn
 
     """
-    pass
 
 
-def CreateRichEditCtrl() -> 'win32typing.PyCRichEditCtrl':
+def CreateRichEditCtrl() -> win32typing.PyCRichEditCtrl:
     """
     Creates a rich edit control.
 
@@ -697,10 +970,9 @@ Returns:
       win32typing.PyCRichEditCtrl
 
     """
-    pass
 
 
-def CreateRichEditDocTemplate(idRes: typing.Any) -> 'win32typing.PyCRichEditDocTemplate':
+def CreateRichEditDocTemplate(idRes: typing.Any) -> win32typing.PyCRichEditDocTemplate:
     """
     Creates a document template object.
 
@@ -713,10 +985,9 @@ Returns:
       win32typing.PyCRichEditDocTemplate
 
     """
-    pass
 
 
-def CreateRichEditView(doc: 'win32typing.PyCDocument' = None) -> 'win32typing.PyCRichEditView':
+def CreateRichEditView(doc: win32typing.PyCDocument = None) -> win32typing.PyCRichEditView:
     """
     Creates a PyRichEditView object.
 
@@ -729,10 +1000,9 @@ Returns:
       win32typing.PyCRichEditView
 
     """
-    pass
 
 
-def CreateSliderCtrl() -> 'win32typing.PyCSliderCtrl':
+def CreateSliderCtrl() -> win32typing.PyCSliderCtrl:
     """
     Creates a Slider control object.
 
@@ -745,10 +1015,9 @@ Returns:
       win32typing.PyCSliderCtrl
 
     """
-    pass
 
 
-def CreateSplitter() -> 'win32typing.PyCSplitterWnd':
+def CreateSplitter() -> win32typing.PyCSplitterWnd:
     """
     Creates a splitter window object.
 
@@ -761,10 +1030,9 @@ Returns:
       win32typing.PyCSplitterWnd
 
     """
-    pass
 
 
-def CreateStatusBar(parent: 'win32typing.PyCWnd', arg: typing.Any, arg1: typing.Any, ctrlStype: typing.Any = 0) -> 'win32typing.PyCStatusBar':
+def CreateStatusBar(parent: win32typing.PyCWnd, arg: typing.Any, arg1: typing.Any, ctrlStype: typing.Any = 0) -> win32typing.PyCStatusBar:
     """
     Creates a statusbar object.
 
@@ -780,10 +1048,9 @@ Returns:
       win32typing.PyCStatusBar
 
     """
-    pass
 
 
-def CreateStatusBarCtrl() -> 'win32typing.PyCStatusBarCtrl':
+def CreateStatusBarCtrl() -> win32typing.PyCStatusBarCtrl:
     """
     None
 
@@ -796,10 +1063,9 @@ Returns:
       win32typing.PyCStatusBarCtrl
 
     """
-    pass
 
 
-def CreateFont(properties: typing.Any) -> 'win32typing.PyCFont':
+def CreateFont(properties: typing.Any) -> win32typing.PyCFont:
     """
     None
 
@@ -812,10 +1078,9 @@ Returns:
       win32typing.PyCFont
 
     """
-    pass
 
 
-def CreateToolBar(parent: 'win32typing.PyCWnd', style: typing.Any, arg: typing.Any) -> 'win32typing.PyCToolBar':
+def CreateToolBar(parent: win32typing.PyCWnd, style: typing.Any, arg: typing.Any) -> win32typing.PyCToolBar:
     """
     Creates a toolbar object.
 
@@ -830,10 +1095,9 @@ Returns:
       win32typing.PyCToolBar
 
     """
-    pass
 
 
-def CreateToolBarCtrl() -> 'win32typing.PyCToolBarCtrl':
+def CreateToolBarCtrl() -> win32typing.PyCToolBarCtrl:
     """
     None
 
@@ -846,10 +1110,9 @@ Returns:
       win32typing.PyCToolBarCtrl
 
     """
-    pass
 
 
-def CreateToolTipCtrl() -> 'win32typing.PyCToolTipCtrl':
+def CreateToolTipCtrl() -> win32typing.PyCToolTipCtrl:
     """
     None
 
@@ -862,10 +1125,9 @@ Returns:
       win32typing.PyCToolTipCtrl
 
     """
-    pass
 
 
-def CreateThread() -> 'win32typing.PyCWinThread':
+def CreateThread() -> win32typing.PyCWinThread:
     """
     None
 
@@ -878,10 +1140,9 @@ Returns:
       win32typing.PyCWinThread
 
     """
-    pass
 
 
-def CreateView(doc: 'win32typing.PyCDocument') -> 'win32typing.PyCScrollView':
+def CreateView(doc: win32typing.PyCDocument) -> win32typing.PyCScrollView:
     """
     Creates a generic view object.
 
@@ -894,10 +1155,9 @@ Returns:
       win32typing.PyCScrollView
 
     """
-    pass
 
 
-def CreateEditView(doc: 'win32typing.PyCDocument') -> 'win32typing.PyCEditView':
+def CreateEditView(doc: win32typing.PyCDocument) -> win32typing.PyCEditView:
     """
     Creates a PyEditView object.
 
@@ -910,7 +1170,6 @@ Returns:
       win32typing.PyCEditView
 
     """
-    pass
 
 
 def CreateDebuggerThread() -> None:
@@ -926,10 +1185,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateWindowFromHandle(hwnd: typing.Any) -> 'win32typing.PyCWnd':
+def CreateWindowFromHandle(hwnd: typing.Any) -> win32typing.PyCWnd:
     """
     None
 
@@ -943,10 +1201,9 @@ Returns:
 
 
     """
-    pass
 
 
-def CreateWnd() -> 'win32typing.PyCWnd':
+def CreateWnd() -> win32typing.PyCWnd:
     """
     None
 
@@ -959,7 +1216,6 @@ Returns:
       win32typing.PyCWnd
 
     """
-    pass
 
 
 def DestroyDebuggerThread() -> None:
@@ -975,7 +1231,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def DoWaitCursor(code: typing.Any) -> None:
@@ -991,7 +1246,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def DisplayTraceback() -> None:
@@ -1007,7 +1261,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def Enable3dControls() -> typing.Any:
@@ -1027,10 +1280,9 @@ Return ValueTrue if 3d controls could be enabled, false otherwise.
 
 
     """
-    pass
 
 
-def FindWindow(className: str, windowName: str) -> 'win32typing.PyCWnd':
+def FindWindow(className: str, windowName: str) -> win32typing.PyCWnd:
     """
     Searches for the specified top-level window
 
@@ -1045,10 +1297,9 @@ Returns:
 
 
     """
-    pass
 
 
-def FindWindowEx(parentWindow: 'win32typing.PyCWnd', childAfter: 'win32typing.PyCWnd', className: str, windowName: str) -> 'win32typing.PyCWnd':
+def FindWindowEx(parentWindow: win32typing.PyCWnd, childAfter: win32typing.PyCWnd, className: str, windowName: str) -> win32typing.PyCWnd:
     """
     Searches for the specified top-level or child window
 
@@ -1065,7 +1316,6 @@ Returns:
 
 
     """
-    pass
 
 
 def FullPath(path: str) -> str:
@@ -1081,10 +1331,9 @@ Returns:
       str
 
     """
-    pass
 
 
-def GetActiveWindow() -> 'win32typing.PyCWnd':
+def GetActiveWindow() -> win32typing.PyCWnd:
     """
     Retrieves the active window.
 
@@ -1100,10 +1349,9 @@ Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error excep
 
 
     """
-    pass
 
 
-def GetApp() -> 'win32typing.PyCWinApp':
+def GetApp() -> win32typing.PyCWinApp:
     """
     Retrieves the application object.
 
@@ -1116,7 +1364,6 @@ Returns:
       win32typing.PyCWinApp
 
     """
-    pass
 
 
 def GetAppName() -> typing.Any:
@@ -1132,7 +1379,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetAppRegistryKey() -> None:
@@ -1148,7 +1394,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetBytes(address: typing.Any, size: typing.Any) -> str:
@@ -1171,7 +1416,6 @@ Return ValueThe result is a string with a length of size.
 
 
     """
-    pass
 
 
 def GetCommandLine() -> str:
@@ -1187,7 +1431,6 @@ Returns:
       str
 
     """
-    pass
 
 
 def GetDeviceCaps(hdc: typing.Any, index: typing.Any) -> typing.Any:
@@ -1204,7 +1447,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetFileTitle(fileName: str) -> str:
@@ -1220,10 +1462,9 @@ Returns:
       str
 
     """
-    pass
 
 
-def GetFocus() -> 'win32typing.PyCWnd':
+def GetFocus() -> win32typing.PyCWnd:
     """
     Retrieves the window with the focus.
 
@@ -1239,10 +1480,9 @@ Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error excep
 
 
     """
-    pass
 
 
-def GetForegroundWindow() -> 'win32typing.PyCWnd':
+def GetForegroundWindow() -> win32typing.PyCWnd:
     """
     Retrieves the foreground window.
 
@@ -1258,10 +1498,9 @@ Return ValueThe result is a PyCWnd (or derived) object, or a win32ui.error excep
 
 
     """
-    pass
 
 
-def GetHalftoneBrush() -> 'win32typing.PyCBrush':
+def GetHalftoneBrush() -> win32typing.PyCBrush:
     """
     Creates a new halftone brush object.
 
@@ -1274,7 +1513,6 @@ Returns:
       win32typing.PyCBrush
 
     """
-    pass
 
 
 def GetInitialStateRequest() -> typing.Any:
@@ -1290,10 +1528,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetMainFrame() -> 'win32typing.PyCWnd':
+def GetMainFrame() -> win32typing.PyCWnd:
     """
     Returns a window object for the main application frame.
 
@@ -1306,7 +1543,6 @@ Returns:
       win32typing.PyCWnd
 
     """
-    pass
 
 
 def GetName() -> str:
@@ -1322,7 +1558,6 @@ Returns:
       str
 
     """
-    pass
 
 
 def GetProfileFileName() -> str:
@@ -1338,10 +1573,9 @@ Returns:
       str
 
     """
-    pass
 
 
-def GetProfileVal(section: str, entry: str, defValue: 'typing.Union[str, typing.Any]') -> 'typing.Union[str, typing.Any]':
+def GetProfileVal(section: str, entry: str, defValue: str | typing.Any) -> str | typing.Any:
     """
     Returns a value from the application's INI file.
 
@@ -1356,7 +1590,6 @@ Returns:
       typing.Union[str, typing.Any]
 
     """
-    pass
 
 
 def GetRecentFileList() -> typing.Any:
@@ -1376,10 +1609,9 @@ Return ValueA list of strings containing the fully qualified file names.
 
 
     """
-    pass
 
 
-def GetResource() -> 'win32typing.PyDLL':
+def GetResource() -> win32typing.PyDLL:
     """
     Retrieve the object associated with the applications resources.
 
@@ -1392,10 +1624,9 @@ Returns:
       win32typing.PyDLL
 
     """
-    pass
 
 
-def GetThread() -> 'win32typing.PyCWinApp':
+def GetThread() -> win32typing.PyCWinApp:
     """
     Retrieves the current thread object.
 
@@ -1408,7 +1639,6 @@ Returns:
       win32typing.PyCWinApp
 
     """
-    pass
 
 
 def GetType() -> typing.Any:
@@ -1424,7 +1654,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def InitRichEdit() -> str:
@@ -1440,7 +1669,6 @@ Returns:
       str
 
     """
-    pass
 
 
 def InstallCallbackCaller() -> typing.Any:
@@ -1460,7 +1688,6 @@ Return ValueThe previous callback caller.
 
 
     """
-    pass
 
 
 def IsDebug() -> typing.Any:
@@ -1476,7 +1703,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def IsWin32s() -> typing.Any:
@@ -1492,7 +1718,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def IsObject(o: typing.Any) -> typing.Any:
@@ -1508,10 +1733,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def LoadDialogResource(idRes: typing.Any, dll: 'win32typing.PyDLL' = None) -> typing.Any:
+def LoadDialogResource(idRes: typing.Any, dll: win32typing.PyDLL = None) -> typing.Any:
     """
     Loads a dialog resource, and returns a list detailing the objects.
 
@@ -1525,10 +1749,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def LoadLibrary(fileName: str) -> 'win32typing.PyDLL':
+def LoadLibrary(fileName: str) -> win32typing.PyDLL:
     """
     Creates a DLL object, and loads a Windows DLL into the object.
 
@@ -1541,10 +1764,9 @@ Returns:
       win32typing.PyDLL
 
     """
-    pass
 
 
-def LoadMenu(_id: typing.Any, dll: 'win32typing.PyDLL' = None) -> 'win32typing.PyCMenu':
+def LoadMenu(_id: typing.Any, dll: win32typing.PyDLL = None) -> win32typing.PyCMenu:
     """
     Creates and loads a menu resource from a DLL.
 
@@ -1558,7 +1780,6 @@ Returns:
       win32typing.PyCMenu
 
     """
-    pass
 
 
 def LoadStdProfileSettings(maxFiles: typing.Any) -> None:
@@ -1576,7 +1797,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def LoadString(stringId: typing.Any) -> str:
@@ -1592,10 +1812,9 @@ Returns:
       str
 
     """
-    pass
 
 
-def MessageBox(message: str, arg: typing.Any, title: 'typing.Union[str, typing.Any]' = None) -> typing.Any:
+def MessageBox(message: str, arg: typing.Any, title: str | typing.Any = None) -> typing.Any:
     """
     Display a message box.
 
@@ -1612,7 +1831,6 @@ Return ValueAn integer identifying the button pressed to dismiss the dialog.
 
 
     """
-    pass
 
 
 def OutputDebugString(msg: str) -> None:
@@ -1628,7 +1846,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EnableControlContainer() -> typing.Any:
@@ -1644,7 +1861,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PrintTraceback(tb: typing.Any, output: typing.Any) -> None:
@@ -1661,7 +1877,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def PumpWaitingMessages(firstMessage: typing.Any, lastMessage: typing.Any) -> typing.Any:
@@ -1687,7 +1902,6 @@ Return ValueThe result is 1 if a WM_QUIT message was processed, otherwise 0.
 
 
     """
-    pass
 
 
 def RegisterWndClass(style: typing.Any, hCursor: typing.Any = 0, hBrush: typing.Any = 0, hIcon: typing.Any = 0) -> str:
@@ -1706,7 +1920,6 @@ Returns:
       str
 
     """
-    pass
 
 
 def RemoveRecentFile(index: typing.Any = 0) -> None:
@@ -1722,7 +1935,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetAppHelpPath() -> typing.Any:
@@ -1738,7 +1950,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetAppName(appName: str) -> typing.Any:
@@ -1754,7 +1965,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetCurrentInstanceHandle(newVal: typing.Any) -> typing.Any:
@@ -1771,7 +1981,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetCurrentResourceHandle(newVal: typing.Any) -> typing.Any:
@@ -1788,7 +1997,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetDialogBkColor(arg: typing.Any, arg1: typing.Any) -> typing.Any:
@@ -1807,7 +2015,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetProfileFileName(filename: str) -> None:
@@ -1823,7 +2030,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetRegistryKey(key: str) -> None:
@@ -1839,10 +2045,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def SetResource(dll: typing.Any) -> 'win32typing.PyDLL':
+def SetResource(dll: typing.Any) -> win32typing.PyDLL:
     """
     Specifies the default DLL object for application resources.
 
@@ -1856,7 +2061,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetStatusText(msg: str, bForce: typing.Any = 0) -> None:
@@ -1873,7 +2077,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def StartDebuggerPump() -> None:
@@ -1889,7 +2092,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def StopDebuggerPump() -> None:
@@ -1905,7 +2107,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def TranslateMessage() -> typing.Any:
@@ -1921,10 +2122,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def TranslateVirtualKey(vk: typing.Any) -> 'typing.Union[str, typing.Any]':
+def TranslateVirtualKey(vk: typing.Any) -> str | typing.Any:
     """
     None
 
@@ -1937,10 +2137,9 @@ Returns:
       typing.Union[str, typing.Any]
 
     """
-    pass
 
 
-def WinHelp(arg: typing.Any, data: 'typing.Union[str, typing.Any]') -> None:
+def WinHelp(arg: typing.Any, data: str | typing.Any) -> None:
     """
     Invokes the Windows Help system.
 
@@ -1954,10 +2153,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def WriteProfileVal(section: str, entry: str, value: 'typing.Union[str, typing.Any]') -> None:
+def WriteProfileVal(section: str, entry: str, value: str | typing.Any) -> None:
     """
     Writes a value to the application's INI file.
 
@@ -1972,7 +2170,6 @@ Returns:
       None
 
     """
-    pass
 
 
 AFX_IDW_PANE_FIRST = ...

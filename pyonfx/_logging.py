@@ -4,9 +4,10 @@ __all__: list[str] = []
 
 import sys
 from abc import ABC, ABCMeta
+from collections.abc import Callable
 from enum import IntEnum
 from threading import Lock
-from typing import Any, Callable, NoReturn, TypeVar, overload
+from typing import Any, NoReturn, TypeVar, overload
 
 import loguru
 

@@ -1,13 +1,402 @@
-from win32helper import win32typing
 import typing
-__all__ = ['', 'EnumFontFamilies', 'set_logger', 'LOGFONT', 'CreateFontIndirect', 'GetObject', 'GetObjectType', 'PyGetMemory', 'PyGetString', 'PySetString', 'PySetMemory', 'PyGetArraySignedLong', 'PyGetBufferAddressAndLen', 'FlashWindow', 'FlashWindowEx', 'GetWindowLong', 'GetClassLong', 'SetWindowLong', 'CallWindowProc', 'SendMessage', 'SendMessageTimeout', 'PostMessage', 'PostThreadMessage', 'ReplyMessage', 'RegisterWindowMessage', 'DefWindowProc', 'EnumWindows', 'EnumThreadWindows', 'EnumChildWindows', 'DialogBox', 'DialogBoxParam', 'DialogBoxIndirect', 'DialogBoxIndirectParam', 'CreateDialogIndirect', 'DialogBoxIndirectParam', 'EndDialog', 'GetDlgItem', 'GetDlgItemInt', 'SetDlgItemInt', 'GetDlgCtrlID', 'GetDlgItemText', 'SetDlgItemText', 'GetNextDlgTabItem', 'GetNextDlgGroupItem', 'SetWindowText', 'GetWindowText', 'InitCommonControls', 'InitCommonControlsEx', 'LoadCursor', 'SetCursor', 'GetCursor', 'GetCursorInfo', 'CreateAcceleratorTable', 'DestroyAccleratorTable', 'LoadMenu', 'DestroyMenu', 'SetMenu', 'GetMenu', 'LoadIcon', 'CopyIcon', 'DrawIcon', 'DrawIconEx', 'CreateIconIndirect', 'CreateIconFromResource', 'LoadImage', 'DeleteObject', 'BitBlt', 'StretchBlt', 'PatBlt', 'SetStretchBltMode', 'GetStretchBltMode', 'TransparentBlt', 'MaskBlt', 'AlphaBlend', 'ImageList_Add', 'ImageList_Create', 'ImageList_Destroy', 'ImageList_Draw', 'ImageList_DrawEx', 'ImageList_GetIcon', 'ImageList_GetImageCount', 'ImageList_LoadImage', 'ImageList_LoadBitmap', 'ImageList_Remove', 'ImageList_Replace', 'ImageList_ReplaceIcon', 'ImageList_SetBkColor', 'ImageList_SetOverlayImage', 'MessageBox', 'MessageBeep', 'CreateWindow', 'DestroyWindow', 'EnableWindow', 'FindWindow', 'FindWindowEx', 'DragAcceptFiles', 'DragDetect', 'SetDoubleClickTime', 'GetDoubleClickTime', 'HideCaret', 'SetCaretPos', 'GetCaretPos', 'ShowCaret', 'ShowWindow', 'IsWindowVisible', 'IsWindowEnabled', 'SetFocus', 'GetFocus', 'UpdateWindow', 'BringWindowToTop', 'SetActiveWindow', 'GetActiveWindow', 'SetForegroundWindow', 'GetForegroundWindow', 'GetClientRect', 'GetDC', 'SaveDC', 'RestoreDC', 'DeleteDC', 'CreateCompatibleDC', 'CreateCompatibleBitmap', 'CreateBitmap', 'SelectObject', 'GetCurrentObject', 'GetWindowRect', 'GetStockObject', 'PostQuitMessage', 'WaitMessage', 'SetWindowPos', 'GetWindowPlacement', 'SetWindowPlacement', 'RegisterClass', 'UnregisterClass', 'PumpMessages', 'PumpWaitingMessages', 'GetMessage', 'TranslateMessage', 'DispatchMessage', 'TranslateAccelerator', 'PeekMessage', 'Shell_NotifyIcon', 'GetSystemMenu', 'DrawMenuBar', 'MoveWindow', 'CloseWindow', 'DeleteMenu', 'RemoveMenu', 'CreateMenu', 'CreatePopupMenu', 'TrackPopupMenu', 'CommDlgExtendedError', 'ExtractIcon', 'ExtractIconEx', 'DestroyIcon', 'GetIconInfo', 'ScreenToClient', 'ClientToScreen', 'PaintDesktop', 'RedrawWindow', 'GetTextExtentPoint32', 'GetTextMetrics', 'GetTextCharacterExtra', 'SetTextCharacterExtra', 'GetTextAlign', 'SetTextAlign', 'GetTextFace', 'GetMapMode', 'SetMapMode', 'GetGraphicsMode', 'SetGraphicsMode', 'GetLayout', 'SetLayout', 'GetPolyFillMode', 'SetPolyFillMode', 'GetWorldTransform', 'SetWorldTransform', 'ModifyWorldTransform', 'CombineTransform', 'GetWindowOrgEx', 'SetWindowOrgEx', 'GetViewportOrgEx', 'SetViewportOrgEx', 'GetWindowExtEx', 'SetWindowExtEx',
-           'GetViewportExtEx', 'SetViewportExtEx', 'GradientFill', 'GetOpenFileName', 'InsertMenuItem', 'SetMenuItemInfo', 'GetMenuItemInfo', 'GetMenuItemCount', 'GetMenuItemRect', 'GetMenuState', 'SetMenuDefaultItem', 'GetMenuDefaultItem', 'AppendMenu', 'InsertMenu', 'EnableMenuItem', 'CheckMenuItem', 'GetSubMenu', 'ModifyMenu', 'GetMenuItemID', 'SetMenuItemBitmaps', 'CheckMenuRadioItem', 'SetMenuInfo', 'GetMenuInfo', 'DrawFocusRect', 'DrawText', 'LineTo', 'Ellipse', 'Pie', 'Arc', 'ArcTo', 'AngleArc', 'Chord', 'ExtFloodFill', 'SetPixel', 'GetPixel', 'GetROP2', 'SetROP2', 'SetPixelV', 'MoveToEx', 'GetCurrentPositionEx', 'GetArcDirection', 'SetArcDirection', 'Polygon', 'Polyline', 'PolylineTo', 'PolyBezier', 'PolyBezierTo', 'PlgBlt', 'CreatePolygonRgn', 'ExtTextOut', 'GetTextColor', 'SetTextColor', 'GetBkMode', 'SetBkMode', 'GetBkColor', 'SetBkColor', 'DrawEdge', 'FillRect', 'FillRgn', 'PaintRgn', 'FrameRgn', 'InvertRgn', 'EqualRgn', 'PtInRegion', 'PtInRect', 'RectInRegion', 'SetRectRgn', 'CombineRgn', 'DrawAnimatedRects', 'CreateSolidBrush', 'CreatePatternBrush', 'CreateHatchBrush', 'CreatePen', 'GetSysColor', 'GetSysColorBrush', 'InvalidateRect', 'FrameRect', 'InvertRect', 'WindowFromDC', 'GetUpdateRgn', 'GetWindowRgn', 'SetWindowRgn', 'GetWindowRgnBox', 'ValidateRgn', 'InvalidateRgn', 'GetRgnBox', 'OffsetRgn', 'Rectangle', 'RoundRect', 'BeginPaint', 'EndPaint', 'BeginPath', 'EndPath', 'AbortPath', 'CloseFigure', 'FlattenPath', 'FillPath', 'WidenPath', 'StrokePath', 'StrokeAndFillPath', 'GetMiterLimit', 'SetMiterLimit', 'PathToRegion', 'GetPath', 'CreateRoundRectRgn', 'CreateRectRgnIndirect', 'CreateEllipticRgnIndirect', 'CreateWindowEx', 'GetParent', 'SetParent', 'GetCursorPos', 'GetDesktopWindow', 'GetWindow', 'GetWindowDC', 'IsIconic', 'IsWindow', 'IsChild', 'ReleaseCapture', 'GetCapture', 'SetCapture', '_TrackMouseEvent', 'ReleaseDC', 'CreateCaret', 'DestroyCaret', 'ScrollWindowEx', 'SetScrollInfo', 'GetScrollInfo', 'GetClassName', 'WindowFromPoint', 'ChildWindowFromPoint', 'ChildWindowFromPoint', 'ListView_SortItems', 'ListView_SortItemsEx', 'CreateDC', 'GetSaveFileNameW', 'GetOpenFileNameW', 'SystemParametersInfo', 'SetLayeredWindowAttributes', 'GetLayeredWindowAttributes', 'UpdateLayeredWindow', 'AnimateWindow', 'CreateBrushIndirect', 'ExtCreatePen', 'DrawTextW', 'EnumPropsEx', 'RegisterDeviceNotification', 'UnregisterDeviceNotification', 'RegisterHotKey', 'CLR_NONE', 'ILC_COLOR', 'ILC_COLOR16', 'ILC_COLOR24', 'ILC_COLOR32', 'ILC_COLOR4', 'ILC_COLOR8', 'ILC_COLORDDB', 'ILC_MASK', 'ILD_BLEND', 'ILD_BLEND25', 'ILD_BLEND50', 'ILD_FOCUS', 'ILD_MASK', 'ILD_NORMAL', 'ILD_SELECTED', 'ILD_TRANSPARENT', 'IMAGE_BITMAP', 'IMAGE_CURSOR', 'IMAGE_ICON', 'LR_CREATEDIBSECTION', 'LR_DEFAULTCOLOR', 'LR_DEFAULTSIZE', 'LR_LOADFROMFILE', 'LR_LOADMAP3DCOLORS', 'LR_LOADTRANSPARENT', 'LR_MONOCHROME', 'LR_SHARED', 'LR_VGACOLOR', 'NIF_ICON', 'NIF_INFO', 'NIF_MESSAGE', 'NIF_STATE', 'NIF_TIP', 'NIIF_ERROR', 'NIIF_ICON_MASK', 'NIIF_INFO', 'NIIF_NONE', 'NIIF_NOSOUND', 'NIIF_WARNING', 'NIM_ADD', 'NIM_DELETE', 'NIM_MODIFY', 'NIM_SETFOCUS', 'NIM_SETVERSION', 'TPM_BOTTOMALIGN', 'TPM_CENTERALIGN', 'TPM_LEFTALIGN', 'TPM_LEFTBUTTON', 'TPM_NONOTIFY', 'TPM_RETURNCMD', 'TPM_RIGHTALIGN', 'TPM_RIGHTBUTTON', 'TPM_TOPALIGN', 'TPM_VCENTERALIGN']
+
+from win32helper import win32typing
+
+__all__ = [
+    "CLR_NONE",
+    "ILC_COLOR",
+    "ILC_COLOR4",
+    "ILC_COLOR8",
+    "ILC_COLOR16",
+    "ILC_COLOR24",
+    "ILC_COLOR32",
+    "ILC_COLORDDB",
+    "ILC_MASK",
+    "ILD_BLEND",
+    "ILD_BLEND25",
+    "ILD_BLEND50",
+    "ILD_FOCUS",
+    "ILD_MASK",
+    "ILD_NORMAL",
+    "ILD_SELECTED",
+    "ILD_TRANSPARENT",
+    "IMAGE_BITMAP",
+    "IMAGE_CURSOR",
+    "IMAGE_ICON",
+    "LOGFONT",
+    "LR_CREATEDIBSECTION",
+    "LR_DEFAULTCOLOR",
+    "LR_DEFAULTSIZE",
+    "LR_LOADFROMFILE",
+    "LR_LOADMAP3DCOLORS",
+    "LR_LOADTRANSPARENT",
+    "LR_MONOCHROME",
+    "LR_SHARED",
+    "LR_VGACOLOR",
+    "NIF_ICON",
+    "NIF_INFO",
+    "NIF_MESSAGE",
+    "NIF_STATE",
+    "NIF_TIP",
+    "NIIF_ERROR",
+    "NIIF_ICON_MASK",
+    "NIIF_INFO",
+    "NIIF_NONE",
+    "NIIF_NOSOUND",
+    "NIIF_WARNING",
+    "NIM_ADD",
+    "NIM_DELETE",
+    "NIM_MODIFY",
+    "NIM_SETFOCUS",
+    "NIM_SETVERSION",
+    "TPM_BOTTOMALIGN",
+    "TPM_CENTERALIGN",
+    "TPM_LEFTALIGN",
+    "TPM_LEFTBUTTON",
+    "TPM_NONOTIFY",
+    "TPM_RETURNCMD",
+    "TPM_RIGHTALIGN",
+    "TPM_RIGHTBUTTON",
+    "TPM_TOPALIGN",
+    "TPM_VCENTERALIGN",
+    "AbortPath",
+    "AlphaBlend",
+    "AngleArc",
+    "AnimateWindow",
+    "AppendMenu",
+    "Arc",
+    "ArcTo",
+    "BeginPaint",
+    "BeginPath",
+    "BitBlt",
+    "BringWindowToTop",
+    "CallWindowProc",
+    "CheckMenuItem",
+    "CheckMenuRadioItem",
+    "ChildWindowFromPoint",
+    "ChildWindowFromPoint",
+    "Chord",
+    "ClientToScreen",
+    "CloseFigure",
+    "CloseWindow",
+    "CombineRgn",
+    "CombineTransform",
+    "CommDlgExtendedError",
+    "CopyIcon",
+    "CreateAcceleratorTable",
+    "CreateBitmap",
+    "CreateBrushIndirect",
+    "CreateCaret",
+    "CreateCompatibleBitmap",
+    "CreateCompatibleDC",
+    "CreateDC",
+    "CreateDialogIndirect",
+    "CreateEllipticRgnIndirect",
+    "CreateFontIndirect",
+    "CreateHatchBrush",
+    "CreateIconFromResource",
+    "CreateIconIndirect",
+    "CreateMenu",
+    "CreatePatternBrush",
+    "CreatePen",
+    "CreatePolygonRgn",
+    "CreatePopupMenu",
+    "CreateRectRgnIndirect",
+    "CreateRoundRectRgn",
+    "CreateSolidBrush",
+    "CreateWindow",
+    "CreateWindowEx",
+    "DefWindowProc",
+    "DeleteDC",
+    "DeleteMenu",
+    "DeleteObject",
+    "DestroyAccleratorTable",
+    "DestroyCaret",
+    "DestroyIcon",
+    "DestroyMenu",
+    "DestroyWindow",
+    "DialogBox",
+    "DialogBoxIndirect",
+    "DialogBoxIndirectParam",
+    "DialogBoxIndirectParam",
+    "DialogBoxParam",
+    "DispatchMessage",
+    "DragAcceptFiles",
+    "DragDetect",
+    "DrawAnimatedRects",
+    "DrawEdge",
+    "DrawFocusRect",
+    "DrawIcon",
+    "DrawIconEx",
+    "DrawMenuBar",
+    "DrawText",
+    "DrawTextW",
+    "Ellipse",
+    "EnableMenuItem",
+    "EnableWindow",
+    "EndDialog",
+    "EndPaint",
+    "EndPath",
+    "EnumChildWindows",
+    "EnumFontFamilies",
+    "EnumPropsEx",
+    "EnumThreadWindows",
+    "EnumWindows",
+    "EqualRgn",
+    "ExtCreatePen",
+    "ExtFloodFill",
+    "ExtTextOut",
+    "ExtractIcon",
+    "ExtractIconEx",
+    "FillPath",
+    "FillRect",
+    "FillRgn",
+    "FindWindow",
+    "FindWindowEx",
+    "FlashWindow",
+    "FlashWindowEx",
+    "FlattenPath",
+    "FrameRect",
+    "FrameRgn",
+    "GetActiveWindow",
+    "GetArcDirection",
+    "GetBkColor",
+    "GetBkMode",
+    "GetCapture",
+    "GetCaretPos",
+    "GetClassLong",
+    "GetClassName",
+    "GetClientRect",
+    "GetCurrentObject",
+    "GetCurrentPositionEx",
+    "GetCursor",
+    "GetCursorInfo",
+    "GetCursorPos",
+    "GetDC",
+    "GetDesktopWindow",
+    "GetDlgCtrlID",
+    "GetDlgItem",
+    "GetDlgItemInt",
+    "GetDlgItemText",
+    "GetDoubleClickTime",
+    "GetFocus",
+    "GetForegroundWindow",
+    "GetGraphicsMode",
+    "GetIconInfo",
+    "GetLayeredWindowAttributes",
+    "GetLayout",
+    "GetMapMode",
+    "GetMenu",
+    "GetMenuDefaultItem",
+    "GetMenuInfo",
+    "GetMenuItemCount",
+    "GetMenuItemID",
+    "GetMenuItemInfo",
+    "GetMenuItemRect",
+    "GetMenuState",
+    "GetMessage",
+    "GetMiterLimit",
+    "GetNextDlgGroupItem",
+    "GetNextDlgTabItem",
+    "GetObject",
+    "GetObjectType",
+    "GetOpenFileName",
+    "GetOpenFileNameW",
+    "GetParent",
+    "GetPath",
+    "GetPixel",
+    "GetPolyFillMode",
+    "GetROP2",
+    "GetRgnBox",
+    "GetSaveFileNameW",
+    "GetScrollInfo",
+    "GetStockObject",
+    "GetStretchBltMode",
+    "GetSubMenu",
+    "GetSysColor",
+    "GetSysColorBrush",
+    "GetSystemMenu",
+    "GetTextAlign",
+    "GetTextCharacterExtra",
+    "GetTextColor",
+    "GetTextExtentPoint32",
+    "GetTextFace",
+    "GetTextMetrics",
+    "GetUpdateRgn",
+    "GetViewportExtEx",
+    "GetViewportOrgEx",
+    "GetWindow",
+    "GetWindowDC",
+    "GetWindowExtEx",
+    "GetWindowLong",
+    "GetWindowOrgEx",
+    "GetWindowPlacement",
+    "GetWindowRect",
+    "GetWindowRgn",
+    "GetWindowRgnBox",
+    "GetWindowText",
+    "GetWorldTransform",
+    "GradientFill",
+    "HideCaret",
+    "ImageList_Add",
+    "ImageList_Create",
+    "ImageList_Destroy",
+    "ImageList_Draw",
+    "ImageList_DrawEx",
+    "ImageList_GetIcon",
+    "ImageList_GetImageCount",
+    "ImageList_LoadBitmap",
+    "ImageList_LoadImage",
+    "ImageList_Remove",
+    "ImageList_Replace",
+    "ImageList_ReplaceIcon",
+    "ImageList_SetBkColor",
+    "ImageList_SetOverlayImage",
+    "InitCommonControls",
+    "InitCommonControlsEx",
+    "InsertMenu",
+    "InsertMenuItem",
+    "InvalidateRect",
+    "InvalidateRgn",
+    "InvertRect",
+    "InvertRgn",
+    "IsChild",
+    "IsIconic",
+    "IsWindow",
+    "IsWindowEnabled",
+    "IsWindowVisible",
+    "LineTo",
+    "ListView_SortItems",
+    "ListView_SortItemsEx",
+    "LoadCursor",
+    "LoadIcon",
+    "LoadImage",
+    "LoadMenu",
+    "MaskBlt",
+    "MessageBeep",
+    "MessageBox",
+    "ModifyMenu",
+    "ModifyWorldTransform",
+    "MoveToEx",
+    "MoveWindow",
+    "OffsetRgn",
+    "PaintDesktop",
+    "PaintRgn",
+    "PatBlt",
+    "PathToRegion",
+    "PeekMessage",
+    "Pie",
+    "PlgBlt",
+    "PolyBezier",
+    "PolyBezierTo",
+    "Polygon",
+    "Polyline",
+    "PolylineTo",
+    "PostMessage",
+    "PostQuitMessage",
+    "PostThreadMessage",
+    "PtInRect",
+    "PtInRegion",
+    "PumpMessages",
+    "PumpWaitingMessages",
+    "PyGetArraySignedLong",
+    "PyGetBufferAddressAndLen",
+    "PyGetMemory",
+    "PyGetString",
+    "PySetMemory",
+    "PySetString",
+    "RectInRegion",
+    "Rectangle",
+    "RedrawWindow",
+    "RegisterClass",
+    "RegisterDeviceNotification",
+    "RegisterHotKey",
+    "RegisterWindowMessage",
+    "ReleaseCapture",
+    "ReleaseDC",
+    "RemoveMenu",
+    "ReplyMessage",
+    "RestoreDC",
+    "RoundRect",
+    "SaveDC",
+    "ScreenToClient",
+    "ScrollWindowEx",
+    "SelectObject",
+    "SendMessage",
+    "SendMessageTimeout",
+    "SetActiveWindow",
+    "SetArcDirection",
+    "SetBkColor",
+    "SetBkMode",
+    "SetCapture",
+    "SetCaretPos",
+    "SetCursor",
+    "SetDlgItemInt",
+    "SetDlgItemText",
+    "SetDoubleClickTime",
+    "SetFocus",
+    "SetForegroundWindow",
+    "SetGraphicsMode",
+    "SetLayeredWindowAttributes",
+    "SetLayout",
+    "SetMapMode",
+    "SetMenu",
+    "SetMenuDefaultItem",
+    "SetMenuInfo",
+    "SetMenuItemBitmaps",
+    "SetMenuItemInfo",
+    "SetMiterLimit",
+    "SetParent",
+    "SetPixel",
+    "SetPixelV",
+    "SetPolyFillMode",
+    "SetROP2",
+    "SetRectRgn",
+    "SetScrollInfo",
+    "SetStretchBltMode",
+    "SetTextAlign",
+    "SetTextCharacterExtra",
+    "SetTextColor",
+    "SetViewportExtEx",
+    "SetViewportOrgEx",
+    "SetWindowExtEx",
+    "SetWindowLong",
+    "SetWindowOrgEx",
+    "SetWindowPlacement",
+    "SetWindowPos",
+    "SetWindowRgn",
+    "SetWindowText",
+    "SetWorldTransform",
+    "Shell_NotifyIcon",
+    "ShowCaret",
+    "ShowWindow",
+    "StretchBlt",
+    "StrokeAndFillPath",
+    "StrokePath",
+    "SystemParametersInfo",
+    "TrackPopupMenu",
+    "TranslateAccelerator",
+    "TranslateMessage",
+    "TransparentBlt",
+    "UnregisterClass",
+    "UnregisterDeviceNotification",
+    "UpdateLayeredWindow",
+    "UpdateWindow",
+    "ValidateRgn",
+    "WaitMessage",
+    "WidenPath",
+    "WindowFromDC",
+    "WindowFromPoint",
+    "",
+    "_TrackMouseEvent",
+    "set_logger",
+]
 
 
 """"""
 
 
-def EnumFontFamilies(hdc: int, Family: typing.Union[str], EnumFontFamProc: typing.Any, Param: typing.Any) -> typing.Any:
+def EnumFontFamilies(hdc: int, Family: str, EnumFontFamProc: typing.Any, Param: typing.Any) -> typing.Any:
     """
     Enumerates the available font families.
 
@@ -23,7 +412,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def set_logger(logger: typing.Any) -> None:
@@ -39,10 +427,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def LOGFONT() -> 'win32typing.PyLOGFONT':
+def LOGFONT() -> win32typing.PyLOGFONT:
     """
     Creates a LOGFONT object.
 
@@ -55,10 +442,9 @@ Returns:
       win32typing.PyLOGFONT
 
     """
-    pass
 
 
-def CreateFontIndirect(lplf: 'win32typing.PyLOGFONT') -> typing.Any:
+def CreateFontIndirect(lplf: win32typing.PyLOGFONT) -> typing.Any:
     """
     function creates a logical font that has the specified characteristics. 
 
@@ -73,7 +459,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetObject(handle: int) -> typing.Any:
@@ -89,7 +474,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetObjectType(h: int) -> typing.Any:
@@ -105,7 +489,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PyGetMemory(addr: typing.Any, _len: typing.Any) -> typing.Any:
@@ -122,7 +505,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PyGetString(addr: typing.Any, _len: typing.Any) -> str:
@@ -142,7 +524,6 @@ string must be NULL terminated.Return ValueIf win32gui.UNICODE is True, this wil
 
 
     """
-    pass
 
 
 def PySetString(addr: typing.Any, String: typing.Any, maxLen: typing.Any) -> typing.Any:
@@ -160,7 +541,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PySetMemory(addr: typing.Any, String: typing.Any) -> typing.Any:
@@ -177,7 +557,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PyGetArraySignedLong(array: typing.Any, index: typing.Any) -> typing.Any:
@@ -194,7 +573,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PyGetBufferAddressAndLen(obj: typing.Any) -> typing.Any:
@@ -210,7 +588,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def FlashWindow(hwnd: int, bInvert: typing.Any) -> typing.Any:
@@ -227,7 +604,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def FlashWindowEx(hwnd: int, dwFlags: typing.Any, uCount: typing.Any, dwTimeout: typing.Any) -> typing.Any:
@@ -246,7 +622,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetWindowLong(hwnd: typing.Any, index: typing.Any) -> typing.Any:
@@ -263,7 +638,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetClassLong(hwnd: typing.Any, index: typing.Any) -> typing.Any:
@@ -280,7 +654,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetWindowLong(hwnd: int, index: typing.Any, value: typing.Any) -> typing.Any:
@@ -298,10 +671,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CallWindowProc(wndproc: typing.Any, hwnd: int, msg: typing.Any, wparam: typing.Union[typing.Any], lparam: typing.Union[typing.Any]) -> typing.Any:
+def CallWindowProc(wndproc: typing.Any, hwnd: int, msg: typing.Any, wparam: typing.Any, lparam: typing.Any) -> typing.Any:
     """
     None
 
@@ -318,10 +690,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def SendMessage(hwnd: typing.Any, message: typing.Any, wparam: typing.Union[typing.Any] = None, lparam: typing.Union[typing.Any] = None) -> typing.Any:
+def SendMessage(hwnd: typing.Any, message: typing.Any, wparam: typing.Any = None, lparam: typing.Any = None) -> typing.Any:
     """
     Sends a message to the window.
 
@@ -337,10 +708,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def SendMessageTimeout(hwnd: typing.Any, message: typing.Any, wparam: typing.Any, lparam: typing.Any, flags: typing.Any, timeout: typing.Any) -> typing.Tuple[typing.Any, typing.Any]:
+def SendMessageTimeout(hwnd: typing.Any, message: typing.Any, wparam: typing.Any, lparam: typing.Any, flags: typing.Any, timeout: typing.Any) -> tuple[typing.Any, typing.Any]:
     """
     Sends a message to the window.
 
@@ -363,7 +733,6 @@ with zero as the error code.  See the Microsoft documentation for more informati
 
 
     """
-    pass
 
 
 def PostMessage(hwnd: typing.Any, message: typing.Any, wparam: typing.Any = 0, lparam: typing.Any = 0) -> None:
@@ -382,7 +751,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def PostThreadMessage(threadId: typing.Any, message: typing.Any, wparam: typing.Any, lparam: typing.Any) -> None:
@@ -401,7 +769,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ReplyMessage(result: typing.Any) -> typing.Any:
@@ -417,10 +784,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def RegisterWindowMessage(name: 'typing.Union[str, typing.Any]') -> typing.Any:
+def RegisterWindowMessage(name: str | typing.Any) -> typing.Any:
     """
     Defines a new window message that is guaranteed to be unique throughout the system. The message value can be used when sending or posting messages.
 
@@ -433,7 +799,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DefWindowProc(hwnd: typing.Any, message: typing.Any, wparam: typing.Any, lparam: typing.Any) -> typing.Any:
@@ -452,7 +817,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def EnumWindows(callback: typing.Any, extra: typing.Any) -> None:
@@ -469,7 +833,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EnumThreadWindows(dwThreadId: typing.Any, callback: typing.Any, extra: typing.Any) -> None:
@@ -487,7 +850,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EnumChildWindows(hwnd: int, callback: typing.Any, extra: typing.Any) -> None:
@@ -505,10 +867,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def DialogBox(hInstance: int, TemplateName: 'win32typing.PyResourceId', hWndParent: int, DialogFunc: typing.Any, InitParam: typing.Any = 0) -> typing.Any:
+def DialogBox(hInstance: int, TemplateName: win32typing.PyResourceId, hWndParent: int, DialogFunc: typing.Any, InitParam: typing.Any = 0) -> typing.Any:
     """
     Creates a modal dialog box.
 
@@ -525,7 +886,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DialogBoxParam() -> typing.Any:
@@ -541,10 +901,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def DialogBoxIndirect(hInstance: int, controlList: 'win32typing.PyDialogTemplate', hWndParent: int, DialogFunc: typing.Any, InitParam: typing.Any = 0) -> typing.Any:
+def DialogBoxIndirect(hInstance: int, controlList: win32typing.PyDialogTemplate, hWndParent: int, DialogFunc: typing.Any, InitParam: typing.Any = 0) -> typing.Any:
     """
     None
 
@@ -561,7 +920,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 @typing.overload
 def DialogBoxIndirectParam() -> typing.Any:
@@ -577,10 +935,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateDialogIndirect(hInstance: int, controlList: 'win32typing.PyDialogTemplate', hWndParent: int, DialogFunc: typing.Any, InitParam: typing.Any = 0) -> typing.Any:
+def CreateDialogIndirect(hInstance: int, controlList: win32typing.PyDialogTemplate, hWndParent: int, DialogFunc: typing.Any, InitParam: typing.Any = 0) -> typing.Any:
     """
     None
 
@@ -597,7 +954,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 @typing.overload
 def DialogBoxIndirectParam() -> typing.Any:
@@ -613,7 +969,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def EndDialog(hwnd: typing.Any, result: typing.Any) -> None:
@@ -630,7 +985,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetDlgItem(hDlg: int, IDDlgItem: typing.Any) -> typing.Any:
@@ -647,7 +1001,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetDlgItemInt(hDlg: int, IDDlgItem: typing.Any, Signed: typing.Any) -> None:
@@ -665,7 +1018,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetDlgItemInt(hDlg: int, IDDlgItem: typing.Any, Value: typing.Any, Signed: typing.Any) -> None:
@@ -684,7 +1036,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetDlgCtrlID(hwnd: typing.Any) -> typing.Any:
@@ -700,7 +1051,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetDlgItemText(hDlg: int, IDDlgItem: typing.Any) -> str:
@@ -717,10 +1067,9 @@ Returns:
       str
 
     """
-    pass
 
 
-def SetDlgItemText(hDlg: int, IDDlgItem: typing.Any, String: typing.Union[typing.Any]) -> None:
+def SetDlgItemText(hDlg: int, IDDlgItem: typing.Any, String: typing.Any) -> None:
     """
     Sets the text for a window or control
 
@@ -735,7 +1084,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetNextDlgTabItem(hDlg: typing.Any, hCtl: typing.Any, bPrevious: typing.Any) -> typing.Any:
@@ -753,7 +1101,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetNextDlgGroupItem(hDlg: typing.Any, hCtl: typing.Any, bPrevious: typing.Any) -> typing.Any:
@@ -771,7 +1118,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetWindowText() -> None:
@@ -787,7 +1133,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetWindowText(hwnd: int) -> str:
@@ -803,7 +1148,6 @@ Returns:
       str
 
     """
-    pass
 
 
 def InitCommonControls() -> None:
@@ -819,7 +1163,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def InitCommonControlsEx(flag: typing.Any) -> None:
@@ -835,7 +1178,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def LoadCursor(hinstance: typing.Any, resid: typing.Any) -> typing.Any:
@@ -852,7 +1194,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetCursor(hcursor: typing.Any) -> typing.Any:
@@ -868,7 +1209,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetCursor() -> typing.Any:
@@ -884,10 +1224,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetCursorInfo() -> 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]':
+def GetCursorInfo() -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     """
     Retrieves information about the global cursor.
 
@@ -900,10 +1239,9 @@ Returns:
       typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]
 
     """
-    pass
 
 
-def CreateAcceleratorTable(accels: 'typing.Tuple[typing.Tuple[typing.Any, typing.Any, typing.Any], ...]') -> typing.Any:
+def CreateAcceleratorTable(accels: tuple[tuple[typing.Any, typing.Any, typing.Any], ...]) -> typing.Any:
     """
     Creates an accelerator table
 
@@ -916,7 +1254,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DestroyAccleratorTable(haccel: typing.Any) -> None:
@@ -932,10 +1269,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def LoadMenu(hinstance: typing.Any, resource_id: 'typing.Union[str, typing.Any]') -> typing.Any:
+def LoadMenu(hinstance: typing.Any, resource_id: str | typing.Any) -> typing.Any:
     """
     Loads a menu
 
@@ -949,7 +1285,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DestroyMenu() -> None:
@@ -965,7 +1300,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetMenu(hwnd: typing.Any, hmenu: typing.Any) -> None:
@@ -982,7 +1316,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetMenu() -> None:
@@ -998,10 +1331,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def LoadIcon(hinstance: typing.Any, resource_id: 'typing.Union[str, typing.Any]') -> typing.Any:
+def LoadIcon(hinstance: typing.Any, resource_id: str | typing.Any) -> typing.Any:
     """
     Loads an icon
 
@@ -1015,7 +1347,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def CopyIcon(hicon: typing.Any) -> typing.Any:
@@ -1031,7 +1362,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DrawIcon(hDC: typing.Any, X: typing.Any, Y: typing.Any, hicon: typing.Any) -> None:
@@ -1050,10 +1380,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def DrawIconEx(hDC: typing.Any, xLeft: typing.Any, yTop: typing.Any, hIcon: typing.Any, cxWidth: typing.Any, cyWidth: typing.Any, istepIfAniCur: typing.Any, hbrFlickerFreeDraw: 'win32typing.PyGdiHANDLE', diFlags: typing.Any) -> None:
+def DrawIconEx(hDC: typing.Any, xLeft: typing.Any, yTop: typing.Any, hIcon: typing.Any, cxWidth: typing.Any, cyWidth: typing.Any, istepIfAniCur: typing.Any, hbrFlickerFreeDraw: win32typing.PyGdiHANDLE, diFlags: typing.Any) -> None:
     """
     Draws an icon or cursor into the specified device context, 
 
@@ -1078,10 +1407,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateIconIndirect(iconinfo: 'win32typing.PyICONINFO') -> typing.Any:
+def CreateIconIndirect(iconinfo: win32typing.PyICONINFO) -> typing.Any:
     """
     Creates an icon or cursor from an ICONINFO structure.
 
@@ -1094,7 +1422,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def CreateIconFromResource(bits: str, fIcon: typing.Any, ver: typing.Any = 0x00030000) -> int:
@@ -1112,10 +1439,9 @@ Returns:
       int
 
     """
-    pass
 
 
-def LoadImage(hinst: typing.Any, name: 'typing.Union[str, typing.Any]', _type: typing.Any, cxDesired: typing.Any, cyDesired: typing.Any, fuLoad: typing.Any) -> typing.Any:
+def LoadImage(hinst: typing.Any, name: str | typing.Any, _type: typing.Any, cxDesired: typing.Any, cyDesired: typing.Any, fuLoad: typing.Any) -> typing.Any:
     """
     Loads a bitmap, cursor or icon
 
@@ -1133,10 +1459,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def DeleteObject(handle: 'win32typing.PyGdiHANDLE') -> None:
+def DeleteObject(handle: win32typing.PyGdiHANDLE) -> None:
     """
     Deletes a logical pen, brush, font, bitmap, region, or palette, freeing all system resources associated with the object. After the object is deleted, the specified handle is no longer valid.
 
@@ -1149,7 +1474,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def BitBlt(hdcDest: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, hdcSrc: typing.Any, nXSrc: typing.Any, nYSrc: typing.Any, dwRop: typing.Any) -> None:
@@ -1177,7 +1501,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def StretchBlt(hdcDest: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, hdcSrc: typing.Any, nXSrc: typing.Any, nYSrc: typing.Any, nWidthSrc: typing.Any, nHeightSrc: typing.Any, dwRop: typing.Any) -> None:
@@ -1207,7 +1530,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def PatBlt(hdc: int, XLeft: typing.Any, YLeft: typing.Any, Width: typing.Any, Height: typing.Any, Rop: typing.Any) -> None:
@@ -1228,7 +1550,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetStretchBltMode(hdc: int, StretchMode: typing.Any) -> typing.Any:
@@ -1248,7 +1569,6 @@ If the function fails, the return value is zero.
 
 
     """
-    pass
 
 
 def GetStretchBltMode(hdc: int) -> typing.Any:
@@ -1265,7 +1585,6 @@ Returns:
 
 
     """
-    pass
 
 
 def TransparentBlt(Dest: int, XOriginDest: typing.Any, YOriginDest: typing.Any, WidthDest: typing.Any, HeightDest: typing.Any, Src: int, XOriginSrc: typing.Any, YOriginSrc: typing.Any, WidthSrc: typing.Any, HeightSrc: typing.Any, Transparent: typing.Any) -> None:
@@ -1291,10 +1610,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def MaskBlt(Dest: int, XDest: typing.Any, YDest: typing.Any, Width: typing.Any, Height: typing.Any, Src: int, XSrc: typing.Any, YSrc: typing.Any, Mask: 'win32typing.PyGdiHANDLE', xMask: typing.Any, yMask: typing.Any, Rop: typing.Any) -> None:
+def MaskBlt(Dest: int, XDest: typing.Any, YDest: typing.Any, Width: typing.Any, Height: typing.Any, Src: int, XSrc: typing.Any, YSrc: typing.Any, Mask: win32typing.PyGdiHANDLE, xMask: typing.Any, yMask: typing.Any, Rop: typing.Any) -> None:
     """
     Combines the color data for the source and destination 
 
@@ -1320,10 +1638,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def AlphaBlend(Dest: int, XOriginDest: typing.Any, YOriginDest: typing.Any, WidthDest: typing.Any, HeightDest: typing.Any, Src: int, XOriginSrc: typing.Any, YOriginSrc: typing.Any, WidthSrc: typing.Any, HeightSrc: typing.Any, blendFunction: 'win32typing.PyBLENDFUNCTION') -> None:
+def AlphaBlend(Dest: int, XOriginDest: typing.Any, YOriginDest: typing.Any, WidthDest: typing.Any, HeightDest: typing.Any, Src: int, XOriginSrc: typing.Any, YOriginSrc: typing.Any, WidthSrc: typing.Any, HeightSrc: typing.Any, blendFunction: win32typing.PyBLENDFUNCTION) -> None:
     """
     Transfers color information using alpha blending
 
@@ -1346,10 +1663,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def ImageList_Add(himl: typing.Any, hbmImage: 'win32typing.PyGdiHANDLE', hbmMask: 'win32typing.PyGdiHANDLE') -> typing.Any:
+def ImageList_Add(himl: typing.Any, hbmImage: win32typing.PyGdiHANDLE, hbmMask: win32typing.PyGdiHANDLE) -> typing.Any:
     """
     Adds an image or images to an image list.
 
@@ -1365,7 +1681,6 @@ Returns:
 
 
     """
-    pass
 
 
 def ImageList_Create() -> typing.Any:
@@ -1381,7 +1696,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_Destroy() -> typing.Any:
@@ -1397,7 +1711,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_Draw() -> typing.Any:
@@ -1413,7 +1726,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_DrawEx() -> typing.Any:
@@ -1429,7 +1741,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_GetIcon() -> typing.Any:
@@ -1445,7 +1756,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_GetImageCount() -> typing.Any:
@@ -1461,7 +1771,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_LoadImage() -> typing.Any:
@@ -1477,7 +1786,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_LoadBitmap() -> typing.Any:
@@ -1493,7 +1801,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_Remove() -> typing.Any:
@@ -1509,7 +1816,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_Replace() -> typing.Any:
@@ -1525,7 +1831,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_ReplaceIcon() -> typing.Any:
@@ -1541,7 +1846,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_SetBkColor() -> typing.Any:
@@ -1557,7 +1861,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ImageList_SetOverlayImage(hImageList: typing.Any, iImage: typing.Any, iOverlay: typing.Any) -> None:
@@ -1575,10 +1878,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def MessageBox(parent: typing.Any, text: typing.Union[str], caption: typing.Union[str], flags: typing.Any) -> typing.Any:
+def MessageBox(parent: typing.Any, text: str, caption: str, flags: typing.Any) -> typing.Any:
     """
     Displays a message box
 
@@ -1594,7 +1896,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def MessageBeep(_type: typing.Any) -> None:
@@ -1610,10 +1911,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateWindow(className: 'typing.Union[str, typing.Any]', windowTitle: str, style: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, parent: typing.Any, menu: typing.Any, hinstance: typing.Any, reserved: typing.Any) -> typing.Any:
+def CreateWindow(className: str | typing.Any, windowTitle: str, style: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, parent: typing.Any, menu: typing.Any, hinstance: typing.Any, reserved: typing.Any) -> typing.Any:
     """
     Creates a new window.
 
@@ -1636,7 +1936,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DestroyWindow(hwnd: typing.Any) -> None:
@@ -1652,7 +1951,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EnableWindow(hWnd: int, bEnable: typing.Any) -> typing.Any:
@@ -1670,10 +1968,9 @@ Returns:
 
 
     """
-    pass
 
 
-def FindWindow(ClassName: 'win32typing.PyResourceId', WindowName: str) -> int:
+def FindWindow(ClassName: win32typing.PyResourceId, WindowName: str) -> int:
     """
     Retrieves a handle to the top-level window whose class name and window name match the specified strings.
 
@@ -1687,10 +1984,9 @@ Returns:
       int
 
     """
-    pass
 
 
-def FindWindowEx(Parent: int, ChildAfter: int, ClassName: 'win32typing.PyResourceId', WindowName: str) -> int:
+def FindWindowEx(Parent: int, ChildAfter: int, ClassName: win32typing.PyResourceId, WindowName: str) -> int:
     """
     Retrieves a handle to the top-level window whose class name and window name match the specified strings.
 
@@ -1706,7 +2002,6 @@ Returns:
       int
 
     """
-    pass
 
 
 def DragAcceptFiles(hwnd: typing.Any, fAccept: typing.Any) -> None:
@@ -1723,10 +2018,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def DragDetect(hwnd: typing.Any, point: typing.Tuple[typing.Any, typing.Any]) -> None:
+def DragDetect(hwnd: typing.Any, point: tuple[typing.Any, typing.Any]) -> None:
     """
     captures the mouse and tracks its movement until the user releases the left button, presses the ESC key, or moves the mouse outside the drag rectangle around the specified point.
 
@@ -1743,7 +2037,6 @@ If the user did not move the mouse outside of the drag rectangle while holding d
 
 
     """
-    pass
 
 
 def SetDoubleClickTime(newVal: typing.Any) -> None:
@@ -1759,7 +2052,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetDoubleClickTime() -> typing.Any:
@@ -1775,7 +2067,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def HideCaret(hWnd: int) -> None:
@@ -1791,7 +2082,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetCaretPos(x: typing.Any, y: typing.Any) -> None:
@@ -1808,10 +2098,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetCaretPos() -> typing.Tuple[typing.Any, typing.Any]:
+def GetCaretPos() -> tuple[typing.Any, typing.Any]:
     """
     Returns the current caret position
 
@@ -1824,7 +2113,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
 def ShowCaret(hWnd: int) -> None:
@@ -1840,7 +2128,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ShowWindow(hWnd: typing.Any, cmdShow: typing.Any) -> typing.Any:
@@ -1857,7 +2144,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def IsWindowVisible(hwnd: typing.Any) -> typing.Any:
@@ -1873,7 +2159,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def IsWindowEnabled(hwnd: typing.Any) -> typing.Any:
@@ -1889,7 +2174,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetFocus(hwnd: typing.Any) -> None:
@@ -1905,7 +2189,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetFocus() -> None:
@@ -1921,7 +2204,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def UpdateWindow(hwnd: typing.Any) -> None:
@@ -1937,7 +2219,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def BringWindowToTop(hwnd: typing.Any) -> None:
@@ -1953,7 +2234,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetActiveWindow(hwnd: typing.Any) -> typing.Any:
@@ -1969,7 +2249,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetActiveWindow() -> typing.Any:
@@ -1985,7 +2264,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetForegroundWindow(hwnd: typing.Any) -> typing.Any:
@@ -2001,7 +2279,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetForegroundWindow() -> typing.Any:
@@ -2017,10 +2294,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetClientRect(hwnd: typing.Any) -> 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]':
+def GetClientRect(hwnd: typing.Any) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     """
     Returns the rectangle of the client area of a window, in client coordinates
 
@@ -2033,7 +2309,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]
 
     """
-    pass
 
 
 def GetDC(hwnd: typing.Any) -> typing.Any:
@@ -2049,7 +2324,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SaveDC(hdc: int) -> typing.Any:
@@ -2066,7 +2340,6 @@ Returns:
 
 
     """
-    pass
 
 
 def RestoreDC(hdc: int, SavedDC: typing.Any) -> None:
@@ -2083,7 +2356,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def DeleteDC(hdc: typing.Any) -> None:
@@ -2099,7 +2371,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CreateCompatibleDC(dc: typing.Any) -> typing.Any:
@@ -2115,10 +2386,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateCompatibleBitmap(hdc: typing.Any, width: typing.Any, height: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def CreateCompatibleBitmap(hdc: typing.Any, width: typing.Any, height: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Creates a bitmap compatible with the device that is associated with the specified device context.
 
@@ -2133,10 +2403,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def CreateBitmap(width: typing.Any, height: typing.Any, cPlanes: typing.Any, cBitsPerPixel: typing.Any, bitmap_bits: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def CreateBitmap(width: typing.Any, height: typing.Any, cPlanes: typing.Any, cBitsPerPixel: typing.Any, bitmap_bits: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Creates a bitmap
 
@@ -2153,7 +2422,6 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
 def SelectObject(hdc: typing.Any, _object: typing.Any) -> typing.Any:
@@ -2170,7 +2438,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetCurrentObject(hdc: int, ObjectType: typing.Any) -> int:
@@ -2187,10 +2454,9 @@ Returns:
       int
 
     """
-    pass
 
 
-def GetWindowRect(hwnd: typing.Any) -> 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]':
+def GetWindowRect(hwnd: typing.Any) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     """
     Returns the rectangle for a window in screen coordinates
 
@@ -2203,7 +2469,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]
 
     """
-    pass
 
 
 def GetStockObject(Object: typing.Any) -> int:
@@ -2219,7 +2484,6 @@ Returns:
       int
 
     """
-    pass
 
 
 def PostQuitMessage(rc: typing.Any) -> None:
@@ -2235,7 +2499,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def WaitMessage() -> None:
@@ -2251,7 +2514,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetWindowPos(hWnd: int, InsertAfter: int, X: typing.Any, Y: typing.Any, cx: typing.Any, cy: typing.Any, Flags: typing.Any) -> None:
@@ -2273,7 +2535,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetWindowPlacement() -> typing.Any:
@@ -2310,7 +2571,6 @@ normalposSpecifies the window's coordinates when the window is in the restored p
 
 
     """
-    pass
 
 
 def SetWindowPlacement(hWnd: int, placement: typing.Any) -> None:
@@ -2327,10 +2587,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def RegisterClass(wndClass: 'win32typing.PyWNDCLASS') -> typing.Any:
+def RegisterClass(wndClass: win32typing.PyWNDCLASS) -> typing.Any:
     """
     Registers a window class.
 
@@ -2343,10 +2602,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def UnregisterClass(atom: 'win32typing.PyResourceId', hinst: int) -> None:
+def UnregisterClass(atom: win32typing.PyResourceId, hinst: int) -> None:
     """
     None
 
@@ -2360,7 +2618,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def PumpMessages() -> None:
@@ -2378,7 +2635,6 @@ Return ValueReturns exit code from PostQuitMessage when a WM_QUIT message is rec
 
 
     """
-    pass
 
 
 def PumpWaitingMessages() -> typing.Any:
@@ -2396,7 +2652,6 @@ Return ValueReturns non-zero (exit code from PostQuitMessage) if a WM_QUIT messa
 
 
     """
-    pass
 
 
 def GetMessage(hwnd: typing.Any, _min: typing.Any, _max: typing.Any) -> typing.Any:
@@ -2414,7 +2669,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def TranslateMessage(msg: typing.Any) -> typing.Any:
@@ -2430,7 +2684,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def DispatchMessage(msg: typing.Any) -> typing.Any:
@@ -2446,7 +2699,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def TranslateAccelerator(hwnd: typing.Any, haccel: typing.Any, msg: typing.Any) -> typing.Any:
@@ -2464,7 +2716,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PeekMessage(hwnd: typing.Any, filterMin: typing.Any, filterMax: typing.Any, removalOptions: typing.Any) -> typing.Any:
@@ -2483,10 +2734,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def Shell_NotifyIcon(Message: typing.Any, nid: 'win32typing.PyNOTIFYICONDATA') -> None:
+def Shell_NotifyIcon(Message: typing.Any, nid: win32typing.PyNOTIFYICONDATA) -> None:
     """
     Adds, removes or modifies a taskbar icon.
 
@@ -2500,7 +2750,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetSystemMenu(hwnd: typing.Any, bRevert: typing.Any) -> typing.Any:
@@ -2518,7 +2767,6 @@ Returns:
 
 
     """
-    pass
 
 
 def DrawMenuBar(hwnd: typing.Any) -> None:
@@ -2534,7 +2782,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def MoveWindow(hwnd: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, bRepaint: typing.Any) -> None:
@@ -2555,7 +2802,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CloseWindow() -> None:
@@ -2571,7 +2817,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def DeleteMenu(hmenu: typing.Any, position: typing.Any, flags: typing.Any) -> None:
@@ -2589,7 +2834,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def RemoveMenu(hmenu: typing.Any, position: typing.Any, flags: typing.Any) -> None:
@@ -2607,7 +2851,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CreateMenu() -> typing.Any:
@@ -2627,7 +2870,6 @@ Return ValueThe result is a HMENU to the new menu.
 
 
     """
-    pass
 
 
 def CreatePopupMenu() -> typing.Any:
@@ -2647,10 +2889,9 @@ Return ValueThe result is a HMENU to the new menu.
 
 
     """
-    pass
 
 
-def TrackPopupMenu(hmenu: typing.Any, flags: typing.Any, x: typing.Any, y: typing.Any, reserved: typing.Any, hwnd: typing.Any, prcRect: 'win32typing.PyRECT') -> typing.Any:
+def TrackPopupMenu(hmenu: typing.Any, flags: typing.Any, x: typing.Any, y: typing.Any, reserved: typing.Any, hwnd: typing.Any, prcRect: win32typing.PyRECT) -> typing.Any:
     """
     Display popup shortcut menu
 
@@ -2669,7 +2910,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def CommDlgExtendedError() -> typing.Any:
@@ -2685,10 +2925,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def ExtractIcon(hinstance: typing.Any, moduleName: typing.Union[str], index: typing.Any) -> typing.Any:
+def ExtractIcon(hinstance: typing.Any, moduleName: str, index: typing.Any) -> typing.Any:
     """
     None
 
@@ -2707,7 +2946,6 @@ Return ValueThe result is a HICON.
 
 
     """
-    pass
 
 
 def ExtractIconEx(moduleName: str, index: typing.Any, numIcons: typing.Any = 1) -> typing.Any:
@@ -2732,7 +2970,6 @@ the file, otherwise it is 2 arrays of icon handles.
 
 
     """
-    pass
 
 
 def DestroyIcon(hicon: typing.Any) -> None:
@@ -2748,10 +2985,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetIconInfo(hicon: int) -> 'win32typing.PyICONINFO':
+def GetIconInfo(hicon: int) -> win32typing.PyICONINFO:
     """
     Returns parameters for an icon or cursor
 
@@ -2767,10 +3003,9 @@ The hbmMask and hbmColor items are bitmaps created for the caller, so must be fr
 
 
     """
-    pass
 
 
-def ScreenToClient(hWnd: int, Point: typing.Tuple[typing.Any, typing.Any]) -> typing.Tuple[typing.Any, typing.Any]:
+def ScreenToClient(hWnd: int, Point: tuple[typing.Any, typing.Any]) -> tuple[typing.Any, typing.Any]:
     """
     Convert screen coordinates to client coords
 
@@ -2784,10 +3019,9 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
-def ClientToScreen(hWnd: int, Point: typing.Tuple[typing.Any, typing.Any]) -> typing.Tuple[typing.Any, typing.Any]:
+def ClientToScreen(hWnd: int, Point: tuple[typing.Any, typing.Any]) -> tuple[typing.Any, typing.Any]:
     """
     Convert client coordinates to screen coords
 
@@ -2801,7 +3035,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
 def PaintDesktop(hdc: int) -> None:
@@ -2817,10 +3050,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def RedrawWindow(hWnd: int, rcUpdate: 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]', hrgnUpdate: 'win32typing.PyGdiHANDLE', flags: typing.Any) -> None:
+def RedrawWindow(hWnd: int, rcUpdate: tuple[typing.Any, typing.Any, typing.Any, typing.Any], hrgnUpdate: win32typing.PyGdiHANDLE, flags: typing.Any) -> None:
     """
     Causes a portion of a window to be redrawn
 
@@ -2836,10 +3068,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetTextExtentPoint32(hdc: int, _str: str) -> typing.Tuple[typing.Any, typing.Any]:
+def GetTextExtentPoint32(hdc: int, _str: str) -> tuple[typing.Any, typing.Any]:
     """
     Computes the width and height of the specified string of text.
 
@@ -2853,7 +3084,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
 def GetTextMetrics(dc: typing.Any) -> typing.Any:
@@ -2869,7 +3099,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetTextCharacterExtra(hdc: int) -> typing.Any:
@@ -2885,7 +3114,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetTextCharacterExtra(hdc: int, CharExtra: typing.Any) -> typing.Any:
@@ -2903,7 +3131,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetTextAlign(hdc: int) -> typing.Any:
@@ -2920,7 +3147,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetTextAlign(hdc: int, Mode: typing.Any) -> typing.Any:
@@ -2938,7 +3164,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetTextFace(hdc: int) -> str:
@@ -2954,7 +3179,6 @@ Returns:
       str
 
     """
-    pass
 
 
 def GetMapMode(hdc: int) -> typing.Any:
@@ -2971,7 +3195,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetMapMode(hdc: int, MapMode: typing.Any) -> typing.Any:
@@ -2989,7 +3212,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetGraphicsMode(hdc: int) -> typing.Any:
@@ -3006,7 +3228,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetGraphicsMode(hdc: int, Mode: typing.Any) -> typing.Any:
@@ -3024,7 +3245,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetLayout(hdc: int) -> typing.Any:
@@ -3041,7 +3261,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetLayout(hdc: int, Layout: typing.Any) -> typing.Any:
@@ -3059,7 +3278,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetPolyFillMode(hdc: int) -> typing.Any:
@@ -3076,7 +3294,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetPolyFillMode(hdc: int, PolyFillMode: typing.Any) -> typing.Any:
@@ -3094,10 +3311,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetWorldTransform(hdc: int) -> 'win32typing.PyXFORM':
+def GetWorldTransform(hdc: int) -> win32typing.PyXFORM:
     """
     Retrieves a device context's coordinate space translation matrix
 
@@ -3110,10 +3326,9 @@ Returns:
       win32typing.PyXFORM
 
     """
-    pass
 
 
-def SetWorldTransform(hdc: int, Xform: 'win32typing.PyXFORM') -> None:
+def SetWorldTransform(hdc: int, Xform: win32typing.PyXFORM) -> None:
     """
     Transforms a device context's coordinate space
 
@@ -3127,10 +3342,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def ModifyWorldTransform(hdc: int, Xform: 'win32typing.PyXFORM', Mode: typing.Any) -> None:
+def ModifyWorldTransform(hdc: int, Xform: win32typing.PyXFORM, Mode: typing.Any) -> None:
     """
     Combines a coordinate tranformation with device context's current transformation
 
@@ -3145,10 +3359,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CombineTransform(xform1: 'win32typing.PyXFORM', xform2: 'win32typing.PyXFORM') -> 'win32typing.PyXFORM':
+def CombineTransform(xform1: win32typing.PyXFORM, xform2: win32typing.PyXFORM) -> win32typing.PyXFORM:
     """
     Combines two coordinate space transformations
 
@@ -3162,10 +3375,9 @@ Returns:
       win32typing.PyXFORM
 
     """
-    pass
 
 
-def GetWindowOrgEx(hdc: int) -> typing.Tuple[typing.Any, typing.Any]:
+def GetWindowOrgEx(hdc: int) -> tuple[typing.Any, typing.Any]:
     """
     Retrievs the window origin for a DC
 
@@ -3178,10 +3390,9 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
-def SetWindowOrgEx(hdc: int, X: typing.Any, Y: typing.Any) -> typing.Tuple[typing.Any, typing.Any]:
+def SetWindowOrgEx(hdc: int, X: typing.Any, Y: typing.Any) -> tuple[typing.Any, typing.Any]:
     """
     Changes the window origin for a DC
 
@@ -3197,10 +3408,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetViewportOrgEx(hdc: int) -> typing.Tuple[typing.Any, typing.Any]:
+def GetViewportOrgEx(hdc: int) -> tuple[typing.Any, typing.Any]:
     """
     Retrievs the origin for a DC's viewport
 
@@ -3213,10 +3423,9 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
-def SetViewportOrgEx(hdc: int, X: typing.Any, Y: typing.Any) -> typing.Tuple[typing.Any, typing.Any]:
+def SetViewportOrgEx(hdc: int, X: typing.Any, Y: typing.Any) -> tuple[typing.Any, typing.Any]:
     """
     Changes the viewport origin for a DC
 
@@ -3232,10 +3441,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetWindowExtEx(hdc: int) -> typing.Tuple[typing.Any, typing.Any]:
+def GetWindowExtEx(hdc: int) -> tuple[typing.Any, typing.Any]:
     """
     Retrieves the window extents for a DC
 
@@ -3249,10 +3457,9 @@ Returns:
 
 
     """
-    pass
 
 
-def SetWindowExtEx(hdc: int, XExtent: typing.Any, YExtent: typing.Any) -> typing.Tuple[typing.Any, typing.Any]:
+def SetWindowExtEx(hdc: int, XExtent: typing.Any, YExtent: typing.Any) -> tuple[typing.Any, typing.Any]:
     """
     Changes the window extents for a DC
 
@@ -3268,10 +3475,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetViewportExtEx(hdc: int) -> typing.Tuple[typing.Any, typing.Any]:
+def GetViewportExtEx(hdc: int) -> tuple[typing.Any, typing.Any]:
     """
     Retrieves the viewport extents for a DC
 
@@ -3285,10 +3491,9 @@ Returns:
 
 
     """
-    pass
 
 
-def SetViewportExtEx(hdc: int, XExtent: typing.Any, YExtent: typing.Any) -> typing.Tuple[typing.Any, typing.Any]:
+def SetViewportExtEx(hdc: int, XExtent: typing.Any, YExtent: typing.Any) -> tuple[typing.Any, typing.Any]:
     """
     Changes the viewport extents for a DC
 
@@ -3304,10 +3509,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GradientFill(hdc: typing.Any, Vertex: 'typing.Tuple[win32typing.PyTRIVERTEX, ...]', Mesh: typing.Any, Mode: typing.Any) -> None:
+def GradientFill(hdc: typing.Any, Vertex: tuple[win32typing.PyTRIVERTEX, ...], Mesh: typing.Any, Mode: typing.Any) -> None:
     """
     Shades triangles or rectangles by interpolating between vertex colors
 
@@ -3323,10 +3527,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetOpenFileName(OPENFILENAME: 'typing.Union[str, typing.Any]') -> typing.Any:
+def GetOpenFileName(OPENFILENAME: str | typing.Any) -> typing.Any:
     """
     Creates an Open dialog box that lets the user specify the drive, directory, and the name of a file or set of files to open.
 
@@ -3345,7 +3548,6 @@ Return ValueIf the user presses OK, the function returns TRUE.  Otherwise, use C
 
 
     """
-    pass
 
 
 def InsertMenuItem(hMenu: typing.Any, uItem: typing.Any, fByPosition: typing.Any, menuItem: typing.Any) -> None:
@@ -3364,7 +3566,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetMenuItemInfo(hMenu: typing.Any, uItem: typing.Any, fByPosition: typing.Any, menuItem: typing.Any) -> None:
@@ -3383,7 +3584,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetMenuItemInfo(hMenu: typing.Any, uItem: typing.Any, fByPosition: typing.Any, menuItem: typing.Any) -> None:
@@ -3402,7 +3602,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetMenuItemCount(hMenu: typing.Any) -> typing.Any:
@@ -3418,10 +3617,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetMenuItemRect(hWnd: typing.Any, hMenu: typing.Any, uItem: typing.Any) -> 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]':
+def GetMenuItemRect(hWnd: typing.Any, hMenu: typing.Any, uItem: typing.Any) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     """
     None
 
@@ -3436,7 +3634,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]
 
     """
-    pass
 
 
 def GetMenuState(hMenu: typing.Any, uID: typing.Any, flags: typing.Any) -> typing.Any:
@@ -3454,7 +3651,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetMenuDefaultItem(hMenu: typing.Any, uItem: typing.Any, fByPos: typing.Any) -> None:
@@ -3472,7 +3668,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetMenuDefaultItem(hMenu: typing.Any, fByPos: typing.Any, flags: typing.Any) -> typing.Any:
@@ -3490,7 +3685,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def AppendMenu() -> None:
@@ -3506,7 +3700,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def InsertMenu() -> None:
@@ -3522,7 +3715,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EnableMenuItem() -> None:
@@ -3538,7 +3730,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CheckMenuItem() -> typing.Any:
@@ -3554,7 +3745,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetSubMenu(hMenu: typing.Any, nPos: typing.Any) -> typing.Any:
@@ -3571,7 +3761,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ModifyMenu(hMnu: typing.Any, uPosition: typing.Any, uFlags: typing.Any, uIDNewItem: typing.Any, newItem: str) -> None:
@@ -3591,7 +3780,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetMenuItemID(hMenu: typing.Any, nPos: typing.Any) -> typing.Any:
@@ -3608,10 +3796,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def SetMenuItemBitmaps(hMenu: typing.Any, uPosition: typing.Any, uFlags: typing.Any, hBitmapUnchecked: 'win32typing.PyGdiHANDLE', hBitmapChecked: 'win32typing.PyGdiHANDLE') -> None:
+def SetMenuItemBitmaps(hMenu: typing.Any, uPosition: typing.Any, uFlags: typing.Any, hBitmapUnchecked: win32typing.PyGdiHANDLE, hBitmapChecked: win32typing.PyGdiHANDLE) -> None:
     """
     Associates the specified bitmap with a menu item. Whether the menu item is selected or clear, the system displays the appropriate bitmap next to the menu item.
 
@@ -3628,7 +3815,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CheckMenuRadioItem(hMenu: typing.Any, idFirst: typing.Any, idLast: typing.Any, idCheck: typing.Any, uFlags: typing.Any) -> None:
@@ -3652,7 +3838,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetMenuInfo(hmenu: typing.Any, info: typing.Any) -> None:
@@ -3669,7 +3854,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetMenuInfo(hmenu: typing.Any, info: typing.Any) -> None:
@@ -3686,10 +3870,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def DrawFocusRect(hDC: int, rc: 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]') -> None:
+def DrawFocusRect(hDC: int, rc: tuple[typing.Any, typing.Any, typing.Any, typing.Any]) -> None:
     """
     Draws a standard focus outline around a rectangle
 
@@ -3703,10 +3886,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def DrawText(hDC: 'typing.Union[typing.Any, int]', String: typing.Any, nCount: typing.Any, Rect: 'win32typing.PyRECT', Format: typing.Any) -> 'typing.Tuple[typing.Any, win32typing.PyRECT]':
+def DrawText(hDC: typing.Any | int, String: typing.Any, nCount: typing.Any, Rect: win32typing.PyRECT, Format: typing.Any) -> tuple[typing.Any, win32typing.PyRECT]:
     """
     Draws formatted text on a device context
 
@@ -3724,7 +3906,6 @@ Returns:
 
 
     """
-    pass
 
 
 def LineTo(hdc: int, XEnd: typing.Any, YEnd: typing.Any) -> None:
@@ -3742,7 +3923,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def Ellipse(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any) -> None:
@@ -3762,7 +3942,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def Pie(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any, XRadial1: typing.Any, YRadial1: typing.Any, XRadial2: typing.Any, YRadial2: typing.Any) -> None:
@@ -3786,7 +3965,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def Arc(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any, XRadial1: typing.Any, YRadial1: typing.Any, XRadial2: typing.Any, YRadial2: typing.Any) -> None:
@@ -3810,7 +3988,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ArcTo(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any, XRadial1: typing.Any, YRadial1: typing.Any, XRadial2: typing.Any, YRadial2: typing.Any) -> None:
@@ -3834,10 +4011,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def AngleArc(hdc: int, Y: typing.Any, Y1: typing.Any, Radius: typing.Any, StartAngle: 'float', SweepAngle: 'float') -> None:
+def AngleArc(hdc: int, Y: typing.Any, Y1: typing.Any, Radius: typing.Any, StartAngle: float, SweepAngle: float) -> None:
     """
     Draws a line from current pos and a section of a circle's arc
 
@@ -3855,7 +4031,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def Chord(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any, XRadial1: typing.Any, YRadial1: typing.Any, XRadial2: typing.Any, YRadial2: typing.Any) -> None:
@@ -3879,7 +4054,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ExtFloodFill(arg: int, XStart: typing.Any, YStart: typing.Any, Color: typing.Any, FillType: typing.Any) -> None:
@@ -3899,7 +4073,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def SetPixel(hdc: int, X: typing.Any, Y: typing.Any, Color: typing.Any) -> typing.Any:
@@ -3919,7 +4092,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetPixel(hdc: int, XPos: typing.Any, YPos: typing.Any) -> typing.Any:
@@ -3937,7 +4109,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetROP2(hdc: int) -> typing.Any:
@@ -3954,7 +4125,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetROP2(hdc: int, DrawMode: typing.Any) -> typing.Any:
@@ -3972,7 +4142,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetPixelV(hdc: int, X: typing.Any, Y: typing.Any, Color: typing.Any) -> None:
@@ -3991,10 +4160,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def MoveToEx(hdc: int, X: typing.Any, Y: typing.Any) -> typing.Tuple[typing.Any, typing.Any]:
+def MoveToEx(hdc: int, X: typing.Any, Y: typing.Any) -> tuple[typing.Any, typing.Any]:
     """
     Changes the current drawing position
 
@@ -4010,10 +4178,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetCurrentPositionEx(hdc: int) -> typing.Tuple[typing.Any, typing.Any]:
+def GetCurrentPositionEx(hdc: int) -> tuple[typing.Any, typing.Any]:
     """
     Returns a device context's current drawing position
 
@@ -4026,7 +4193,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
 def GetArcDirection(hdc: int) -> typing.Any:
@@ -4043,7 +4209,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetArcDirection(hdc: int, ArcDirection: typing.Any) -> typing.Any:
@@ -4061,10 +4226,9 @@ Returns:
 
 
     """
-    pass
 
 
-def Polygon(hdc: int, Points: 'typing.List[typing.Tuple[typing.Any, typing.Any]]') -> None:
+def Polygon(hdc: int, Points: list[tuple[typing.Any, typing.Any]]) -> None:
     """
     Draws a closed filled polygon defined by a sequence of points
 
@@ -4078,10 +4242,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def Polyline(hdc: int, Points: 'typing.List[typing.Tuple[typing.Any, typing.Any]]') -> None:
+def Polyline(hdc: int, Points: list[tuple[typing.Any, typing.Any]]) -> None:
     """
     Connects a sequence of points using currently selected pen
 
@@ -4095,10 +4258,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def PolylineTo(hdc: int, Points: 'typing.List[typing.Tuple[typing.Any, typing.Any]]') -> None:
+def PolylineTo(hdc: int, Points: list[tuple[typing.Any, typing.Any]]) -> None:
     """
     Draws a series of lines starting from current position.  Updates current position with end point.
 
@@ -4112,10 +4274,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def PolyBezier(hdc: int, Points: 'typing.List[typing.Tuple[typing.Any, typing.Any]]') -> None:
+def PolyBezier(hdc: int, Points: list[tuple[typing.Any, typing.Any]]) -> None:
     """
     Draws a series of Bezier curves starting from first point specified.
 
@@ -4129,10 +4290,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def PolyBezierTo(hdc: int, Points: 'typing.List[typing.Tuple[typing.Any, typing.Any]]') -> None:
+def PolyBezierTo(hdc: int, Points: list[tuple[typing.Any, typing.Any]]) -> None:
     """
     Draws a series of Bezier curves starting from current drawing position.
 
@@ -4146,10 +4306,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def PlgBlt(Dest: int, Point: typing.Any, Src: int, XSrc: typing.Any, YSrc: typing.Any, Width: typing.Any, Height: typing.Any, Mask: 'win32typing.PyGdiHANDLE' = None, xMask: typing.Any = 0, yMask: typing.Any = 0) -> None:
+def PlgBlt(Dest: int, Point: typing.Any, Src: int, XSrc: typing.Any, YSrc: typing.Any, Width: typing.Any, Height: typing.Any, Mask: win32typing.PyGdiHANDLE = None, xMask: typing.Any = 0, yMask: typing.Any = 0) -> None:
     """
     Copies color from a rectangle into a parallelogram
 
@@ -4171,10 +4330,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreatePolygonRgn(Points: 'typing.List[typing.Tuple[typing.Any, typing.Any]]', PolyFillMode: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def CreatePolygonRgn(Points: list[tuple[typing.Any, typing.Any]], PolyFillMode: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Creates a region from a sequence of vertices
 
@@ -4188,10 +4346,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def ExtTextOut(hdc: int, _int: typing.Any, _int1: typing.Any, _int2: typing.Any, rect: typing.Optional[win32typing.PyRECT], string: typing.Any, _tuple: typing.Optional[typing.Tuple[typing.Tuple[typing.Any, typing.Any], ...]] = ...) -> typing.Any:
+def ExtTextOut(hdc: int, _int: typing.Any, _int1: typing.Any, _int2: typing.Any, rect: win32typing.PyRECT | None, string: typing.Any, _tuple: tuple[tuple[typing.Any, typing.Any], ...] | None = ...) -> typing.Any:
     """
     Writes text to a DC.
 
@@ -4212,7 +4369,6 @@ Return ValueAlways none.  If the function fails, an exception is raised.
 
 
     """
-    pass
 
 
 def GetTextColor(hdc: typing.Any) -> typing.Any:
@@ -4229,7 +4385,6 @@ Returns:
 
 
     """
-    pass
 
 
 def SetTextColor(hdc: typing.Any, color: typing.Any) -> typing.Any:
@@ -4247,7 +4402,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetBkMode(hdc: int) -> typing.Any:
@@ -4264,10 +4418,9 @@ Returns:
 
 
     """
-    pass
 
 
-def SetBkMode(hdc: 'typing.Union[typing.Any, int]', BkMode: typing.Any) -> typing.Any:
+def SetBkMode(hdc: typing.Any | int, BkMode: typing.Any) -> typing.Any:
     """
     Sets the background mode for a device context
 
@@ -4282,7 +4435,6 @@ Returns:
 
 
     """
-    pass
 
 
 def GetBkColor(hdc: int) -> typing.Any:
@@ -4299,10 +4451,9 @@ Returns:
 
 
     """
-    pass
 
 
-def SetBkColor(hdc: 'typing.Union[typing.Any, int]', color: typing.Any) -> typing.Any:
+def SetBkColor(hdc: typing.Any | int, color: typing.Any) -> typing.Any:
     """
     Sets the background color for a device context
 
@@ -4317,10 +4468,9 @@ Returns:
 
 
     """
-    pass
 
 
-def DrawEdge(hdc: int, rc: 'win32typing.PyRECT', edge: typing.Any, Flags: typing.Any) -> 'win32typing.PyRECT':
+def DrawEdge(hdc: int, rc: win32typing.PyRECT, edge: typing.Any, Flags: typing.Any) -> win32typing.PyRECT:
     """
     Draws edge(s) of a rectangle
 
@@ -4337,10 +4487,9 @@ Returns:
 
 
     """
-    pass
 
 
-def FillRect(hDC: int, rc: 'win32typing.PyRECT', hbr: 'win32typing.PyGdiHANDLE') -> None:
+def FillRect(hDC: int, rc: win32typing.PyRECT, hbr: win32typing.PyGdiHANDLE) -> None:
     """
     Fills a rectangular area with specified brush
 
@@ -4355,10 +4504,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def FillRgn(hdc: int, hrgn: 'win32typing.PyGdiHANDLE', hbr: 'win32typing.PyGdiHANDLE') -> None:
+def FillRgn(hdc: int, hrgn: win32typing.PyGdiHANDLE, hbr: win32typing.PyGdiHANDLE) -> None:
     """
     Fills a region with specified brush
 
@@ -4373,10 +4521,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def PaintRgn(hdc: int, hrgn: 'win32typing.PyGdiHANDLE') -> None:
+def PaintRgn(hdc: int, hrgn: win32typing.PyGdiHANDLE) -> None:
     """
     Paints a region with current brush
 
@@ -4390,7 +4537,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def FrameRgn(hdc: int, hrgn: typing.Any, hbr: typing.Any, Width: typing.Any, Height: typing.Any) -> None:
@@ -4410,7 +4556,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def InvertRgn(hdc: int, hrgn: typing.Any) -> None:
@@ -4427,7 +4572,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EqualRgn(SrcRgn1: typing.Any, SrcRgn2: typing.Any) -> typing.Any:
@@ -4444,7 +4588,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def PtInRegion(hrgn: typing.Any, X: typing.Any, Y: typing.Any) -> typing.Any:
@@ -4462,10 +4605,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def PtInRect(rect: 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]', point: typing.Tuple[typing.Any, typing.Any]) -> typing.Any:
+def PtInRect(rect: tuple[typing.Any, typing.Any, typing.Any, typing.Any], point: tuple[typing.Any, typing.Any]) -> typing.Any:
     """
     Determines if a rectangle contains a point
 
@@ -4479,10 +4621,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def RectInRegion(hrgn: typing.Any, rc: 'win32typing.PyRECT') -> typing.Any:
+def RectInRegion(hrgn: typing.Any, rc: win32typing.PyRECT) -> typing.Any:
     """
     Determines if a region and rectangle overlap at any point
 
@@ -4496,7 +4637,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetRectRgn(hrgn: typing.Any, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any) -> None:
@@ -4516,7 +4656,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CombineRgn(Dest: typing.Any, Src1: typing.Any, Src2: typing.Any, CombineMode: typing.Any) -> typing.Any:
@@ -4536,10 +4675,9 @@ Returns:
 
 
     """
-    pass
 
 
-def DrawAnimatedRects(hwnd: typing.Any, idAni: typing.Any, minCoords: 'win32typing.PyRECT', restCoords: 'win32typing.PyRECT') -> None:
+def DrawAnimatedRects(hwnd: typing.Any, idAni: typing.Any, minCoords: win32typing.PyRECT, restCoords: win32typing.PyRECT) -> None:
     """
     Animates a rectangle in the manner of minimizing, mazimizing, or opening
 
@@ -4555,10 +4693,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateSolidBrush(Color: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def CreateSolidBrush(Color: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Creates a solid brush of specified color
 
@@ -4571,10 +4708,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def CreatePatternBrush(hbmp: 'win32typing.PyGdiHANDLE') -> 'win32typing.PyGdiHANDLE':
+def CreatePatternBrush(hbmp: win32typing.PyGdiHANDLE) -> win32typing.PyGdiHANDLE:
     """
     Creates a brush using a bitmap as a pattern
 
@@ -4587,10 +4723,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def CreateHatchBrush(Style: typing.Any, clrref: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def CreateHatchBrush(Style: typing.Any, clrref: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Creates a hatch brush with specified style and color
 
@@ -4604,10 +4739,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def CreatePen(PenStyle: typing.Any, Width: typing.Any, Color: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def CreatePen(PenStyle: typing.Any, Width: typing.Any, Color: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Create a GDI pen
 
@@ -4622,7 +4756,6 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
 def GetSysColor(Index: typing.Any) -> typing.Any:
@@ -4638,10 +4771,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetSysColorBrush(Index: typing.Any) -> 'win32typing.PyGdiHANDLE':
+def GetSysColorBrush(Index: typing.Any) -> win32typing.PyGdiHANDLE:
     """
     Creates a handle to a system color brush
 
@@ -4654,10 +4786,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def InvalidateRect(hWnd: int, Rect: 'win32typing.PyRECT', Erase: typing.Any) -> None:
+def InvalidateRect(hWnd: int, Rect: win32typing.PyRECT, Erase: typing.Any) -> None:
     """
     Invalidates a rectangular area of a window and adds it to the window's update region
 
@@ -4672,10 +4803,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def FrameRect(hDC: int, rc: 'win32typing.PyRECT', hbr: 'win32typing.PyGdiHANDLE') -> None:
+def FrameRect(hDC: int, rc: win32typing.PyRECT, hbr: win32typing.PyGdiHANDLE) -> None:
     """
     Draws an outline around a rectangle
 
@@ -4690,10 +4820,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def InvertRect(hDC: int, rc: 'win32typing.PyRECT') -> None:
+def InvertRect(hDC: int, rc: win32typing.PyRECT) -> None:
     """
     Inverts the colors in a regtangular region
 
@@ -4707,7 +4836,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def WindowFromDC(hDC: int) -> int:
@@ -4724,10 +4852,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetUpdateRgn(hWnd: int, hRgn: 'win32typing.PyGdiHANDLE', Erase: typing.Any) -> typing.Any:
+def GetUpdateRgn(hWnd: int, hRgn: win32typing.PyGdiHANDLE, Erase: typing.Any) -> typing.Any:
     """
     Copies the update region of a window into an existing region
 
@@ -4743,10 +4870,9 @@ Returns:
 
 
     """
-    pass
 
 
-def GetWindowRgn(hWnd: int, hRgn: 'win32typing.PyGdiHANDLE') -> typing.Any:
+def GetWindowRgn(hWnd: int, hRgn: win32typing.PyGdiHANDLE) -> typing.Any:
     """
     Copies the window region of a window into an existing region
 
@@ -4761,10 +4887,9 @@ Returns:
 
 
     """
-    pass
 
 
-def SetWindowRgn(hWnd: int, hRgn: 'win32typing.PyGdiHANDLE', Redraw: typing.Any) -> None:
+def SetWindowRgn(hWnd: int, hRgn: win32typing.PyGdiHANDLE, Redraw: typing.Any) -> None:
     """
     Sets the visible region of a window
 
@@ -4779,10 +4904,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetWindowRgnBox(hWnd: int) -> 'typing.Tuple[typing.Any, win32typing.PyRECT]':
+def GetWindowRgnBox(hWnd: int) -> tuple[typing.Any, win32typing.PyRECT]:
     """
     Returns the bounding box for a window's region
 
@@ -4799,10 +4923,9 @@ Return ValueReturns type of region and rectangle coordinates in device units
 
 
     """
-    pass
 
 
-def ValidateRgn(hWnd: int, hRgn: 'win32typing.PyGdiHANDLE') -> None:
+def ValidateRgn(hWnd: int, hRgn: win32typing.PyGdiHANDLE) -> None:
     """
     Removes a region from a window's update region
 
@@ -4816,10 +4939,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def InvalidateRgn(hWnd: int, hRgn: 'win32typing.PyGdiHANDLE', Erase: typing.Any) -> None:
+def InvalidateRgn(hWnd: int, hRgn: win32typing.PyGdiHANDLE, Erase: typing.Any) -> None:
     """
     Adds a region to a window's update region
 
@@ -4834,10 +4956,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetRgnBox(hrgn: 'win32typing.PyGdiHANDLE') -> 'typing.Tuple[typing.Any, win32typing.PyRECT]':
+def GetRgnBox(hrgn: win32typing.PyGdiHANDLE) -> tuple[typing.Any, win32typing.PyRECT]:
     """
     Calculates the bounding box of a region
 
@@ -4851,10 +4972,9 @@ Returns:
 
 
     """
-    pass
 
 
-def OffsetRgn(hrgn: 'win32typing.PyGdiHANDLE', XOffset: typing.Any, YOffset: typing.Any) -> typing.Any:
+def OffsetRgn(hrgn: win32typing.PyGdiHANDLE, XOffset: typing.Any, YOffset: typing.Any) -> typing.Any:
     """
     Relocates a region
 
@@ -4870,7 +4990,6 @@ Returns:
 
 
     """
-    pass
 
 
 def Rectangle(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any) -> None:
@@ -4890,7 +5009,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def RoundRect(hdc: int, LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any, Width: typing.Any, Height: typing.Any) -> None:
@@ -4912,10 +5030,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def BeginPaint() -> typing.Tuple[typing.Any, typing.Any]:
+def BeginPaint() -> tuple[typing.Any, typing.Any]:
     """
     None
 
@@ -4928,7 +5045,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
 def EndPaint(hwnd: typing.Any, ps: typing.Any) -> None:
@@ -4945,7 +5061,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def BeginPath(hdc: int) -> None:
@@ -4961,7 +5076,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def EndPath(hdc: int) -> None:
@@ -4977,7 +5091,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def AbortPath(hdc: int) -> None:
@@ -4993,7 +5106,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def CloseFigure(hdc: int) -> None:
@@ -5009,7 +5121,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def FlattenPath(hdc: int) -> None:
@@ -5025,7 +5136,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def FillPath(hdc: int) -> None:
@@ -5041,7 +5151,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def WidenPath(hdc: int) -> None:
@@ -5057,7 +5166,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def StrokePath(hdc: int) -> None:
@@ -5073,7 +5181,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def StrokeAndFillPath(hdc: int) -> None:
@@ -5089,10 +5196,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetMiterLimit(hdc: int) -> 'float':
+def GetMiterLimit(hdc: int) -> float:
     """
     Retrieves the limit of miter joins for a DC
 
@@ -5105,10 +5211,9 @@ Returns:
       float
 
     """
-    pass
 
 
-def SetMiterLimit(hdc: int, NewLimit: 'float') -> 'float':
+def SetMiterLimit(hdc: int, NewLimit: float) -> float:
     """
     Set the limit of miter joins for a DC
 
@@ -5123,10 +5228,9 @@ Returns:
 
 
     """
-    pass
 
 
-def PathToRegion(hdc: int) -> 'win32typing.PyGdiHANDLE':
+def PathToRegion(hdc: int) -> win32typing.PyGdiHANDLE:
     """
     Converts a closed path in a DC to a region
 
@@ -5139,12 +5243,11 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def GetPath(hdc: int) -> typing.Tuple[
-    typing.Tuple[typing.Tuple[int, int], ...],
-    typing.Tuple[int, ...]
+def GetPath(hdc: int) -> tuple[
+    tuple[tuple[int, int], ...],
+    tuple[int, ...]
 ]:
     """
     Returns a sequence of points that describe the current path
@@ -5159,7 +5262,6 @@ Returns:
 
 
     """
-    pass
 
 
 def CreateRoundRectRgn(LeftRect: typing.Any, TopRect: typing.Any, RightRect: typing.Any, BottomRect: typing.Any, WidthEllipse: typing.Any, HeightEllipse: typing.Any) -> typing.Any:
@@ -5180,10 +5282,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateRectRgnIndirect(rc: 'win32typing.PyRECT') -> typing.Any:
+def CreateRectRgnIndirect(rc: win32typing.PyRECT) -> typing.Any:
     """
     Creates a rectangular region,
 
@@ -5196,10 +5297,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateEllipticRgnIndirect(rc: 'win32typing.PyRECT') -> typing.Any:
+def CreateEllipticRgnIndirect(rc: win32typing.PyRECT) -> typing.Any:
     """
     Creates an ellipse region,
 
@@ -5212,10 +5312,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateWindowEx(dwExStyle: typing.Any, className: 'typing.Union[str, typing.Any]', windowTitle: str, style: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, parent: typing.Any, menu: typing.Any, hinstance: typing.Any, reserved: typing.Any) -> typing.Any:
+def CreateWindowEx(dwExStyle: typing.Any, className: str | typing.Any, windowTitle: str, style: typing.Any, x: typing.Any, y: typing.Any, width: typing.Any, height: typing.Any, parent: typing.Any, menu: typing.Any, hinstance: typing.Any, reserved: typing.Any) -> typing.Any:
     """
     Creates a new window with Extended Style.
 
@@ -5239,7 +5338,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetParent(child: typing.Any) -> typing.Any:
@@ -5255,7 +5353,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetParent(child: typing.Any, child1: typing.Any) -> typing.Any:
@@ -5272,10 +5369,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetCursorPos() -> typing.Tuple[typing.Any, typing.Any]:
+def GetCursorPos() -> tuple[typing.Any, typing.Any]:
     """
     retrieves the cursor's position, in screen coordinates.
 
@@ -5288,7 +5384,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any]
 
     """
-    pass
 
 
 def GetDesktopWindow() -> typing.Any:
@@ -5304,7 +5399,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetWindow(hWnd: typing.Any, uCmd: typing.Any) -> typing.Any:
@@ -5321,7 +5415,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def GetWindowDC(hWnd: typing.Any) -> typing.Any:
@@ -5337,7 +5430,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def IsIconic(hWnd: typing.Any) -> None:
@@ -5353,7 +5445,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def IsWindow(hWnd: typing.Any) -> None:
@@ -5369,7 +5460,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def IsChild(hWndParent: typing.Any, hWnd: typing.Any) -> None:
@@ -5386,7 +5476,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ReleaseCapture() -> None:
@@ -5402,7 +5491,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def GetCapture() -> typing.Any:
@@ -5418,7 +5506,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def SetCapture() -> None:
@@ -5434,10 +5521,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def _TrackMouseEvent(tme: 'win32typing.TRACKMOUSEEVENT') -> None:
+def _TrackMouseEvent(tme: win32typing.TRACKMOUSEEVENT) -> None:
     """
     Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time.
 
@@ -5450,7 +5536,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ReleaseDC(hWnd: typing.Any, hDC: typing.Any) -> typing.Any:
@@ -5467,10 +5552,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def CreateCaret(hWnd: typing.Any, hBitmap: 'win32typing.PyGdiHANDLE', nWidth: typing.Any, nHeight: typing.Any) -> None:
+def CreateCaret(hWnd: typing.Any, hBitmap: win32typing.PyGdiHANDLE, nWidth: typing.Any, nHeight: typing.Any) -> None:
     """
     Creates a new caret for a window
 
@@ -5486,7 +5570,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def DestroyCaret() -> None:
@@ -5502,10 +5585,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def ScrollWindowEx(hWnd: typing.Any, dx: typing.Any, dy: typing.Any, rcScroll: 'win32typing.PyRECT', rcClip: 'win32typing.PyRECT', hrgnUpdate: typing.Any, flags: typing.Any) -> 'typing.Tuple[typing.Any, win32typing.PyRECT]':
+def ScrollWindowEx(hWnd: typing.Any, dx: typing.Any, dy: typing.Any, rcScroll: win32typing.PyRECT, rcClip: win32typing.PyRECT, hrgnUpdate: typing.Any, flags: typing.Any) -> tuple[typing.Any, win32typing.PyRECT]:
     """
     scrolls the content of the specified window's client area.
 
@@ -5527,10 +5609,9 @@ If SW_SMOOTHSCROLL is specified, use upper 16 bits to specify time in millisecon
 
 
     """
-    pass
 
 
-def SetScrollInfo(hwnd: typing.Any, nBar: typing.Any, scollInfo: 'win32typing.PySCROLLINFO', bRedraw: typing.Any = 1) -> None:
+def SetScrollInfo(hwnd: typing.Any, nBar: typing.Any, scollInfo: win32typing.PySCROLLINFO, bRedraw: typing.Any = 1) -> None:
     """
     Sets information about a scroll-bar
 
@@ -5548,10 +5629,9 @@ Return ValueReturns an int with the current position of the scroll box.
 
 
     """
-    pass
 
 
-def GetScrollInfo(hwnd: typing.Any, nBar: typing.Any, mask: typing.Any) -> 'win32typing.PySCROLLINFO':
+def GetScrollInfo(hwnd: typing.Any, nBar: typing.Any, mask: typing.Any) -> win32typing.PySCROLLINFO:
     """
     Returns information about a scroll bar
 
@@ -5566,7 +5646,6 @@ Returns:
       win32typing.PySCROLLINFO
 
     """
-    pass
 
 
 def GetClassName(hwnd: int) -> str:
@@ -5582,10 +5661,9 @@ Returns:
       str
 
     """
-    pass
 
 
-def WindowFromPoint(point: typing.Tuple[typing.Any, typing.Any]) -> typing.Any:
+def WindowFromPoint(point: tuple[typing.Any, typing.Any]) -> typing.Any:
     """
     Retrieves a handle to the window that contains the specified point.
 
@@ -5598,10 +5676,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def ChildWindowFromPoint(hwndParent: typing.Any, point: typing.Tuple[typing.Any, typing.Any]) -> typing.Any:
+def ChildWindowFromPoint(hwndParent: typing.Any, point: tuple[typing.Any, typing.Any]) -> typing.Any:
     """
     Determines which, if any, of the child windows belonging to a parent window contains the specified point.
 
@@ -5615,10 +5692,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def ChildWindowFromPoint(hwndParent: typing.Any, point: typing.Tuple[typing.Any, typing.Any]) -> typing.Any:
+def ChildWindowFromPoint(hwndParent: typing.Any, point: tuple[typing.Any, typing.Any]) -> typing.Any:
     """
     Determines which, if any, of the child windows belonging to a parent window contains the specified point.
 
@@ -5632,7 +5708,6 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
 def ListView_SortItems(hwnd: typing.Any, callback: typing.Any, param: typing.Any = None) -> None:
@@ -5650,7 +5725,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def ListView_SortItemsEx(hwnd: typing.Any, callback: typing.Any, param: typing.Any = None) -> None:
@@ -5668,10 +5742,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateDC(Driver: str, Device: str, InitData: 'win32typing.PyDEVMODE') -> typing.Any:
+def CreateDC(Driver: str, Device: str, InitData: win32typing.PyDEVMODE) -> typing.Any:
     """
     Creates a device context for a printer or display device
 
@@ -5686,10 +5759,9 @@ Returns:
       typing.Any
 
     """
-    pass
 
 
-def GetSaveFileNameW(hwndOwner: int = None, hInstance: int = None, Filter: typing.Any = None, CustomFilter: typing.Any = None, FilterIndex: typing.Any = 0, File: typing.Any = None, MaxFile: typing.Any = 1024, InitialDir: typing.Any = None, Title: typing.Any = None, Flags: typing.Any = 0, DefExt: typing.Any = None, TemplateName: 'win32typing.PyResourceId' = None) -> 'typing.Tuple[typing.Any, typing.Any, typing.Any]':
+def GetSaveFileNameW(hwndOwner: int = None, hInstance: int = None, Filter: typing.Any = None, CustomFilter: typing.Any = None, FilterIndex: typing.Any = 0, File: typing.Any = None, MaxFile: typing.Any = 1024, InitialDir: typing.Any = None, Title: typing.Any = None, Flags: typing.Any = 0, DefExt: typing.Any = None, TemplateName: win32typing.PyResourceId = None) -> tuple[typing.Any, typing.Any, typing.Any]:
     """
     Creates a dialog for user to specify location to save a file or files
 
@@ -5736,10 +5808,9 @@ win32gui.error is raised.  If the user pressed cancel, the error number (ie, the
 
 
     """
-    pass
 
 
-def GetOpenFileNameW(hwndOwner: int = None, hInstance: int = None, Filter: typing.Any = None, CustomFilter: typing.Any = None, FilterIndex: typing.Any = 0, File: typing.Any = None, MaxFile: typing.Any = 1024, InitialDir: typing.Any = None, Title: typing.Any = None, Flags: typing.Any = 0, DefExt: typing.Any = None, TemplateName: 'win32typing.PyResourceId' = None) -> 'typing.Tuple[typing.Any, typing.Any, typing.Any]':
+def GetOpenFileNameW(hwndOwner: int = None, hInstance: int = None, Filter: typing.Any = None, CustomFilter: typing.Any = None, FilterIndex: typing.Any = 0, File: typing.Any = None, MaxFile: typing.Any = 1024, InitialDir: typing.Any = None, Title: typing.Any = None, Flags: typing.Any = 0, DefExt: typing.Any = None, TemplateName: win32typing.PyResourceId = None) -> tuple[typing.Any, typing.Any, typing.Any]:
     """
     Creates a dialog to allow user to select file(s) to open
 
@@ -5763,7 +5834,6 @@ Returns:
       typing.Tuple[typing.Any, typing.Any, typing.Any]
 
     """
-    pass
 
 
 def SystemParametersInfo(Action: typing.Any, Param: typing.Any = None, WinIni: typing.Any = 0) -> None:
@@ -5968,7 +6038,6 @@ Return ValueSPI_SET functions all return None on success.  Types returned by SPI
 
 
     """
-    pass
 
 
 def SetLayeredWindowAttributes(hwnd: int, Key: typing.Any, Alpha: typing.Any, Flags: typing.Any) -> None:
@@ -5987,10 +6056,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def GetLayeredWindowAttributes(hwnd: int) -> 'typing.Tuple[typing.Any, typing.Any, typing.Any]':
+def GetLayeredWindowAttributes(hwnd: int) -> tuple[typing.Any, typing.Any, typing.Any]:
     """
     Retrieves the layering parameters of a window with the WS_EX_LAYERED extended style
 
@@ -6009,10 +6077,9 @@ Return ValueReturns a tuple of (color key, alpha, flags)
 
 
     """
-    pass
 
 
-def UpdateLayeredWindow(hwnd: int, arg: 'typing.Tuple[typing.Any, typing.Any, typing.Any, typing.Any]', hdcDst: int = None, ptDst: typing.Tuple[typing.Any, typing.Any] = None, size: typing.Tuple[typing.Any, typing.Any] = None, hdcSrc: typing.Any = None, ptSrc: typing.Tuple[typing.Any, typing.Any] = None, Key: typing.Any = 0, Flags: typing.Any = 0) -> None:
+def UpdateLayeredWindow(hwnd: int, arg: tuple[typing.Any, typing.Any, typing.Any, typing.Any], hdcDst: int = None, ptDst: tuple[typing.Any, typing.Any] = None, size: tuple[typing.Any, typing.Any] = None, hdcSrc: typing.Any = None, ptSrc: tuple[typing.Any, typing.Any] = None, Key: typing.Any = 0, Flags: typing.Any = 0) -> None:
     """
     Updates the position, size, shape, content, and translucency of a layered window.
 
@@ -6033,7 +6100,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def AnimateWindow(hwnd: int, Time: typing.Any, Flags: typing.Any) -> None:
@@ -6051,10 +6117,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def CreateBrushIndirect(lb: 'win32typing.PyLOGBRUSH') -> 'win32typing.PyGdiHANDLE':
+def CreateBrushIndirect(lb: win32typing.PyLOGBRUSH) -> win32typing.PyGdiHANDLE:
     """
     Creates a GDI brush from a LOGBRUSH struct
 
@@ -6067,10 +6132,9 @@ Returns:
       win32typing.PyGdiHANDLE
 
     """
-    pass
 
 
-def ExtCreatePen(PenStyle: typing.Any, Width: typing.Any, lb: 'win32typing.PyLOGBRUSH', Style: 'typing.Tuple[typing.Any, ...]' = None) -> int:
+def ExtCreatePen(PenStyle: typing.Any, Width: typing.Any, lb: win32typing.PyLOGBRUSH, Style: tuple[typing.Any, ...] = None) -> int:
     """
     Creates a GDI pen object
 
@@ -6086,10 +6150,9 @@ Returns:
       int
 
     """
-    pass
 
 
-def DrawTextW(hDC: int, String: str, Count: typing.Any, Rect: 'win32typing.PyRECT', Format: typing.Any) -> 'typing.Tuple[typing.Any, win32typing.PyRECT]':
+def DrawTextW(hDC: int, String: str, Count: typing.Any, Rect: win32typing.PyRECT, Format: typing.Any) -> tuple[typing.Any, win32typing.PyRECT]:
     """
     Draws Unicode text on a device context.
 
@@ -6110,7 +6173,6 @@ Return ValueReturns the height of the drawn text, and the rectangle coordinates
 
 
     """
-    pass
 
 
 def EnumPropsEx(hWnd: int, EnumFunc: typing.Any, Param: typing.Any) -> None:
@@ -6128,10 +6190,9 @@ Returns:
       None
 
     """
-    pass
 
 
-def RegisterDeviceNotification(handle: int, _filter: typing.Any, flags: typing.Any) -> 'win32typing.PyHDEVNOTIFY':
+def RegisterDeviceNotification(handle: int, _filter: typing.Any, flags: typing.Any) -> win32typing.PyHDEVNOTIFY:
     """
     Registers the device or type of device for which a window will receive notifications.
 
@@ -6146,7 +6207,6 @@ Returns:
       win32typing.PyHDEVNOTIFY
 
     """
-    pass
 
 
 def UnregisterDeviceNotification() -> None:
@@ -6166,7 +6226,6 @@ Returns:
       None
 
     """
-    pass
 
 
 def RegisterHotKey(hWnd: int, _id: typing.Any, Modifiers: typing.Any, vk: typing.Any) -> None:
@@ -6185,7 +6244,6 @@ Returns:
       None
 
     """
-    pass
 
 
 CLR_NONE = ...

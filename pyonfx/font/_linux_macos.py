@@ -1,6 +1,6 @@
 
 import html
-from functools import cached_property, lru_cache
+from functools import cache, cached_property, lru_cache
 from typing import TYPE_CHECKING, Any
 
 import cairo  # type: ignore
@@ -77,7 +77,7 @@ class Font(_AbstractFont):
             self.layout.get_spacing() * const,
         )
 
-    @lru_cache(maxsize=None)
+    @cache
     def text_extents(self, text: str) -> _TextExtents:
         if not text:
             return _TextExtents(0.0, 0.0)
@@ -112,7 +112,7 @@ class Font(_AbstractFont):
     @logger.catch
     def text_to_shape(self, text: str) -> Shape:
         if not text:
-            raise ValueError(f'{self.__class__.__name__}: Text is empty!')
+            raise ValueError(f"{self.__class__.__name__}: Text is empty!")
         curr_width = 0.
         cmds: list[DrawingCommand] = []
         DC, DP = DrawingCommand, DrawingProp

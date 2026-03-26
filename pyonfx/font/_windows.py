@@ -1,10 +1,11 @@
 
-from functools import cached_property, lru_cache
+from functools import cache, cached_property, lru_cache
 from typing import TYPE_CHECKING, Any
 
 import win32con
 import win32gui
 import win32ui
+
 if TYPE_CHECKING:
     from win32helper.win32typing import PyCFont  # type: ignore
 else:
@@ -73,7 +74,7 @@ class Font(_AbstractFont):
             self._metrics["ExternalLeading"] * const,
         )
 
-    @lru_cache(maxsize=None)
+    @cache
     def text_extents(self, text: str) -> _TextExtents:
         cx, cy = win32gui.GetTextExtentPoint32(self.dc, text)
 
@@ -86,7 +87,7 @@ class Font(_AbstractFont):
     @logger.catch
     def text_to_shape(self, text: str) -> Shape:
         if not text:
-            raise ValueError(f'{self.__class__.__name__}: Text is empty!')
+            raise ValueError(f"{self.__class__.__name__}: Text is empty!")
         # TODO: Calcultating distance between origins of character cells (just in case of spacing)
 
         # Add path to device context
@@ -99,7 +100,7 @@ class Font(_AbstractFont):
         # Checking for errors
         if len(points) == 0 or len(points) != len(type_points):
             raise RuntimeError(
-                f'{self.__class__.__name__}: no points detected or mismatch length between points and type_points'
+                f"{self.__class__.__name__}: no points detected or mismatch length between points and type_points"
             )
 
         # Defining variables

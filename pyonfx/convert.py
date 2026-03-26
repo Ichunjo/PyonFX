@@ -17,7 +17,8 @@
 from __future__ import annotations
 
 __all__ = [
-    'ConvertTime', 'ConvertColour'
+    "ConvertColour",
+    "ConvertTime"
 ]
 
 import colorsys
@@ -36,7 +37,7 @@ class ConvertTime:
     # Seconds | Timestamp
     @staticmethod
     def ts2seconds(ts: str, /) -> float:
-        h, m, s = map(float, ts.split(':'))
+        h, m, s = map(float, ts.split(":"))
         return h * 3600 + m * 60 + s
 
     @classmethod
@@ -124,7 +125,7 @@ class ConvertTime:
         elif precision == 9:
             out = f"{h:02.0f}:{m:02.0f}:{s:012.9f}"
         else:
-            raise ValueError(f'composets: the precision {precision} must be a multiple of 3 (including 0)')
+            raise ValueError(f"composets: the precision {precision} must be a multiple of 3 (including 0)")
         return out
 
     @classmethod

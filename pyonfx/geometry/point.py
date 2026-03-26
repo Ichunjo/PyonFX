@@ -18,7 +18,7 @@ from .coordinates import Coordinates
 from .polar import Cylindrical, Polar, Spherical
 from .vector import Vector, VectorCartesian2D, VectorCartesian3D, VectorCylindrical, VectorPolar, VectorSpherical
 
-PointT = TypeVar('PointT', bound='Point')
+PointT = TypeVar("PointT", bound="Point")
 
 
 class Point(Coordinates, ABC, empty_slots=True):
@@ -216,4 +216,3 @@ class PointSpherical(Spherical, Point):
 
 class PointsView(View[Point]):
     """View for points"""
-    ...

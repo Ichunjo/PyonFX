@@ -17,16 +17,15 @@
 from __future__ import annotations
 
 __all__ = [
-    'Shape',
-    'Pixel',
-    'DrawingProp',
-    'DrawingCommand',
-    'OutlineMode'
+    "DrawingCommand",
+    "DrawingProp",
+    "OutlineMode",
+    "Pixel",
+    "Shape"
 ]
 import inspect
 import re
 import sys
-
 from abc import ABC, abstractmethod
 from collections import deque
 from copy import deepcopy
@@ -38,18 +37,24 @@ else:
     class StrEnum(str, Enum):
         ...
 
+from collections.abc import Callable, Iterable, MutableSequence, Sequence
 from math import atan, ceil, cos, degrees, isfinite, radians, sqrt
-from typing import Any, Callable, Deque, Iterable, MutableSequence, NamedTuple, Sequence, SupportsIndex, cast, overload
+from typing import Any, NamedTuple, SupportsIndex, cast, overload
 
 import numpy as np
-
 from more_itertools import flatten, sliced, unzip, zip_offset
 
 from ._logging import logger
 from .colourspace import ASSColor, Opacity
 from .geometry import (
-    CartesianAxis, Geometry, Point, PointCartesian2D, PointCartesian3D, PointsView,
-    VectorCartesian2D, VectorCartesian3D
+    CartesianAxis,
+    Geometry,
+    Point,
+    PointCartesian2D,
+    PointCartesian3D,
+    PointsView,
+    VectorCartesian2D,
+    VectorCartesian3D,
 )
 from .misc import chunk, frange
 from .ptypes import Alignment, View
@@ -72,12 +77,12 @@ class Pixel(NamedTuple):
         """
         self.pos.round(round_digits)
         alpha = (
-            f'\\alpha{self.opacity}' if self.opacity.ass_hex not in {'&HFF&', '&H00&'} else ''
-        ) if self.opacity is not None else ''
-        colour = f'\\c{self.colour}' if self.colour is not None else ''
+            f"\\alpha{self.opacity}" if self.opacity.ass_hex not in {"&HFF&", "&H00&"} else ""
+        ) if self.opacity is not None else ""
+        colour = f"\\c{self.colour}" if self.colour is not None else ""
         return (
-            f'{{\\p1\\pos({self.pos.x + shift_x},{self.pos.y + shift_y})'
-            + alpha + colour + f'}}{Shape.square(1.5).to_str()}'
+            f"{{\\p1\\pos({self.pos.x + shift_x},{self.pos.y + shift_y})"
+            + alpha + colour + f"}}{Shape.square(1.5).to_str()}"
         )
 
 
@@ -94,7 +99,7 @@ class DrawingProp(StrEnum):
     Documentation about them is from the Aegisub official one.
     """
 
-    MOVE = 'm'
+    MOVE = "m"
     """
     m <x> <y> - Move\n
     Moves the cursor to x,y. If you have an unclosed shape, it will automatically be closed,
@@ -102,7 +107,7 @@ class DrawingProp(StrEnum):
     All drawing routines must start with this command.
     """
 
-    MOVE_NO_CLOSING = 'n'
+    MOVE_NO_CLOSING = "n"
     """
     n <x> <y> - Move (no closing)\n
     Moves the cursor to x,y, without closing the current shape.
@@ -113,13 +118,13 @@ class DrawingProp(StrEnum):
     Alias for MOVE_NO_CLOSING
     """
 
-    LINE = 'l'
+    LINE = "l"
     """
     l <x> <y> - Line\n
     Draws a line from the current cursor position to x,y, and moves the cursor there afterwards.
     """
 
-    EXTEND_BSPLINE = 'p'
+    EXTEND_BSPLINE = "p"
     """
     p <x> <y> - Extend b-spline\n
     Extends the b-spline to x,y. This is essentially the same as adding another pair of coordinates
@@ -130,7 +135,7 @@ class DrawingProp(StrEnum):
     """
     Alias for EXTEND_BSPLINE
     """
-    CUBIC_BÉZIER_CURVE = 'b'
+    CUBIC_BÉZIER_CURVE = "b"
     """
     b <x1> <y1> <x2> <y2> <x3> <y3> - Cubic Bézier curve\n
     Draws a cubic (3rd degree) Bézier curve from the cursor position to (x3,y3),
@@ -144,7 +149,7 @@ class DrawingProp(StrEnum):
     Alias for CUBIC_BÉZIER_CURVE
     """
 
-    CUBIC_BSPLINE = 's'
+    CUBIC_BSPLINE = "s"
     """
     s <x1> <y1> <x2> <y2> <x3> <y3> .. <xN> <yN> - Cubic b-spline\n
     Draws a cubic (3rd degree) uniform b-spline to point N.
@@ -158,7 +163,7 @@ class DrawingProp(StrEnum):
     Alias for CUBIC_BSPLINE
     """
 
-    CLOSE_BSPLINE = 'c'
+    CLOSE_BSPLINE = "c"
     """
     c - Close b-spline\n
     Closes the b-spline.
@@ -170,11 +175,10 @@ _dp_value2member_map: dict[str, DrawingProp] = DrawingProp._value2member_map_  #
 
 class PropsView(View[DrawingProp]):
     """View for DrawingProps"""
-    ...
 
 
 class _AbstractDrawingCommand(Sequence[Point], ABC):
-    __slots__ = ('_prop', '_coordinates')
+    __slots__ = ("_coordinates", "_prop")
     _prop: DrawingProp
     _coordinates: tuple[Point, ...]
 
@@ -202,8 +206,8 @@ class _AbstractDrawingCommand(Sequence[Point], ABC):
         return o._prop == self._prop and o._coordinates == self._coordinates
 
     def __str__(self) -> str:
-        return f'{self._prop.value} ' + ' '.join(
-            f'{p.x} {p.y}'
+        return f"{self._prop.value} " + " ".join(
+            f"{p.x} {p.y}"
             for p in (
                 # Get the points and convert them to 2D
                 po if isinstance(po, PointCartesian2D) else po.to_3d().project_2d()
@@ -212,7 +216,7 @@ class _AbstractDrawingCommand(Sequence[Point], ABC):
         )
 
     def __repr__(self) -> str:
-        return repr(str(self._prop) + ', ' + ', '.join(map(str, self)))
+        return repr(str(self._prop) + ", " + ", ".join(map(str, self)))
 
     @abstractmethod
     def to_str(self, round_digits: int = 3, optimise: bool = True) -> str:
@@ -266,7 +270,7 @@ class DrawingCommand(_AbstractDrawingCommand):
         if not check_len:
             raise ValueError(
                 f'{self.__class__.__name__}: "{self._prop}" does not correspond to the length of the coordinates'
-                + ''.join(map(str, self))
+                + "".join(map(str, self))
             )
 
     def to_str(self, round_digits: int = 3, optimise: bool = True) -> str:
@@ -291,7 +295,7 @@ class DrawingCommand(_AbstractDrawingCommand):
             if float(po.y).is_integer():
                 po.y = po.y.as_integer_ratio()[0]
             points.append(po)
-        return self._prop.value + ' ' + ' '.join(f'{p.x} {p.y}' for p in points)
+        return self._prop.value + " " + " ".join(f"{p.x} {p.y}" for p in points)
 
     def round(self, ndigits: int = 3) -> None:
         """
@@ -304,7 +308,7 @@ class DrawingCommand(_AbstractDrawingCommand):
 
 
 class _AbstractShape(MutableSequence[DrawingCommand], ABC):
-    __slots__ = ('_commands', )
+    __slots__ = ("_commands", )
     _commands: list[DrawingCommand]
 
     @abstractmethod
@@ -334,12 +338,10 @@ class _AbstractShape(MutableSequence[DrawingCommand], ABC):
 
     @logger.catch
     def __setitem__(self, index: SupportsIndex | slice, value: DrawingCommand | Iterable[DrawingCommand]) -> None:
-        if isinstance(index, SupportsIndex) and isinstance(value, DrawingCommand):
-            self._commands[index] = value
-        elif isinstance(index, slice) and not isinstance(value, DrawingCommand):
+        if (isinstance(index, SupportsIndex) and isinstance(value, DrawingCommand)) or (isinstance(index, slice) and not isinstance(value, DrawingCommand)):
             self._commands[index] = value
         else:
-            raise NotImplementedError(f'{self.__class__.__name__}: not supported')
+            raise NotImplementedError(f"{self.__class__.__name__}: not supported")
 
     def __delitem__(self, index: SupportsIndex | slice) -> None:
         del self._commands[index]
@@ -426,14 +428,14 @@ class Shape(_AbstractShape):
             return self.__str__()
 
         # Last prop used, drawing to be str'd
-        p, draw = DrawingProp.CLOSE_BSPLINE, ''
+        p, draw = DrawingProp.CLOSE_BSPLINE, ""
         # Iterating over all the commands
         for cmd in self:
             cmdstr = cmd.to_str(round_digits)
             if cmd._prop != p:
-                draw += cmdstr + ' '
+                draw += cmdstr + " "
             elif cmd._prop == p and cmd._prop in {DrawingProp.LINE, DrawingProp.CUBIC_BÉZIER_CURVE}:
-                draw += cmdstr[2:] + ' '
+                draw += cmdstr[2:] + " "
             else:
                 raise NotImplementedError(f'{self.__class__.__name__}: prop "{cmd._prop}" not recognised!')
             p = cmd._prop
@@ -638,7 +640,7 @@ class Shape(_AbstractShape):
         :param shapes:          List of Shape objects
         :return:                A new merged Shape
         """
-        return cls(flatten((shape._commands for shape in shapes)), copy_cmds=False)
+        return cls(flatten(shape._commands for shape in shapes), copy_cmds=False)
 
     @logger.catch
     def flatten(self, tolerance: float = 1.) -> None:
@@ -666,7 +668,7 @@ class Shape(_AbstractShape):
                 ncmds.append(cmd0)
             elif cmd0._prop == b:
                 # Get the previous coordinate to complete a bezier curve
-                flatten_cmds: Deque[DrawingCommand] = deque()
+                flatten_cmds: deque[DrawingCommand] = deque()
                 flatten_cmds.extendleft(
                     DrawingCommand(l, co, unsafe=True)
                     for co in Geometry.curve4_to_lines(
@@ -675,7 +677,7 @@ class Shape(_AbstractShape):
                 )
                 ncmds.extend(flatten_cmds)
             else:
-                raise NotImplementedError(f'{self.__class__.__name__}: drawing property not supported!')
+                raise NotImplementedError(f"{self.__class__.__name__}: drawing property not supported!")
 
         ncmds.reverse()
         self._commands = ncmds
@@ -707,7 +709,7 @@ class Shape(_AbstractShape):
             elif cmd0._prop == l:
                 # Get the new points
                 assert cmd1
-                splitted_cmds: Deque[DrawingCommand] = deque()
+                splitted_cmds: deque[DrawingCommand] = deque()
                 splitted_cmds.extendleft(
                     DrawingCommand(l, c)
                     for c in Geometry.split_line(cmd1[-1].to_2d(), cmd0[0].to_2d(), max_length)
@@ -772,7 +774,7 @@ class Shape(_AbstractShape):
         :return:                A Shape object representing a ring
         """
         if out_rad <= in_rad:
-            raise ValueError(f'{cls.__name__}: inner radius must be less than outer radius')
+            raise ValueError(f"{cls.__name__}: inner radius must be less than outer radius")
         disk = cls.disk(out_rad, c_xy, True)
         disk.extend(cls.disk(in_rad, c_xy, False)._commands)
         return disk
@@ -959,7 +961,6 @@ class Shape(_AbstractShape):
         :param orthocentred:    Centred in the orthocenter, defaults to True
         :return:                A Shape object representing a triangle
         """
-        ...
 
     @overload
     @classmethod
@@ -975,7 +976,6 @@ class Shape(_AbstractShape):
         :param orthocentred:    Centred in the orthocenter, defaults to True
         :return:                A Shape object representing a triangle
         """
-        ...
 
     @classmethod
     def triangle(cls, side: float | tuple[float, float], angle: tuple[float, float] | float,
@@ -1099,19 +1099,19 @@ class Shape(_AbstractShape):
         :param drawing_cmds:    String of drawing commands
         :return:                Shape object
         """
-        if not drawing_cmds.startswith('m'):
+        if not drawing_cmds.startswith("m"):
             raise ValueError(f'{cls.__name__}: a shape must have a "m" at the beginning!')
 
         DC, DP = DrawingCommand, DrawingProp
         cmds: list[DrawingCommand] = []
-        draws = cast(list[str], re.findall(r'[mnlpbsc][^mnlpbsc]*(?=[mnlpbsc]|$)', drawing_cmds))
+        draws = cast(list[str], re.findall(r"[mnlpbsc][^mnlpbsc]*(?=[mnlpbsc]|$)", drawing_cmds))
 
         # if sys.version_info <= (3, 10):
         #     ...
         for draw in draws:
             sdraw = draw.split()
             lendraw = len(sdraw)
-            if sdraw[0].startswith(('m', 'n')) and lendraw == 3:
+            if sdraw[0].startswith(("m", "n")) and lendraw == 3:
                 cmds.append(
                     DC(
                         _dp_value2member_map[sdraw.pop(0)],
@@ -1119,7 +1119,7 @@ class Shape(_AbstractShape):
                         unsafe=unsafe
                     )
                 )
-            elif sdraw[0].startswith(('l', 'p')) and lendraw >= 3:
+            elif sdraw[0].startswith(("l", "p")) and lendraw >= 3:
                 p = sdraw.pop(0)
                 cmds.extend(
                     DC(
@@ -1128,17 +1128,17 @@ class Shape(_AbstractShape):
                         unsafe=unsafe
                     ) for x, y in sliced(sdraw, 2, strict=not unsafe)
                 )
-            elif sdraw[0].startswith('b') and (lendraw - 1) / 2 % 3 == 0.:
-                sdraw.remove('b')
+            elif sdraw[0].startswith("b") and (lendraw - 1) / 2 % 3 == 0.:
+                sdraw.remove("b")
                 cmds.extend(
                     DC(
                         DP.CUBIC_BÉZIER_CURVE, *coords, unsafe=unsafe
                     ) for coords in chunk(chunk(map(float, sdraw), 2), 3)
                 )
-            elif sdraw[0].startswith('s') and (lendraw - 1) % 2 == 0.0:
-                sdraw.remove('s')
+            elif sdraw[0].startswith("s") and (lendraw - 1) % 2 == 0.0:
+                sdraw.remove("s")
                 cmds.append(DC(DP.CUBIC_BSPLINE, *chunk(map(float, sdraw), 2), unsafe=unsafe))
-            elif sdraw[0].startswith('c') and lendraw == 1:
+            elif sdraw[0].startswith("c") and lendraw == 1:
                 cmds.append(DC(DP.CLOSE_BSPLINE, unsafe=unsafe))
             else:
                 raise ValueError(f'{cls.__name__}: unexpected shape "{draw}"!')
@@ -1240,7 +1240,7 @@ class Shape(_AbstractShape):
         :param mode:                Stroking mode, can be 'miter', 'bevel' ou 'round', defaults to "round"
         """
         if len(self._commands) < 2:
-            raise ValueError(f'{self.__class__.__name__}: Shape must have at least 2 commands')
+            raise ValueError(f"{self.__class__.__name__}: Shape must have at least 2 commands")
 
         # -- Line width values
         if bord_y:
@@ -1298,9 +1298,9 @@ def _stroke_lines(shape: MutableSequence[DrawingCommand], width: float,
         # -- Check for gap or edge join
         inter = Geometry.line_intersect(
             PointCartesian2D(p.x + o_vec0.x - vec0.x, p.y + o_vec0.y - vec0.y),
-            PointCartesian2D(p.x + o_vec0.x,          p.y + o_vec0.y),  # noqa: E241
+            PointCartesian2D(p.x + o_vec0.x,          p.y + o_vec0.y),
             PointCartesian2D(p.x + o_vec1.x - vec1.x, p.y + o_vec1.y - vec1.y),
-            PointCartesian2D(p.x + o_vec1.x,          p.y + o_vec1.y),  # noqa: E241
+            PointCartesian2D(p.x + o_vec1.x,          p.y + o_vec1.y),
             strict=True
         )
         if isfinite(inter.y):
@@ -1338,9 +1338,9 @@ def _join_mode_miter(
 
     inter = Geometry.line_intersect(
         PointCartesian2D(p.x + o_vec0.x - vec0.x, p.y + o_vec0.y - vec0.y),
-        PointCartesian2D(p.x + o_vec0.x,          p.y + o_vec0.y),  # noqa: E241
+        PointCartesian2D(p.x + o_vec0.x,          p.y + o_vec0.y),
         PointCartesian2D(p.x + o_vec1.x - vec1.x, p.y + o_vec1.y - vec1.y),
-        PointCartesian2D(p.x + o_vec1.x,          p.y + o_vec1.y),  # noqa: E241
+        PointCartesian2D(p.x + o_vec1.x,          p.y + o_vec1.y),
         strict=False
     )
     # -- Vectors intersect

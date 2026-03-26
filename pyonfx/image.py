@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ['Image']
+__all__ = ["Image"]
 
 from pathlib import Path
 from typing import NoReturn
@@ -8,8 +8,8 @@ from typing import NoReturn
 from ._logging import logger
 from .colourspace import ASSColor, Opacity
 from .geometry import PointCartesian2D
-from .shape import Pixel
 from .ptypes import AnyPath
+from .shape import Pixel
 
 
 class Image:

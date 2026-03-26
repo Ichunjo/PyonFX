@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from math import acos, atan2, cos, hypot, radians, sin, sqrt
-from typing import TypeVar
+from typing import Self, TypeVar
 
 from more_itertools import dotproduct
 
@@ -13,7 +13,7 @@ from .cartesian import Cartesian2D, Cartesian3D
 from .coordinates import Coordinates
 from .polar import Cylindrical, Polar, Spherical
 
-VectorT = TypeVar('VectorT', bound='Vector')
+VectorT = TypeVar("VectorT", bound="Vector")
 
 
 class Vector(Coordinates, ABC, empty_slots=True):
@@ -51,7 +51,7 @@ class Vector(Coordinates, ABC, empty_slots=True):
         """
         ...
 
-    def __stretch__(self: VectorT, length: float) -> VectorT:
+    def __stretch__(self, length: float) -> Self:
         """
         Scale vector to given length
 

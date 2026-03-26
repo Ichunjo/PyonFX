@@ -1,8 +1,8 @@
 import os
 import sys
-from fractions import Fraction
 
 import pytest_check as check
+
 from pyonfx import Ass, ConvertTime
 
 # Get ass path used for tests

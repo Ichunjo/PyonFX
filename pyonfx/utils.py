@@ -16,12 +16,11 @@
 
 from __future__ import annotations
 
-__all__ = ['FrameUtility', 'ColorUtility', 'interpolate']
+__all__ = ["ColorUtility", "FrameUtility", "interpolate"]
 
 import re
-from typing import TYPE_CHECKING, Any, Final, Iterable, Iterator, NamedTuple, cast, overload
-
-from typing_extensions import TypeGuard
+from collections.abc import Iterable, Iterator
+from typing import TYPE_CHECKING, Any, Final, NamedTuple, TypeGuard, cast, overload
 
 from ._logging import logger
 from .colourspace import ColourSpace, _ColourSpaceT
@@ -192,7 +191,7 @@ class FrameUtility(Iterable[Frame]):
         """
         if self.current_time < start_time:
             return 0.
-        elif self.current_time > end_time:
+        if self.current_time > end_time:
             return end_value
 
         pstart = self.current_time - self.start_time - start_time

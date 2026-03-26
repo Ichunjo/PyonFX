@@ -17,11 +17,18 @@
 from __future__ import annotations
 
 __all__ = [
-    'Ass', 'AssUntitled', 'AssVoid',
-    'Meta', 'ScriptInfo', 'ProjectGarbage',
-    'Style',
-    'Line', 'Word', 'Syllable', 'Char',
-    'PList'
+    "Ass",
+    "AssUntitled",
+    "AssVoid",
+    "Char",
+    "Line",
+    "Meta",
+    "PList",
+    "ProjectGarbage",
+    "ScriptInfo",
+    "Style",
+    "Syllable",
+    "Word"
 ]
 
 import copy
@@ -30,16 +37,15 @@ import re
 import subprocess
 import sys
 import time
-
 from abc import ABC
 from collections import UserList, defaultdict
+from collections.abc import Iterable, Iterator, Mapping
 from fractions import Fraction
-from functools import lru_cache
+from functools import cache, lru_cache
 from itertools import count
-from typing import Any, Iterable, Iterator, Literal, Mapping, TypeVar, Union, overload
+from typing import Any, Literal, Self, TypeVar, overload
 
 from more_itertools import zip_offset
-from typing_extensions import Self
 
 from ._logging import logger
 from ._metadata import __version__
@@ -48,13 +54,21 @@ from .exception import LineNotFoundWarning, MatchNotFoundError
 from .font import Font, get_font
 from .ptime import Time, bound2assframe
 from .ptypes import (
-    Alignment, AnyPath, AssBool, AutoSlots, BorderStyleBool, CustomBool, OrderedSet, StyleBool,
-    _Section, _Tag
+    Alignment,
+    AnyPath,
+    AssBool,
+    AutoSlots,
+    BorderStyleBool,
+    CustomBool,
+    OrderedSet,
+    StyleBool,
+    _Section,
+    _Tag,
 )
 from .shape import Pixel, Shape
 
-_AssTextT = TypeVar('_AssTextT', bound='_AssText')
-_MetaDataT = TypeVar('_MetaDataT', bound='_MetaData')
+_AssTextT = TypeVar("_AssTextT", bound="_AssText")
+_MetaDataT = TypeVar("_MetaDataT", bound="_MetaData")
 
 
 class Ass(AutoSlots):
@@ -114,13 +128,13 @@ class Ass(AutoSlots):
         if input_ is None:
             return
 
-        with open(input_, 'r', encoding='utf-8-sig') as file:
+        with open(input_, encoding="utf-8-sig") as file:
             lines_file = file.read()
 
         # Find section pattern
         self._sections = {
             m.group(0): _Section(m.group(0), *m.span(0))
-            for m in re.finditer(r'(^\[[^\]]*])', lines_file, re.MULTILINE)
+            for m in re.finditer(r"(^\[[^\]]*])", lines_file, re.MULTILINE)
         }
 
         # Slice text
@@ -133,20 +147,20 @@ class Ass(AutoSlots):
         # Make a Meta object from both Script Info and Aegisub Project Garbage
         self.meta = Meta()
         if fps is None:
-            raise ValueError(f'{self.__class__.__name__}: FPS is required!')
+            raise ValueError(f"{self.__class__.__name__}: FPS is required!")
         self.meta.fps = fps
         # Script Info
         try:
-            sec = self._sections['[Script Info]']
+            sec = self._sections["[Script Info]"]
         except KeyError:
-            logger.user_warning('There is no [Script Info] section in this file')
+            logger.user_warning("There is no [Script Info] section in this file")
         else:
             self.meta.script_info = ScriptInfo.from_text(sec.text)
         # Aegisub Project Garbage
         try:
-            sec = self._sections['[Aegisub Project Garbage]']
+            sec = self._sections["[Aegisub Project Garbage]"]
         except KeyError:
-            logger.user_warning('There is no [Aegisub Project Garbage] section in this file')
+            logger.user_warning("There is no [Aegisub Project Garbage] section in this file")
         else:
             self.meta.project_garbage = ProjectGarbage.from_text(sec.text)
 
@@ -154,18 +168,18 @@ class Ass(AutoSlots):
         # We remove the first line who starts by "Format:"
         self.styles = []
         try:
-            sec = self._sections['[V4+ Styles]']
+            sec = self._sections["[V4+ Styles]"]
         except KeyError:
-            logger.user_warning('There is no [V4+ Styles] section in this file')
+            logger.user_warning("There is no [V4+ Styles] section in this file")
         else:
             self.styles.extend(Style.from_text(txt) for txt in sec.text.strip().splitlines()[1:])
 
         # We remove the first line who starts by "Format:"
         self._lines = PList()
         try:
-            sec = self._sections['[Events]']
+            sec = self._sections["[Events]"]
         except KeyError:
-            logger.user_warning('There is no [Events] section in this file')
+            logger.user_warning("There is no [Events] section in this file")
         else:
             n = count(0, 1)
             for ltext in sec.text.strip().splitlines()[1:]:
@@ -176,7 +190,7 @@ class Ass(AutoSlots):
                 )
 
         if not extended:
-            return None
+            return
 
         # Keep styles and lines linked to them for compute the leadin and leadout
         lines_by_styles: defaultdict[str, list[Line]] = defaultdict(list)
@@ -210,9 +224,9 @@ class Ass(AutoSlots):
             curline.leadout = default_lead if not postline else postline.start_time - curline.end_time
 
     def __del__(self) -> None:
-        logger.debug('Entering __del__ Ass...')
+        logger.debug("Entering __del__ Ass...")
         get_font.cache_clear()
-        logger.debug('Clear cache done!')
+        logger.debug("Clear cache done!")
 
     @property
     def data(self) -> tuple[Meta, list[Style], PList[Line]]:
@@ -268,48 +282,48 @@ class Ass(AutoSlots):
                                     If False, start and end times will just be the raw timestamps.
         """
         if not self._output:
-            raise ValueError('path_output hasn\'t been specified in the constructor')
+            raise ValueError("path_output hasn't been specified in the constructor")
 
-        with open(self._output, 'w', encoding='utf-8-sig') as f:
+        with open(self._output, "w", encoding="utf-8-sig") as f:
             # Write script info section
-            f.write('[Script Info]\n')
+            f.write("[Script Info]\n")
             try:
                 si_txt = self.meta.script_info.as_text(
-                    [f'; Script generated by Pyonfx {__version__}\n; https://github.com/Ichunjo/PyonFX']
+                    [f"; Script generated by Pyonfx {__version__}\n; https://github.com/Ichunjo/PyonFX"]
                 )
             except AttributeError:
-                si_txt = ''
-            f.write(si_txt + '\n')
+                si_txt = ""
+            f.write(si_txt + "\n")
 
             # Write aegisub project garbage section
-            f.write('[Aegisub Project Garbage]\n')
+            f.write("[Aegisub Project Garbage]\n")
             try:
                 apg_txt = self.meta.project_garbage.as_text()
             except AttributeError:
-                apg_txt = ''
-            f.write(apg_txt + '\n')
+                apg_txt = ""
+            f.write(apg_txt + "\n")
 
             # Write styles
-            f.write('[V4+ Styles]\n')
+            f.write("[V4+ Styles]\n")
             f.write(
-                'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, '
-                'Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, '
-                'MarginV, Encoding\n'
+                "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, "
+                "Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, "
+                "MarginV, Encoding\n"
             )
             f.writelines(s.as_text() for s in self.styles)
-            f.write('\n')
+            f.write("\n")
 
             # Write lines
-            f.write('[Events]\n')
-            f.write('Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n')
+            f.write("[Events]\n")
+            f.write("Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n")
             if comment_original:
                 try:
-                    events_txt = ''.join(self._sections['[Events]'].text.strip().splitlines()[1:])
+                    events_txt = "".join(self._sections["[Events]"].text.strip().splitlines()[1:])
                 except KeyError:
                     pass
                 else:
-                    f.write(re.sub(r'^Dialogue:|Comment:', 'Comment:', events_txt, 0, re.MULTILINE))
-                    f.write('\n')
+                    f.write(re.sub(r"^Dialogue:|Comment:", "Comment:", events_txt, 0, re.MULTILINE))
+                    f.write("\n")
             f.writelines(self._output_lines)
             if lines:
                 f.writelines(
@@ -318,14 +332,14 @@ class Ass(AutoSlots):
                                  else self._fix_timestamps)
                     for line in lines
                 )
-            f.write('\n')
+            f.write("\n")
 
             # Write extradata
-            if keep_extradata and '[Aegisub Extradata]' in self._sections:
+            if keep_extradata and "[Aegisub Extradata]" in self._sections:
                 f.write(
-                    '[Aegisub Extradata]\n'
-                    + self._sections['[Aegisub Extradata]'].text.strip()
-                    + '\n'
+                    "[Aegisub Extradata]\n"
+                    + self._sections["[Aegisub Extradata]"].text.strip()
+                    + "\n"
                 )
 
         logger.user_info(f"Produced lines: {len(self._output_lines + (list(lines) if lines else []))}")
@@ -337,12 +351,12 @@ class Ass(AutoSlots):
         Open the output specified in the constructor with Aegisub.
         """
         if not self._output:
-            raise ValueError('path_output hasn\'t been specified in the constructor')
+            raise ValueError("path_output hasn't been specified in the constructor")
         # Check if it was saved
-        if sys.platform == 'win32':
+        if sys.platform == "win32":
             os.startfile(self._output)
         else:
-            subprocess.call(['aegisub', self._output])
+            subprocess.call(["aegisub", self._output])
 
     @logger.catch
     def open_mpv(self, video_path: AnyPath | None = None, video_start: str | None = None, full_screen: bool = False) -> None:
@@ -356,32 +370,32 @@ class Ass(AutoSlots):
         :param full_screen:         Run MPV in full screen, defaults to False
         """
         if not self._output:
-            raise ValueError('path_output hasn\'t been specified in the constructor')
+            raise ValueError("path_output hasn't been specified in the constructor")
 
         # Check if mpv is usable
-        if self.meta.project_garbage.video__file.startswith('?dummy') and not video_path:
+        if self.meta.project_garbage.video__file.startswith("?dummy") and not video_path:
             raise FileNotFoundError(
-                f'{self.__class__.__name__}: Cannot use MPV; dummy video detected'
+                f"{self.__class__.__name__}: Cannot use MPV; dummy video detected"
             )
 
         # Setting up the command to execute
-        cmd = ['mpv']
+        cmd = ["mpv"]
 
         if video_path:
             cmd.append(str(video_path))
         else:
             cmd.append(self.meta.project_garbage.video__file)
         if video_start:
-            cmd.append('--start=' + video_start)
+            cmd.append("--start=" + video_start)
         if full_screen:
-            cmd.append('--fs')
+            cmd.append("--fs")
 
-        cmd.append('--sub-file=' + str(self._output))
+        cmd.append("--sub-file=" + str(self._output))
 
         try:
             subprocess.call(cmd)
         except FileNotFoundError as file_err:
-            raise FileNotFoundError(f'{self.__class__.__name__}: MPV not found') from file_err
+            raise FileNotFoundError(f"{self.__class__.__name__}: MPV not found") from file_err
 
 
 class AssUntitled(Ass):
@@ -454,16 +468,16 @@ class _DataCore(AutoSlots, Iterable[tuple[str, Any]], ABC, empty_slots=True):
     def _asdict(self) -> dict[str, Any]:
         return {k: v._asdict() if isinstance(v, _DataCore) else v for k, v in self}
 
-    @lru_cache(maxsize=None)
+    @cache
     def _pretty_print(self, obj: _DataCore, indent: int = 0, name: str | None = None) -> str:
         if not name:
-            out = " " * indent + f'{obj.__class__.__name__}:\n'
+            out = " " * indent + f"{obj.__class__.__name__}:\n"
         else:
-            out = " " * indent + f'{name}: ({obj.__class__.__name__}):\n'
+            out = " " * indent + f"{name}: ({obj.__class__.__name__}):\n"
 
         indent += 4
         for k, v in obj:
-            if k.startswith('_'):
+            if k.startswith("_"):
                 continue
             if isinstance(v, _DataCore):
                 # Work recursively to print another object
@@ -474,7 +488,7 @@ class _DataCore(AutoSlots, Iterable[tuple[str, Any]], ABC, empty_slots=True):
                     out += self._pretty_print(el, indent, k)
             else:
                 # Just print a field of this object
-                out += " " * indent + f"{k}: {str(v)}\n"
+                out += " " * indent + f"{k}: {v!s}\n"
         return out
 
 
@@ -501,7 +515,7 @@ class Meta(_DataCore):
 
 class _MetaData(_DataCore, empty_slots=True):
     @classmethod
-    def from_text(cls: type[_MetaDataT], text: str) -> _MetaDataT:
+    def from_text(cls, text: str) -> Self:
         """
         Make a Meta object from a chunk of text [Script Info] or [Aegisub Project Garbage]
 
@@ -510,37 +524,37 @@ class _MetaData(_DataCore, empty_slots=True):
         """
         self = cls()
         # CamelCase to snake_case
-        pattern = re.compile(r'(?<!^)(?=[A-Z])')
+        pattern = re.compile(r"(?<!^)(?=[A-Z])")
 
         for k, v in (
-            (m.groupdict()['name'], m.groupdict()['value'])
-            for m in re.finditer(r'^(?P<name>.*): (?P<value>.*)$', text, re.MULTILINE)
+            (m.groupdict()["name"], m.groupdict()["value"])
+            for m in re.finditer(r"^(?P<name>.*): (?P<value>.*)$", text, re.MULTILINE)
         ):
-            k = pattern.sub('_', k.replace(' ', '_')).lower()
+            k = pattern.sub("_", k.replace(" ", "_")).lower()
             if k in self.__slots__:
                 setattr(self, k, eval(cls.__annotations__[k])(v))
             elif k in self.__slots_ex__ and k not in self.__slots__:
-                setattr(self, k, eval(cls.__annotations__['_' + k])(v))
+                setattr(self, k, eval(cls.__annotations__["_" + k])(v))
         return self
 
     def as_text(self, comment: Iterable[str] | None = None) -> str:
-        section = ''
+        section = ""
         if comment:
-            section += '; '.join(comment) + '\n'
+            section += "; ".join(comment) + "\n"
         for k, v in self:
-            if k.startswith('_'):
+            if k.startswith("_"):
                 continue
             if isinstance(v, CustomBool):
                 v = repr(v)
-            for w in k.split('_'):
+            for w in k.split("_"):
                 if not w:
-                    w = ' '
-                section += f'{w.title()}'
-            section += f': {v}\n'
+                    w = " "
+                section += f"{w.title()}"
+            section += f": {v}\n"
         return section
 
 
-class ScriptInfo(_MetaData, slots_ex=True, slots_ex_exclude='play_res'):
+class ScriptInfo(_MetaData, slots_ex=True, slots_ex_exclude="play_res"):
     title: str
     script_type: str
 
@@ -556,7 +570,7 @@ class ScriptInfo(_MetaData, slots_ex=True, slots_ex_exclude='play_res'):
 
     @scaled_border_and_shadow.setter
     def scaled_border_and_shadow(self, x: AssBool | bool) -> None:
-        self._scaled_border_and_shadow = AssBool('yes' if x else 'no') if isinstance(x, bool) else x
+        self._scaled_border_and_shadow = AssBool("yes" if x else "no") if isinstance(x, bool) else x
 
     y_cb_cr__matrix: str
     """YUV Matrix"""
@@ -590,11 +604,11 @@ class ScriptInfo(_MetaData, slots_ex=True, slots_ex_exclude='play_res'):
         :return: Default ScriptInfo
         """
         si = cls()
-        si.title = 'Default Aegisub file'
-        si.script_type = 'v4.00+'
+        si.title = "Default Aegisub file"
+        si.script_type = "v4.00+"
         si.wrap_style = 0
         si.scaled_border_and_shadow = True
-        si.y_cb_cr__matrix = 'None'
+        si.y_cb_cr__matrix = "None"
         return si
 
 
@@ -775,27 +789,27 @@ class Style(_DataCore):
         """
         self = cls()
 
-        if not (style_match := re.match(r'Style: (.+?)$', text)):
-            raise MatchNotFoundError(f'{self.__class__.__name__}: No Style match found for this line!')
+        if not (style_match := re.match(r"Style: (.+?)$", text)):
+            raise MatchNotFoundError(f"{self.__class__.__name__}: No Style match found for this line!")
         # Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour,
         # Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle,
         # BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-        style = style_match[1].split(',')
+        style = style_match[1].split(",")
 
         self.name = str(style[0])
 
         self.fontname = str(style[1])
         self.fontsize = float(style[2])
 
-        self.color1 = ASSColor(f'&H{style[3][4:]}&')
-        self.color2 = ASSColor(f'&H{style[4][4:]}&')
-        self.color3 = ASSColor(f'&H{style[5][4:]}&')
-        self.color4 = ASSColor(f'&H{style[6][4:]}&')
+        self.color1 = ASSColor(f"&H{style[3][4:]}&")
+        self.color2 = ASSColor(f"&H{style[4][4:]}&")
+        self.color3 = ASSColor(f"&H{style[5][4:]}&")
+        self.color4 = ASSColor(f"&H{style[6][4:]}&")
 
-        self.alpha1 = Opacity.from_ass_val(f'{style[3][:4]}&')
-        self.alpha2 = Opacity.from_ass_val(f'{style[4][:4]}&')
-        self.alpha3 = Opacity.from_ass_val(f'{style[5][:4]}&')
-        self.alpha4 = Opacity.from_ass_val(f'{style[6][:4]}&')
+        self.alpha1 = Opacity.from_ass_val(f"{style[3][:4]}&")
+        self.alpha2 = Opacity.from_ass_val(f"{style[4][:4]}&")
+        self.alpha3 = Opacity.from_ass_val(f"{style[5][:4]}&")
+        self.alpha4 = Opacity.from_ass_val(f"{style[6][:4]}&")
 
         self.bold = StyleBool(int(style[7]))
         self.italic = StyleBool(int(style[8]))
@@ -823,7 +837,7 @@ class Style(_DataCore):
 
     @classmethod
     def get_default(cls) -> Style:
-        return cls.from_text('Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1')
+        return cls.from_text("Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1")
 
     def resample(
         self,
@@ -886,8 +900,8 @@ class Style(_DataCore):
             if isinstance(v, int) or v.is_integer():
                 return str(int(v))
             return str(v)
-        style = 'Style: '
-        style += ','.join([
+        style = "Style: "
+        style += ",".join([
             self.name, self.fontname, fstr(self.fontsize),
             self.alpha_color1, self.alpha_color2, self.alpha_color3, self.alpha_color4,
             repr(self.bold), repr(self.italic), repr(self.underline), repr(self.strikeout),
@@ -897,7 +911,7 @@ class Style(_DataCore):
             str(self.alignment), str(self.margin_l), str(self.margin_r), str(self.margin_v),
             str(self.encoding)
         ])
-        return style + '\n'
+        return style + "\n"
 
 
 class _PositionedText(_DataCore, ABC, empty_slots=True):
@@ -966,31 +980,31 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
     external_leading: float
     """External leading"""
 
-    def __copy__(self: _AssTextT) -> _AssTextT:
+    def __copy__(self) -> Self:
         obj = self.__class__()
         for k, v in self:
             setattr(obj, k, v)
         return obj
 
-    def __deepcopy__(self: _AssTextT, *args: Any) -> _AssTextT:
+    def __deepcopy__(self, *args: Any) -> Self:
         obj = self.__class__()
         for k, v in self:
             setattr(obj, k, copy.deepcopy(v))
         return obj
 
-    def deep_copy(self: _AssTextT) -> _AssTextT:
+    def deep_copy(self) -> Self:
         """
         :return:            A deep copy of this object
         """
         return copy.deepcopy(self)
 
-    def shallow_copy(self: _AssTextT) -> _AssTextT:
+    def shallow_copy(self) -> Self:
         """
         :return:            A shallow copy of this object
         """
         return copy.copy(self)
 
-    def copy(self: _AssTextT) -> _AssTextT:
+    def copy(self) -> Self:
         """
         :return:            A shallow copy of this object
         """
@@ -1110,7 +1124,7 @@ class _AssText(_PositionedText, ABC, empty_slots=True):
         return self.to_shape().to_pixels(supersampling, anti_aliasing)
 
 
-class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
+class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
     """
     Line object contains informations about a single line in the Ass.
 
@@ -1167,7 +1181,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
 
         # Analysing line
         if not (anal_line := re.match(r"(Dialogue|Comment): (.+?)$", text)):
-            raise MatchNotFoundError(f'{self.__class__.__name__}: No Line match found for this line!')
+            raise MatchNotFoundError(f"{self.__class__.__name__}: No Line match found for this line!")
         # Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         self.i = i
 
@@ -1202,10 +1216,10 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
             try:
                 style = _styles_to_map(styles)[linesplit[3]]
             except KeyError:
-                logger.user_warning(f'{LineNotFoundWarning()}: Line {self.i} is using an undefined style, assigning default style...')
-                logger.debug(f'{self.i}: {self.raw_text}')
+                logger.user_warning(f"{LineNotFoundWarning()}: Line {self.i} is using an undefined style, assigning default style...")
+                logger.debug(f"{self.i}: {self.raw_text}")
                 try:
-                    style = copy.deepcopy(_styles_to_map(styles)['Default'])
+                    style = copy.deepcopy(_styles_to_map(styles)["Default"])
                 except KeyError:
                     style = Style.get_default()
                 finally:
@@ -1220,16 +1234,16 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
         line = cls()
         line.comment = False
         line.layer = 0
-        line.start_time = Time.from_ts('0:00:00.00')
-        line.end_time = Time.from_ts('0:00:05.00')
+        line.start_time = Time.from_ts("0:00:00.00")
+        line.end_time = Time.from_ts("0:00:05.00")
         line.style = style
         line.meta = Meta.get_default()
-        line.actor = ''
+        line.actor = ""
         line.margin_l = 0
         line.margin_r = 0
         line.margin_v = 0
-        line.effect = ''
-        line.raw_text = ''
+        line.effect = ""
+        line.raw_text = ""
         line.text = line.raw_text
         return line
 
@@ -1249,7 +1263,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
             play_res_y = self.meta.script_info.play_res_y
             style = self.style
         except AttributeError:
-            return None
+            return
 
         # Horizontal position
         margin_l = self.margin_l if self.margin_l != 0 else style.margin_l
@@ -1324,10 +1338,10 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
             play_res_y = self.meta.script_info.play_res_y
             style = self.style
         except AttributeError:
-            return None
+            return
 
         # Calculating space width and saving spacing
-        space_width = font.text_extents(' ').width
+        space_width = font.text_extents(" ").width
 
         if style.an_is_top() or style.an_is_bottom():
             cur_x = self.left
@@ -1385,7 +1399,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
                 word.y = word.middle
                 # Updating cur_y
                 cur_y += word.height
-        return None
+        return
 
     def add_syls(self, font: Font, vertical_kanji: bool = False) -> None:
         """
@@ -1396,11 +1410,11 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
         """
         self.syls = PList()
 
-        syldata = re.compile(r'{(?P<pretags>.*?)\\[kK][of]?(?P<kdur>\d+)(?P<posttags>[^}]*)}(?P<syltext>[^{]*)')
-        slash = re.compile(r'\\\\')
-        ppsyl = re.compile(r'(\s*).*?(\s*)$')
+        syldata = re.compile(r"{(?P<pretags>.*?)\\[kK][of]?(?P<kdur>\d+)(?P<posttags>[^}]*)}(?P<syltext>[^{]*)")
+        slash = re.compile(r"\\\\")
+        ppsyl = re.compile(r"(\s*).*?(\s*)$")
 
-        ks = tuple(syldata.finditer(self.raw_text.replace('}{', '').replace('\\k', '}{\\k').replace('{}', '')))
+        ks = tuple(syldata.finditer(self.raw_text.replace("}{", "").replace("\\k", "}{\\k").replace("{}", "")))
 
         last_time = Time(0.0)
         word_i = 0
@@ -1411,7 +1425,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
             syl.i = si
             syl.word_i = word_i
 
-            syl.text = k0.groupdict()['syltext']
+            syl.text = k0.groupdict()["syltext"]
             if not syl.text or syl.text.isspace():
                 syl.prespace, syl.postspace = 0, 0
             elif ppsp := ppsyl.match(syl.text):
@@ -1420,16 +1434,16 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
             syl.ascent, syl.descent, syl.internal_leading, syl.external_leading = font.metrics
 
             if (
-                syl.text.endswith(' ')
+                syl.text.endswith(" ")
             ) or (
-                k1 and k1.groupdict()['syltext'].startswith(' ')
+                k1 and k1.groupdict()["syltext"].startswith(" ")
             ):
                 word_i += 1
 
             syl.start_time = last_time
             # kdur is in centiseconds
             # Converting in seconds...
-            kdur = k0.groupdict()['kdur']
+            kdur = k0.groupdict()["kdur"]
             syl.end_time = last_time + int(kdur) / 100
             syl.duration = int(kdur) / 100
 
@@ -1437,16 +1451,16 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
 
             for ptag in (
                 ptag
-                for tagspos in ('pretags', 'posttags')
-                for ptag in slash.split(k0.groupdict()[tagspos].replace('}{', ''))
+                for tagspos in ("pretags", "posttags")
+                for ptag in slash.split(k0.groupdict()[tagspos].replace("}{", ""))
             ):
-                if ptag.startswith('\\-'):
-                    if hasattr(syl, 'inline_fx'):
-                        syl.inline_fx.add(ptag.strip('\\-'))
+                if ptag.startswith("\\-"):
+                    if hasattr(syl, "inline_fx"):
+                        syl.inline_fx.add(ptag.strip("\\-"))
                     else:
-                        syl.inline_fx = OrderedSet([ptag.strip('\\-')])
+                        syl.inline_fx = OrderedSet([ptag.strip("\\-")])
                 elif ptag:
-                    if hasattr(syl, 'tags'):
+                    if hasattr(syl, "tags"):
                         syl.tags.add(ptag)
                     else:
                         syl.tags = OrderedSet([ptag])
@@ -1457,7 +1471,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
             style = self.style
             meta = self.meta
         except AttributeError:
-            return None
+            return
 
         space_width = font.text_extents(" ").width
 
@@ -1488,7 +1502,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
                 syl.middle = self.middle
                 syl.bottom = self.bottom
                 syl.y = self.y
-            return None
+            return
 
         # Kanji vertical position
         if vertical_kanji:
@@ -1525,7 +1539,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
                 syl.bottom = syl.top + syl.height
                 syl.y = syl.middle
                 cur_y += syl.height
-        return None
+        return
 
     def add_chars(self, font: Font, vertical_kanji: bool = False) -> None:
         """
@@ -1539,14 +1553,14 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
 
         # If we have syls in line, we prefert to work with them to provide more informations
         if not self.syls and not self.words:
-            return None
-        words_or_syls: Union['PList[Syllable]', 'PList[Word]'] = self.syls if self.syls else self.words
+            return
+        words_or_syls: PList[Syllable] | PList[Word] = self.syls or self.words
 
         # Getting chars
         for char_index, el in enumerate(words_or_syls):
             el_text = "{}{}{}".format(" " * el.prespace, el.text, " " * el.postspace)
             for ci, (prespace, char_text, postspace) in enumerate(
-                zip_offset(el_text, el_text, el_text, offsets=(-1, 0, 1), longest=True, fillvalue='')
+                zip_offset(el_text, el_text, el_text, offsets=(-1, 0, 1), longest=True, fillvalue="")
             ):
                 if not char_text:
                     continue
@@ -1583,7 +1597,7 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
         try:
             meta, style = self.meta, self.style
         except AttributeError:
-            return None
+            return
 
         if style.an_is_top() or style.an_is_bottom() or not vertical_kanji:
             cur_x = self.left
@@ -1665,16 +1679,16 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
         tagsl = list[_Tag]()
         pos = 0
         for tag_match in re.finditer(r"\{.*?\}", self.raw_text):
-            tags = re.split(r'(\\t.+?\))', tag_match.group(0).replace('{', '').replace('}', ''))
+            tags = re.split(r"(\\t.+?\))", tag_match.group(0).replace("{", "").replace("}", ""))
 
             for tag in tags:
-                if tag.startswith('\\t'):
+                if tag.startswith("\\t"):
                     tag = tag[1:]
                     pos = self.raw_text.find(tag, pos)
                     tagsl.append(_Tag(tag, pos))
                     continue
 
-                for tag_s in tag.split('\\'):
+                for tag_s in tag.split("\\"):
                     if not tag_s:
                         continue
                     pos = self.raw_text.find(tag_s, pos)
@@ -1698,21 +1712,21 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude='tags'):
         :param fix_timestamps:      If True, will fix the timestamps on their real start and end time.
                                     If False, start and end times will just be the raw timestamps.
         """
-        ass_line = 'Comment: ' if self.comment else 'Dialogue: '
+        ass_line = "Comment: " if self.comment else "Dialogue: "
         if fix_timestamps:
             start = self.start_time.assts(self.meta.fps, True)
             end = self.end_time.assts(self.meta.fps, False)
         else:
             start = self.start_time.ts()[1:-1]
             end = self.end_time.ts()[1:-1]
-        ass_line += ','.join([
+        ass_line += ",".join([
             str(self.layer),
             start, end,
             self.style.name, self.actor,
             str(self.margin_l), str(self.margin_r), str(self.margin_v),
             self.effect, self.text
         ])
-        return ass_line + '\n'
+        return ass_line + "\n"
 
 
 class Word(_AssText, slots_ex=True):
@@ -1772,10 +1786,10 @@ class PList(UserList[_AssTextT]):
         super().__init__(__iterable)
 
     def __str__(self) -> str:
-        return '\n'.join(str(at) for at in self)
+        return "\n".join(str(at) for at in self)
 
     def __repr__(self) -> str:
-        return '\n'.join(repr(at) for at in self)
+        return "\n".join(repr(at) for at in self)
 
     @overload
     def strip_empty(self, return_new: Literal[False] = False) -> None:
@@ -1784,7 +1798,6 @@ class PList(UserList[_AssTextT]):
 
         :param return_new:          If False, works on the current object, defaults to False
         """
-        ...
 
     @overload
     def strip_empty(self, return_new: Literal[True]) -> PList[_AssTextT]:
@@ -1793,11 +1806,10 @@ class PList(UserList[_AssTextT]):
 
         :param return_new:          If True, returns a new PList
         """
-        ...
 
     def strip_empty(self, return_new: bool = False) -> None | PList[_AssTextT]:
         for x in (data := self.copy() if return_new else self.data):
-            if not (x.text.strip() != '' and x.duration > 0):
+            if not (x.text.strip() != "" and x.duration > 0):
                 data.remove(x)
         return self.__class__(data) if return_new else None
 

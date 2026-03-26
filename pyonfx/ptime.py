@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-__all__ = ['Time']
+__all__ = ["Time"]
 
 import math
 import warnings
-
 from fractions import Fraction
-from functools import lru_cache
-from typing import TYPE_CHECKING, Any, Literal
-
-from typing_extensions import Self
+from functools import cache
+from typing import TYPE_CHECKING, Any, Literal, Self
 
 if TYPE_CHECKING:
     from _typeshed import ConvertibleToFloat
@@ -132,7 +129,7 @@ class Time(float):
         :param ts:              Timestamp
         :return:                Time object
         """
-        h, m, s = map(float, ts.split(':'))
+        h, m, s = map(float, ts.split(":"))
         return cls(h * 3600 + m * 60 + s)
 
     @classmethod
@@ -192,7 +189,7 @@ class Time(float):
         return cls(s)
 
 
-@lru_cache(maxsize=None)
+@cache
 def bound2frame(time: Time, fps: Fraction, /) -> Time:
     """
     Bound the time to its current displayed frame.
@@ -204,7 +201,7 @@ def bound2frame(time: Time, fps: Fraction, /) -> Time:
     return Time.from_frame(time.frame(fps), fps)
 
 
-@lru_cache(maxsize=None)
+@cache
 def bound2assframe(time: Time, fps: Fraction | float, /, is_start: bool, shifted: bool = False) -> Time:
     """
     Bound the time to its current displayed frame in Aegisub
@@ -247,5 +244,5 @@ def composets(h: float, m: float, s: float, /, *, precision: Literal[0, 3, 6, 9]
     elif precision == 9:
         out = f"{h:02.0f}:{m:02.0f}:{s:012.9f}"
     else:
-        raise ValueError(f'composets: the precision {precision} must be a multiple of 3 (including 0)')
+        raise ValueError(f"composets: the precision {precision} must be a multiple of 3 (including 0)")
     return out

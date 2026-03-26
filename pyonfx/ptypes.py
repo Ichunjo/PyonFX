@@ -3,27 +3,39 @@ from __future__ import annotations
 
 from abc import ABC, ABCMeta, abstractmethod
 from collections import OrderedDict
+from collections.abc import Callable, Collection, Iterable, Iterator, MutableMapping, MutableSet, Reversible, Sequence
 from functools import _lru_cache_wrapper, wraps
 from os import PathLike
 from types import FunctionType, MemberDescriptorType, MethodType
 from typing import (
-    AbstractSet, Any, Callable, Collection, Generic, Iterable, Iterator, Literal,
-    MutableMapping, MutableSet, NamedTuple, Reversible, Sequence, TypeVar, Union, cast,
-    final, get_args, get_origin, overload
+    AbstractSet,
+    Annotated,
+    Any,
+    Generic,
+    Literal,
+    NamedTuple,
+    Self,
+    TypeVar,
+    Union,
+    cast,
+    final,
+    get_args,
+    get_origin,
+    overload,
 )
 
 from numpy.typing import NDArray
-from typing_extensions import Annotated, get_type_hints
+from typing_extensions import get_type_hints
 
-T = TypeVar('T')
-_T = TypeVar('_T')
-S = TypeVar('S')
-T_co = TypeVar('T_co', covariant=True)
-F = TypeVar('F', bound=Callable[..., Any])
-TCV_co = TypeVar('TCV_co', bound=Union[float, int, str], covariant=True)  # Type Color Value covariant
-TCV_inv = TypeVar('TCV_inv', bound=Union[float, int, str])  # Type Color Value invariant
+T = TypeVar("T")
+_T = TypeVar("_T")
+S = TypeVar("S")
+T_co = TypeVar("T_co", covariant=True)
+F = TypeVar("F", bound=Callable[..., Any])
+TCV_co = TypeVar("TCV_co", bound=float | int | str, covariant=True)  # Type Color Value covariant
+TCV_inv = TypeVar("TCV_inv", bound=float | int | str)  # Type Color Value invariant
 ACV = Union[float, int, str]
-Nb = TypeVar('Nb', bound=Union[float, int])  # Number
+Nb = TypeVar("Nb", bound=float | int)  # Number
 Tup3 = tuple[Nb, Nb, Nb]
 Tup4 = tuple[Nb, Nb, Nb, Nb]
 Tup3Str = tuple[str, str, str]
@@ -93,7 +105,7 @@ def check_annotations(func: F, /) -> F:
 
 class View(Reversible[T], Collection[T]):
     """Abstract View class"""
-    __slots__ = '__x'
+    __slots__ = "__x"
 
     def __init__(self, __x: Collection[T]) -> None:
         self.__x = __x
@@ -112,7 +124,7 @@ class View(Reversible[T], Collection[T]):
         return reversed(tuple(self.__x))
 
     def __str__(self) -> str:
-        return f'{self.__class__.__name__}({self.__x})'
+        return f"{self.__class__.__name__}({self.__x})"
 
     __repr__ = __str__
 
@@ -120,7 +132,7 @@ class View(Reversible[T], Collection[T]):
 class AutoSlotsMeta(ABCMeta):
     @classmethod
     def __prepare__(cls, __name: str, __bases: tuple[type, ...], **kwargs: Any) -> MutableMapping[str, object]:
-        return {'__slots__': (), '__slots_ex__': ()}
+        return {"__slots__": (), "__slots_ex__": ()}
 
     def __new__(
         cls, name: str, bases: tuple[type, ...], namespace: dict[str, Any],
@@ -138,13 +150,13 @@ class AutoSlotsMeta(ABCMeta):
         _slots_inherited = OrderedSet(
             banno
             for base in abases
-            if hasattr(base, '__annotations__')
+            if hasattr(base, "__annotations__")
             for banno in base.__annotations__
         )
 
         # __annotations__ and __slots__ from the current class
-        _slots: OrderedSet[str] = OrderedSet(namespace['__slots__'])
-        _slots.update(namespace.get('__annotations__', {}))
+        _slots: OrderedSet[str] = OrderedSet(namespace["__slots__"])
+        _slots.update(namespace.get("__annotations__", {}))
         _all_slots = _slots_inherited | _slots
 
         # Get possible class variables & properties
@@ -154,17 +166,17 @@ class AutoSlotsMeta(ABCMeta):
         attrs.update(namespace)
         attrs = {
             k: v for k, v in attrs.items()
-            if not k.startswith('__') and not k.endswith('__')
+            if not k.startswith("__") and not k.endswith("__")
             and not isinstance(v, (FunctionType, classmethod, staticmethod, MethodType, MemberDescriptorType, _lru_cache_wrapper))
-            and k not in {'_abc_impl', '_is_protocol'}
+            and k not in {"_abc_impl", "_is_protocol"}
         }
 
         namespace = {**attrs, **namespace}
-        namespace['__slots__'] = tuple(k for k in _all_slots if k not in namespace)
+        namespace["__slots__"] = tuple(k for k in _all_slots if k not in namespace)
 
         if slots_ex:
-            sex_exld = (slots_ex_exclude, ) if isinstance(slots_ex_exclude, str) else slots_ex_exclude if slots_ex_exclude else tuple[str]()
-            namespace['__slots_ex__'] = namespace['__slots__'] + tuple(set(attrs) - set(sex_exld))
+            sex_exld = (slots_ex_exclude, ) if isinstance(slots_ex_exclude, str) else slots_ex_exclude or tuple[str]()
+            namespace["__slots_ex__"] = namespace["__slots__"] + tuple(set(attrs) - set(sex_exld))
 
         return super().__new__(cls, name, bases, namespace, **kwargs)
 
@@ -195,8 +207,8 @@ class NamedMutableSequence(AutoSlots, Sequence[T_co], Generic[T_co], ABC, empty_
 
     def __str__(self) -> str:
         clsname = self.__class__.__name__
-        values = ', '.join('%s=%r' % (k, self.__getattribute__(k)) for k in self.__slots__)
-        return '%s(%s)' % (clsname, values)
+        values = ", ".join("%s=%r" % (k, self.__getattribute__(k)) for k in self.__slots__)
+        return "%s(%s)" % (clsname, values)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -233,7 +245,7 @@ class NamedMutableSequence(AutoSlots, Sequence[T_co], Generic[T_co], ABC, empty_
 
 
 class OrderedSet(MutableSet[T], Generic[T], ABC):
-    __slots__ = '__odict'
+    __slots__ = "__odict"
     __odict: OrderedDict[T, Any | None]
 
     def __init__(self, __iterable: Iterable[T] | None = None, /) -> None:
@@ -243,7 +255,7 @@ class OrderedSet(MutableSet[T], Generic[T], ABC):
             self.__odict = OrderedDict()
 
     def __str__(self) -> str:
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(str(v) for v in self))
+        return "%s(%s)" % (self.__class__.__name__, ", ".join(str(v) for v in self))
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -400,27 +412,27 @@ class OrderedSet(MutableSet[T], Generic[T], ABC):
         self.__odict.update((el, None) for it in s for el in it)
 
 
-_CustomBoolT = TypeVar('_CustomBoolT', bound='CustomBool')
+_CustomBoolT = TypeVar("_CustomBoolT", bound="CustomBool")
 
 
 class CustomBool(int):
-    def __copy__(self: _CustomBoolT) -> _CustomBoolT:
+    def __copy__(self) -> Self:
         return self.__class__(self.__repr__())
 
-    def __deepcopy__(self: _CustomBoolT, *args: Any) -> _CustomBoolT:
+    def __deepcopy__(self, *args: Any) -> Self:
         return self.__copy__()
 
 
 @final
 class AssBool(CustomBool):
-    def __new__(cls, __o: str = 'no') -> AssBool:
-        return super().__new__(cls, bool(__o == 'yes'))
+    def __new__(cls, __o: str = "no") -> AssBool:
+        return super().__new__(cls, bool(__o == "yes"))
 
     def __str__(self) -> str:
-        return {1: 'True', 0: 'False'}[self]
+        return {1: "True", 0: "False"}[self]
 
     def __repr__(self) -> str:
-        return {1: 'yes', 0: 'no'}[self]
+        return {1: "yes", 0: "no"}[self]
 
 
 @final
@@ -429,7 +441,7 @@ class StyleBool(CustomBool):
         return super().__new__(cls, __o)
 
     def __str__(self) -> str:
-        return {-1: 'True', 0: 'False'}[self]
+        return {-1: "True", 0: "False"}[self]
 
 
 @final
@@ -438,7 +450,7 @@ class BorderStyleBool(CustomBool):
         return super().__new__(cls, __o)
 
     def __str__(self) -> str:
-        return {3: 'True', 1: 'False'}[self]
+        return {3: "True", 1: "False"}[self]
 
 
 class _Tag(NamedTuple):

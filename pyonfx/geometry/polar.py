@@ -95,4 +95,4 @@ class Spherical(Polar, ABC, empty_slots=True):
         elif axis == PolarAxis.THETA:
             self.theta += radians(rot)
         else:
-            raise ValueError(f'{self.__class__.__name__}: Axis not supported')
+            raise ValueError(f"{self.__class__.__name__}: Axis not supported")

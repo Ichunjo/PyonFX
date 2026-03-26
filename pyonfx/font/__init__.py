@@ -1,12 +1,12 @@
-__all__ = ['Font', 'get_font']
+__all__ = ["Font", "get_font"]
 
 import sys
-from functools import lru_cache
+from functools import cache, lru_cache
 from typing import TYPE_CHECKING, Any
 
-if sys.platform == 'win32':
+if sys.platform == "win32":
     from ._windows import Font
-elif sys.platform in ['linux', 'darwin'] and 'sphinx' not in sys.modules:
+elif sys.platform in ["linux", "darwin"] and "sphinx" not in sys.modules:
     from ._linux_macos import Font
 else:
     raise NotImplementedError
@@ -17,7 +17,7 @@ else:
     Style = Any
 
 
-@lru_cache(maxsize=None)
+@cache
 def get_font(style: Style) -> Font:
     """
     Get a Font object based on a Style

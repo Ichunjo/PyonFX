@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from enum import IntEnum
 from math import ceil, floor, trunc
-from typing import Any, Callable, NoReturn, TypeVar
+from typing import Any, NoReturn, Self, TypeVar
 
 import numpy as np
 from numpy.typing import DTypeLike, NDArray
@@ -13,7 +14,7 @@ from numpy.typing import DTypeLike, NDArray
 from .._logging import logger
 from ..ptypes import NamedMutableSequence, SomeArrayLike
 
-_CT = TypeVar('_CT', bound='Coordinates')
+_CT = TypeVar("_CT", bound="Coordinates")
 
 
 class Coordinates(NamedMutableSequence[float], ABC, empty_slots=True):
@@ -27,44 +28,44 @@ class Coordinates(NamedMutableSequence[float], ABC, empty_slots=True):
     def __self_proxy(self) -> Coordinates:
         return self
 
-    def __add__(self: _CT, _p: tuple[float, ...]) -> _CT:
+    def __add__(self, _p: tuple[float, ...]) -> Self:
         return self.__class__(*[sum(r, 0.0) for r in zip(self.__self_proxy, _p)])
 
-    def __radd__(self: _CT, _p: tuple[float, ...]) -> _CT:
+    def __radd__(self, _p: tuple[float, ...]) -> Self:
         return self.__add__(_p)
 
-    def __sub__(self: _CT, _p: tuple[float, ...]) -> _CT:
+    def __sub__(self, _p: tuple[float, ...]) -> Self:
         return self.__class__(*[c0 - c1 for (c0, c1) in zip(self.__self_proxy, _p)])
 
-    def __rsub__(self: _CT, _p: tuple[float, ...]) -> _CT:
+    def __rsub__(self, _p: tuple[float, ...]) -> Self:
         return self.__class__(*[c1 - c0 for (c0, c1) in zip(self.__self_proxy, _p)])
 
-    def __mul__(self: _CT, _p: int | tuple[float, ...]) -> _CT:
+    def __mul__(self, _p: int | tuple[float, ...]) -> Self:
         if isinstance(_p, int):
             nattrs = [getattr(self, attr) * _p for attr in self.__slots__]
         else:
             nattrs = [c0 * c1 for (c0, c1) in zip(self.__self_proxy, _p)]
         return self.__class__(*nattrs)
 
-    def __rmul__(self: _CT, _p: int | tuple[float, ...]) -> _CT:
+    def __rmul__(self, _p: int | tuple[float, ...]) -> Self:
         return self.__mul__(_p)
 
-    def __matmul__(self: _CT, _mat: SomeArrayLike) -> _CT:
+    def __matmul__(self, _mat: SomeArrayLike) -> Self:
         return self.__class__(*_get_matmul_func(self.__self_proxy[:len(_mat)], _mat))
 
-    def __rmatmul__(self: _CT, _mat: SomeArrayLike) -> _CT:
+    def __rmatmul__(self, _mat: SomeArrayLike) -> Self:
         return self.__class__(*_get_matmul_func(_mat, self.__self_proxy[:len(_mat)]))
 
     def __array__(self, dtype: DTypeLike | None = None, copy: bool | None = None) -> NDArray[Any]:
         return np.array(tuple(self), dtype, copy=copy)
 
-    def __neg__(self: _CT) -> _CT:
+    def __neg__(self) -> Self:
         return self.__class__(*[- a for a in self])
 
-    def __pos__(self: _CT) -> _CT:
+    def __pos__(self) -> Self:
         return self.__class__(*[+ a for a in self])
 
-    def __abs__(self: _CT) -> _CT:
+    def __abs__(self) -> Self:
         return self.__class__(*[abs(a) for a in self])
 
     def __setattr_iter(self, func: Callable[[float], int | float]) -> None:
@@ -149,7 +150,6 @@ class Coordinates(NamedMutableSequence[float], ABC, empty_slots=True):
 
 class Axis(IntEnum):
     """Base axis enum"""
-    ...
 
 
 def _get_matmul_func(_mat1: SomeArrayLike, _mat2: SomeArrayLike) -> map[float]:

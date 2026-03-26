@@ -1,40 +1,54 @@
 """Geometry submodule"""
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from functools import reduce
 from itertools import chain
 from math import asin, ceil, comb, cos, degrees, dist, fsum, inf, radians, sin, sqrt
-from typing import Any, Iterable, Sequence, Tuple, TypeVar, overload
+from typing import Any, Tuple, TypeVar, overload
 
 from .._logging import logger
 from ..misc import chunk, clamp_value, frange
 from .cartesian import Cartesian2D, Cartesian3D, CartesianAxis
 from .coordinates import Axis, Coordinates
 from .point import (
-    Point, PointCartesian2D, PointCartesian3D, PointCylindrical, PointPolar, PointSpherical,
-    PointsView, PointT
+    Point,
+    PointCartesian2D,
+    PointCartesian3D,
+    PointCylindrical,
+    PointPolar,
+    PointSpherical,
+    PointsView,
+    PointT,
 )
 from .polar import Cylindrical, Polar, PolarAxis, Spherical
 from .vector import Vector, VectorCartesian2D, VectorCartesian3D, VectorCylindrical, VectorPolar, VectorSpherical
 
 __all__ = [
-    'Coordinates',
-    'CartesianAxis', 'PolarAxis',
-    'Point',
-    'PointsView',
-    'PointCartesian2D', 'PointCartesian3D',
-    'PointPolar', 'PointCylindrical', 'PointSpherical',
-    'VectorCartesian2D', 'VectorCartesian3D',
-    'VectorPolar', 'VectorCylindrical', 'VectorSpherical',
-    'Geometry'
+    "CartesianAxis",
+    "Coordinates",
+    "Geometry",
+    "Point",
+    "PointCartesian2D",
+    "PointCartesian3D",
+    "PointCylindrical",
+    "PointPolar",
+    "PointSpherical",
+    "PointsView",
+    "PolarAxis",
+    "VectorCartesian2D",
+    "VectorCartesian3D",
+    "VectorCylindrical",
+    "VectorPolar",
+    "VectorSpherical"
 ]
 
 
-_Cartesian2DT = TypeVar('_Cartesian2DT', bound=Cartesian2D)
-_Cartesian3DT = TypeVar('_Cartesian3DT', bound=Cartesian3D)
-_PolarT = TypeVar('_PolarT', bound=Polar)
-_CylindricalT = TypeVar('_CylindricalT', bound=Cylindrical)
-_SphericalT = TypeVar('_SphericalT', bound=Spherical)
+_Cartesian2DT = TypeVar("_Cartesian2DT", bound=Cartesian2D)
+_Cartesian3DT = TypeVar("_Cartesian3DT", bound=Cartesian3D)
+_PolarT = TypeVar("_PolarT", bound=Polar)
+_CylindricalT = TypeVar("_CylindricalT", bound=Cylindrical)
+_SphericalT = TypeVar("_SphericalT", bound=Spherical)
 
 _BézierCurve = tuple[PointCartesian2D, PointCartesian2D, PointCartesian2D, PointCartesian2D]
 _AssBézierCurve = tuple[PointCartesian2D, PointCartesian2D, PointCartesian2D]
@@ -55,7 +69,6 @@ class Geometry:
         :param zp:          Zero point where the rotation will be performed
         :return:            Point or vector rotated
         """
-        ...
 
     @overload
     @staticmethod
@@ -69,7 +82,6 @@ class Geometry:
         :param zp:          Zero point where the rotation will be performed
         :return:            Point or vector rotated
         """
-        ...
 
     @overload
     @staticmethod
@@ -81,7 +93,6 @@ class Geometry:
         :param rot:         Rotation in degrees
         :return:            Point or vector rotated
         """
-        ...
 
     @overload
     @staticmethod
@@ -93,7 +104,6 @@ class Geometry:
         :param rot:         Rotation in degrees
         :return:            Point or vector rotated
         """
-        ...
 
     @overload
     @staticmethod
@@ -106,7 +116,6 @@ class Geometry:
         :param axis:        Axis
         :return:            Point or vector rotated
         """
-        ...
 
     @overload
     @staticmethod
@@ -118,9 +127,9 @@ class Geometry:
     def rotate(_o: Any, rot: float, axis: Any, zp: Any) -> Any:
         """Implementaton"""
         if isinstance(_o, Cartesian3D):
-            _o.__rotate__(rot, axis, zp if zp else (0, 0, 0))
+            _o.__rotate__(rot, axis, zp or (0, 0, 0))
         elif isinstance(_o, Cartesian2D):
-            _o.__rotate__(rot, zp=zp if zp else (0, 0))
+            _o.__rotate__(rot, zp=zp or (0, 0))
         elif isinstance(_o, Spherical):
             _o.__rotate__(rot, axis)
         elif isinstance(_o, (Polar, Cylindrical)):
@@ -139,7 +148,6 @@ class Geometry:
         :param p1:          Second point
         :return:            Vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -151,7 +159,6 @@ class Geometry:
         :param p1:          Second point
         :return:            Vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -163,7 +170,6 @@ class Geometry:
         :param p1:          Second point
         :return:            Vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -175,7 +181,6 @@ class Geometry:
         :param p1:          Second point
         :return:            Vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -187,7 +192,6 @@ class Geometry:
         :param p1:          Second point
         :return:            Vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -210,7 +214,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Angle in radians
         """
-        ...
 
     @overload
     @staticmethod
@@ -222,7 +225,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Angle in radians
         """
-        ...
 
     @overload
     @staticmethod
@@ -234,7 +236,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Angle in radians
         """
-        ...
 
     @overload
     @staticmethod
@@ -246,7 +247,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Angle in radians
         """
-        ...
 
     @overload
     @staticmethod
@@ -258,7 +258,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Angle in radians
         """
-        ...
 
     @staticmethod
     @logger.catch(force_exit=True)
@@ -276,7 +275,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Scalar
         """
-        ...
 
     @overload
     @staticmethod
@@ -288,7 +286,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Orthogonal vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -300,7 +297,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Scalar
         """
-        ...
 
     @overload
     @staticmethod
@@ -312,7 +308,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Orthogonal vector
         """
-        ...
 
     @overload
     @staticmethod
@@ -324,7 +319,6 @@ class Geometry:
         :param v1:          Second vector
         :return:            Orthogonal vector
         """
-        ...
 
     @staticmethod
     @logger.catch(force_exit=True)
@@ -342,7 +336,6 @@ class Geometry:
         :param length:      Required length
         :return:            Vector stretched
         """
-        ...
 
     @overload
     @staticmethod
@@ -354,7 +347,6 @@ class Geometry:
         :param length:      Required length
         :return:            Vector stretched
         """
-        ...
 
     @overload
     @staticmethod
@@ -366,7 +358,6 @@ class Geometry:
         :param length:      Required length
         :return:            Vector stretched
         """
-        ...
 
     @overload
     @staticmethod
@@ -378,7 +369,6 @@ class Geometry:
         :param length:      Required length
         :return:            Vector stretched
         """
-        ...
 
     @overload
     @staticmethod
@@ -390,7 +380,6 @@ class Geometry:
         :param length:      Required length
         :return:            Vector stretched
         """
-        ...
 
     @staticmethod
     @logger.catch(force_exit=True)
@@ -419,7 +408,7 @@ class Geometry:
         v0, v1 = cls.vector(p0, p1), cls.vector(p2, p3)
 
         if v0.norm * v1.norm == 0:
-            raise ValueError(f'{cls.__name__}: lines mustn\'t have zero length')
+            raise ValueError(f"{cls.__name__}: lines mustn't have zero length")
 
         det = cls.orthogonal(v0, v1)
 
@@ -523,7 +512,7 @@ class Geometry:
             """Conversion in recursive processing"""
             if _curve4_is_flat(b_coord):
                 ncoord.append(b_coord[-1])
-                return None
+                return
             b0, b1 = _curve4_subdivide(b_coord)
             _convert_recursive(b0)
             _convert_recursive(b1)
@@ -611,7 +600,7 @@ class Geometry:
     def make_ellipse(
         w: float, h: float,
         c_xy: tuple[float, float] = (0., 0.), /, clockwise: bool = True
-    ) -> Tuple[
+    ) -> tuple[
         PointCartesian2D,
         _AssBézierCurve, _AssBézierCurve, _AssBézierCurve, _AssBézierCurve
     ]:
@@ -727,8 +716,8 @@ class Geometry:
             x2, y2 = x1 - bc * cos(Br), bc * sin(Br)
         else:
             raise ValueError(
-                f'{cls.__name__}: possibles values are one side and two angles '
-                + 'or two sides and one angle'
+                f"{cls.__name__}: possibles values are one side and two angles "
+                + "or two sides and one angle"
             )
 
         return (

@@ -79,7 +79,7 @@ class Cartesian3D(Cartesian2D, ABC, empty_slots=True):
         try:
             rmat = rot_mats[axis]
         except IndexError as i_err:
-            raise ValueError(f'{self.__class__.__name__}: Wrong axis number') from i_err
+            raise ValueError(f"{self.__class__.__name__}: Wrong axis number") from i_err
 
         R = rmat(radians(rot))
         O = np.atleast_3d(np.asanyarray(zp, np.float32))
