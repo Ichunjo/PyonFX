@@ -18,6 +18,11 @@ on:
       - pyproject.toml
       - uv.lock
 
+# Cancel previous runs on new push
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Workflow tasks
 jobs:
   # Apply lint, check formatting
@@ -45,11 +50,16 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgirepository-2.0-dev gobject-introspection libcairo2-dev build-essential gir1.2-gtk-3.0 python3-gi python3-gi-cairo
+          sudo apt-get install -y libgirepository1.0-dev libgirepository-2.0-dev gobject-introspection libcairo2-dev build-essential pkg-config python3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo
 
       - name: Install platform-specific requirements (macOS)
         if: matrix.os == 'macos-latest'
         run: brew install py3cairo pygobject3 pango cairo glib
+
+      - name: Set DYLD_FALLBACK_LIBRARY_PATH for Homebrew (macOS)
+        if: matrix.os == 'macos-latest'
+        run: echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix)/lib" >> $GITHUB_ENV
+        shell: bash
 
       - name: Install dependencies
         run: uv sync --all-extras --all-groups
@@ -85,11 +95,16 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgirepository1.0-dev gcc libcairo2-dev pkg-config python3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo
+          sudo apt-get install -y libgirepository1.0-dev libgirepository-2.0-dev gobject-introspection libcairo2-dev build-essential pkg-config python3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo
 
       - name: Install platform-specific requirements (macOS)
         if: matrix.os == 'macos-latest'
-        run: brew install py3cairo pygobject3 pango
+        run: brew install py3cairo pygobject3 pango cairo glib
+
+      - name: Set DYLD_FALLBACK_LIBRARY_PATH for Homebrew (macOS)
+        if: matrix.os == 'macos-latest'
+        run: echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix)/lib" >> $GITHUB_ENV
+        shell: bash
 
       - name: Setup Go
         uses: actions/setup-go@v5
