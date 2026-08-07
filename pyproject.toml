@@ -30,8 +30,7 @@ classifiers = [
     "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
 ]
 dependencies = [
-    "loguru>=0.7.3",
-    "more_itertools>=10.8.0",
+    "more_itertools>=11.0.0",
     "numpy>=2.0.0, <3.0.0",
     "pycairo>=1.29.0; sys_platform == 'linux' or sys_platform == 'darwin'",
     "PyGObject>=3.54.5; sys_platform == 'linux' or sys_platform == 'darwin'",
@@ -44,14 +43,17 @@ image = ["scikit-image>=0.25.0"]
 
 [dependency-groups]
 dev = [
-    "mypy>=1.18.2",
-    "ruff>=0.15.0",
-    "loguru-mypy>=0.0.4",
+    "mypy>=2.3.0, <2.4.0",
+    "ruff>=0.16.0, <0.17.0",
     "pytest>=9.0.0, <10.0.0",
     "pytest_check>=2.6.0",
     "sphinx-panels>=0.6.0",
     "sphinx-rtd-theme>=1.2.0",
-    "pywin32-stubs>=1.0.7; sys_platform == 'win32'",
+    "lxml-stubs>=0.5.1",
+    "scipy-stubs>=1.18.0.1",
+    "types-defusedxml>=0.7.0.20260504",
+    "types-networkx>=3.6.1.20260728",
+    "types-pywin32>=312.0.0.20260724",
 ]
 
 [tool.hatch.version]
@@ -83,11 +85,7 @@ error_summary = true
 
 [[tool.mypy.overrides]]
 # Modules missing on Windows but needed on Linux/macOS
-module = [
-    "cairo",
-    "gi",
-    "gi.repository.*",
-]
+module = ["cairo", "gi", "gi.repository.*"]
 ignore_missing_imports = true
 
 [tool.ruff]

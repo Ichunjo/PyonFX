@@ -2,19 +2,15 @@ from __future__ import annotations
 
 __all__: list[str] = []
 
+import datetime
+import functools
+import logging
 import sys
 from abc import ABC, ABCMeta
 from collections.abc import Callable
 from enum import IntEnum
 from threading import Lock
-from typing import Any, ClassVar, NoReturn, TypeVar, overload
-
-import loguru
-
-loguru.logger.remove(0)
-
-
-F = TypeVar("F", bound=Callable[..., Any])
+from typing import Any, ClassVar, NoReturn, overload, override
 
 
 class LogLevel(IntEnum):
@@ -29,16 +25,41 @@ class LogLevel(IntEnum):
     USER_INFO = 70
 
 
-def _loguru_format(record: loguru.Record) -> str:
-    if record["extra"]["user"] and record["level"].no >= 60 and record["extra"]["level"] >= 40:
-        return "<level>{message}</level>\n"
+logging.addLevelName(LogLevel.TRACE, "TRACE")
+logging.addLevelName(LogLevel.SUCCESS, "SUCCESS")
+logging.addLevelName(LogLevel.USER_WARNING, "USER WARNING")
+logging.addLevelName(LogLevel.USER_INFO, "USER INFO")
 
-    return (
-        "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-        "<level>{level.name: <12}</level> | "
-        "<cyan>{name}</cyan>:<cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
-        "<level>{message}</level>\n{exception}"
-    )
+
+class PyonFXFormatter(logging.Formatter):
+    @override
+    def formatTime(self, record: logging.LogRecord, datefmt: str | None = None) -> str:
+        ct = datetime.datetime.fromtimestamp(record.created, tz=datetime.UTC).astimezone()
+        return ct.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+
+    @override
+    def format(self, record: logging.LogRecord) -> str:
+        is_user = getattr(record, "user", False)
+        logger_level = getattr(record, "logger_level", LogLevel.ERROR)
+        if is_user and record.levelno >= LogLevel.USER_WARNING and logger_level >= LogLevel.ERROR:
+            return record.getMessage()
+
+        message = record.getMessage()
+        asctime = self.formatTime(record)
+        levelname = record.levelname
+        name = record.name
+        module = record.module
+        func_name = record.funcName
+        lineno = record.lineno
+
+        res = f"{asctime} | {levelname:<12} | {name}:{module}:{func_name}:{lineno} - {message}"
+        if record.exc_info and not record.exc_text:
+            record.exc_text = self.formatException(record.exc_info)
+        if record.exc_text:
+            if not res.endswith("\n"):
+                res += "\n"
+            res += record.exc_text
+        return res
 
 
 class SingletonMeta(ABCMeta):
@@ -57,68 +78,91 @@ class Singleton(ABC, metaclass=SingletonMeta): ...
 
 
 class Logger(Singleton):
-    __slots__ = ("__id", "__level")
+    __slots__ = ("__level", "_handler", "_logger")
 
     def __init__(self) -> None:
-        self.__level = 40
-        ids_ = loguru.logger.configure(
-            handlers=[
-                {
-                    "sink": sys.stderr,
-                    "level": self.__level,
-                    "format": _loguru_format,
-                    "backtrace": True,
-                    "diagnose": True,
-                }
-            ],
-            levels=[
-                {"name": "USER WARNING", "no": LogLevel.USER_WARNING, "color": "<yellow><bold>"},
-                {"name": "USER INFO", "no": LogLevel.USER_INFO, "color": "<white><bold>"},
-            ],
-            extra={"user": False, "level": self.__level},
-        )
-        self.__id = ids_.pop(0)
+        self.__level: int = LogLevel.ERROR
+        self._logger = logging.getLogger("pyonfx")
+        self._logger.setLevel(LogLevel.TRACE)
+        self._logger.propagate = False
+        self._logger.handlers.clear()
+
+        self._handler = logging.StreamHandler(sys.stderr)
+        self._handler.setLevel(self.__level)
+        self._handler.setFormatter(PyonFXFormatter())
+        self._logger.addHandler(self._handler)
 
     def set_level(self, level: int) -> None:
-        loguru.logger.remove(self.__id)
         self.__level = level
-        loguru.logger.add(sys.stderr, level=level, format=_loguru_format, backtrace=True, diagnose=True)
+        self._handler.setLevel(level)
+
+    def _log(self, level: int, message: Any, depth: int = 1, user: bool = False) -> None:
+        if self._logger.isEnabledFor(level):
+            self._logger.log(
+                level,
+                str(message),
+                stacklevel=depth + 2,
+                extra={"user": user, "logger_level": self.__level},
+            )
 
     def trace(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=False, level=self.__level).trace(str(message))
+        self._log(LogLevel.TRACE, message, depth=depth, user=False)
 
     def debug(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=False, level=self.__level).debug(str(message))
+        self._log(LogLevel.DEBUG, message, depth=depth, user=False)
 
     def info(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=False, level=self.__level).info(str(message))
+        self._log(LogLevel.INFO, message, depth=depth, user=False)
 
     def success(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=False, level=self.__level).success(str(message))
+        self._log(LogLevel.SUCCESS, message, depth=depth, user=False)
 
     def warning(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=False, level=self.__level).warning(str(message))
+        self._log(LogLevel.WARNING, message, depth=depth, user=False)
 
     def error(self, message: Any, /) -> NoReturn:
-        loguru.logger.exception(str(message))
+        if sys.exc_info()[0] is not None:
+            self._logger.error(
+                str(message),
+                exc_info=True,  # noqa: LOG014
+                stacklevel=2,
+                extra={"user": False, "logger_level": self.__level},
+            )
+        else:
+            self._logger.error(str(message), stacklevel=2, extra={"user": False, "logger_level": self.__level})
         sys.exit(1)
 
     def user_warning(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=True, level=self.__level).log("USER WARNING", str(message))
+        self._log(LogLevel.USER_WARNING, message, depth=depth, user=True)
 
     def user_info(self, message: Any, /, depth: int = 1) -> None:
-        loguru.logger.opt(depth=depth).bind(user=True, level=self.__level).log("USER INFO", str(message))
+        self._log(LogLevel.USER_INFO, message, depth=depth, user=True)
 
     @overload
-    def catch(self, func: F, /) -> F: ...
-
+    def catch[**P, R](self, func: Callable[P, R], /) -> Callable[P, R]: ...
     @overload
-    def catch(self, /, *, force_exit: bool = ...) -> Callable[[F], F]: ...
+    def catch[**P, R](self, /, *, force_exit: bool = ...) -> Callable[[Callable[P, R]], Callable[P, R]]: ...
+    def catch[**P, R](
+        self, func: Callable[P, R] | None = None, /, *, force_exit: bool = False
+    ) -> Callable[P, R] | Callable[[Callable[P, R]], Callable[P, R]]:
+        def decorator(f: Callable[P, R]) -> Callable[P, R]:
+            @functools.wraps(f)
+            def wrapper(*args: Any, **kwargs: Any) -> Any:
+                try:
+                    return f(*args, **kwargs)
+                except Exception:
+                    self._logger.exception(
+                        "An exception occurred", stacklevel=2, extra={"user": False, "logger_level": self.__level}
+                    )
+                    if force_exit:
+                        sys.exit(1)
+                    return None
 
-    def catch(self, func: F | None = None, /, *, force_exit: bool = False) -> F | Callable[[F], F]:
+            return wrapper
+
         if func is None:
-            return loguru.logger.catch(onerror=(lambda _: sys.exit(1)) if force_exit else None)
-        return loguru.logger.catch(func)
+            return decorator
+        return decorator(func)
 
 
 logger: Logger = Logger()
