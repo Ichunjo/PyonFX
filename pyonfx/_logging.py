@@ -151,9 +151,7 @@ class Logger(Singleton):
                 try:
                     return f(*args, **kwargs)
                 except Exception:
-                    self._logger.exception(
-                        "An exception occurred", stacklevel=2, extra={"user": False, "logger_level": self.__level}
-                    )
+                    self._logger.exception("An exception occurred", stacklevel=2, extra={"user": False, "logger_level": self.__level})
                     if force_exit:
                         sys.exit(1)
                     return None

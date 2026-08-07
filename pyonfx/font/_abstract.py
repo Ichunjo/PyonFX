@@ -62,7 +62,7 @@ class _AbstractFont(ABC):
                             (ascent, descent, internal_leading, external_leading)
         """
 
-    @cache
+    @cache  # noqa: B019
     @abstractmethod
     def text_extents(self, text: str) -> _TextExtents:
         """
@@ -73,7 +73,7 @@ class _AbstractFont(ABC):
                             (width, height)
         """
 
-    @lru_cache
+    @lru_cache  # noqa: B019
     @abstractmethod
     def text_to_shape(self, text: str) -> Shape:
         """

@@ -680,7 +680,7 @@ class Geometry:
             x1, y1 = ab, 0
             x2, y2 = x1 - bc * cos(Br), bc * sin(Br)
         else:
-            raise ValueError(f"{cls.__name__}: possibles values are one side and two angles " + "or two sides and one angle")
+            raise TypeError(f"{cls.__name__}: possibles values are one side and two angles " + "or two sides and one angle")
 
         return (
             P((x0 + cx) * cl, y0 + cy),

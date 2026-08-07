@@ -189,7 +189,7 @@ class _NumBased(ColourSpace[Nb], ABC, empty_slots=True):
     @logger.catch
     def interpolate(self, nobj: ColourSpace[Nb], pct: Pct, /) -> Self:
         if not isinstance(nobj, self.__class__):
-            raise ValueError(f"{self.__class__.__name__}: {nobj} is not of the same type")
+            raise TypeError(f"{self.__class__.__name__}: {nobj} is not of the same type")
         return self.__class__(tuple((1 - pct) * cs1_val + pct * cs2_val for cs1_val, cs2_val in zip(self, nobj)))
 
 
@@ -677,7 +677,7 @@ class Opacity(ColourSpace[float]):
     @logger.catch
     def interpolate(self, nobj: ColourSpace[float], pct: Pct, /) -> Self:
         if not isinstance(nobj, Opacity):
-            raise ValueError(f"Opacity: {nobj} is not of the same type")
+            raise TypeError(f"Opacity: {nobj} is not of the same type")
         return cast(Self, Opacity(self.value * (1 - pct) + nobj.value * pct))
 
     @logger.catch

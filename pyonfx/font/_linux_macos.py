@@ -75,7 +75,7 @@ class Font(_AbstractFont):
             self.layout.get_spacing() * const,
         )
 
-    @cache
+    @cache  # noqa: B019
     def text_extents(self, text: str) -> _TextExtents:
         if not text:
             return _TextExtents(0.0, 0.0)
@@ -99,7 +99,7 @@ class Font(_AbstractFont):
             get_rect(text).height * self.downscale * self.yscale * self.fonthack_scale,
         )
 
-    @lru_cache(maxsize=256)
+    @lru_cache(maxsize=256)  # noqa: B019
     @logger.catch
     def text_to_shape(self, text: str) -> Shape:
         if not text:
@@ -138,9 +138,7 @@ class Font(_AbstractFont):
                 elif ptype == 1:
                     cmds.append(DC(l, (ppath[0] + x_add, ppath[1])))
                 elif ptype == 2:
-                    cmds.append(
-                        DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5]))
-                    )
+                    cmds.append(DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5])))
 
             self.context.new_path()
             curr_width += self.text_extents(char)[0]

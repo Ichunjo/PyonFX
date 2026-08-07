@@ -112,7 +112,7 @@ def check_annotations[F: Callable[..., Any]](func: F, /) -> F:
 class View(Reversible[T], Collection[T]):
     """Abstract View class"""
 
-    __slots__ = "__x"
+    __slots__ = ("__x",)
 
     def __init__(self, x: Collection[T]) -> None:
         self.__x = x
@@ -244,7 +244,7 @@ class NamedMutableSequence[T_co](AutoSlots, Sequence[T_co], ABC, empty_slots=Tru
 
 
 class OrderedSet[T](MutableSet[T], ABC):
-    __slots__ = "__odict"
+    __slots__ = ("__odict",)
     __odict: OrderedDict[T, Any | None]
 
     def __init__(self, __iterable: Iterable[T] | None = None, /) -> None:

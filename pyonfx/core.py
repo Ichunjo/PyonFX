@@ -452,7 +452,7 @@ class _DataCore(AutoSlots, Iterable[tuple[str, Any]], ABC, empty_slots=True):
     def _asdict(self) -> dict[str, Any]:
         return {k: v._asdict() if isinstance(v, _DataCore) else v for k, v in self}
 
-    @cache
+    @cache  # noqa: B019
     def _pretty_print(self, obj: _DataCore, indent: int = 0, name: str | None = None) -> str:
         out = " " * indent + f"{obj.__class__.__name__}:\n" if not name else " " * indent + f"{name}: ({obj.__class__.__name__}):\n"
 
@@ -1224,20 +1224,20 @@ class Line(_AssText, slots_ex=True, slots_ex_exclude="tags"):
                 except KeyError:
                     style = Style.get_default()
                 finally:
-                    style.name = linesplit[3]
+                    style.name = linesplit[3]  # pyright: ignore[reportPossiblyUnboundVariable]
             finally:
-                self.style = style
+                self.style = style  # pyright: ignore[reportPossiblyUnboundVariable]
 
         return self
 
     @classmethod
-    def get_default(cls, style: Style = Style.get_default()) -> Self:
+    def get_default(cls, style: Style | None = None) -> Self:
         line = cls()
         line.comment = False
         line.layer = 0
         line.start_time = Time.from_ts("0:00:00.00")
         line.end_time = Time.from_ts("0:00:05.00")
-        line.style = style
+        line.style = style or Style.get_default()
         line.meta = Meta.get_default()
         line.actor = ""
         line.margin_l = 0
@@ -1811,7 +1811,7 @@ class PList(UserList[_AssTextT]):
         :param return_new:          If True, returns a new PList
         """
 
-    def strip_empty(self, return_new: bool = False) -> None | PList[_AssTextT]:
+    def strip_empty(self, return_new: bool = False) -> PList[_AssTextT] | None:
         for x in (data := self.copy() if return_new else self.data):
             if not (x.text.strip() != "" and x.duration > 0):
                 data.remove(x)
