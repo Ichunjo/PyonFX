@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from functools import cache, cached_property, lru_cache
 from typing import TYPE_CHECKING, Any, NamedTuple
 
 if TYPE_CHECKING:
@@ -51,7 +52,7 @@ class _AbstractFont(ABC):
     @abstractmethod
     def __del__(self) -> None: ...
 
-    @property
+    @cached_property
     @abstractmethod
     def metrics(self) -> _Metrics:
         """
@@ -60,8 +61,8 @@ class _AbstractFont(ABC):
         :return:            A tuple containing text data in this order:
                             (ascent, descent, internal_leading, external_leading)
         """
-        ...
 
+    @cache
     @abstractmethod
     def text_extents(self, text: str) -> _TextExtents:
         """
@@ -71,8 +72,8 @@ class _AbstractFont(ABC):
         :return:            A tuple containing text data in this order:
                             (width, height)
         """
-        ...
 
+    @lru_cache
     @abstractmethod
     def text_to_shape(self, text: str) -> Shape:
         """
@@ -81,4 +82,3 @@ class _AbstractFont(ABC):
         :param text:        Text in string
         :return:            A Shape object
         """
-        ...

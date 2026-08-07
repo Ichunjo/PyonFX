@@ -5,11 +5,6 @@ import win32con
 import win32gui
 import win32ui
 
-if TYPE_CHECKING:
-    from win32helper.win32typing import PyCFont  # type: ignore
-else:
-    PyCFont = Any
-
 from .._logging import logger
 from ..shape import DrawingCommand, DrawingProp, Shape
 
@@ -23,8 +18,6 @@ from ._abstract import _AbstractFont, _Metrics, _TextExtents
 
 class Font(_AbstractFont):
     _metrics: dict[str, float]
-
-    pycfont: PyCFont
 
     def __init__(self, style: Style) -> None:
         super().__init__(style)
@@ -48,16 +41,16 @@ class Font(_AbstractFont):
             "out precision": win32con.OUT_TT_PRECIS,
             "clip precision": win32con.CLIP_DEFAULT_PRECIS,
             "quality": win32con.ANTIALIASED_QUALITY,
-            "pitch and family": int(win32con.DEFAULT_PITCH + win32con.FF_DONTCARE),  # type: ignore[operator]
+            "pitch and family": int(win32con.DEFAULT_PITCH + win32con.FF_DONTCARE),
             "name": self.style.fontname,
         }
         self.pycfont = win32ui.CreateFont(font_spec)
-        win32gui.SelectObject(self.dc, self.pycfont.GetSafeHandle())
+        win32gui.SelectObject(self.dc, self.pycfont.GetSafeHandle())  # type: ignore[no-untyped-call]
         # Calculate metrics
-        self._metrics = win32gui.GetTextMetrics(self.dc)
+        self._metrics = win32gui.GetTextMetrics(self.dc)  # type: ignore[no-untyped-call,call-arg]
 
     def __del__(self) -> None:
-        win32gui.DeleteObject(self.pycfont.GetSafeHandle())
+        win32gui.DeleteObject(self.pycfont.GetSafeHandle())  # type: ignore[no-untyped-call]
         win32gui.DeleteDC(self.dc)
         self.text_extents.cache_clear()
         self.text_to_shape.cache_clear()
@@ -91,14 +84,16 @@ class Font(_AbstractFont):
 
         # Add path to device context
         win32gui.BeginPath(self.dc)
-        win32gui.ExtTextOut(self.dc, 0, 0, 0x0, None, text)
+        win32gui.ExtTextOut(self.dc, 0, 0, 0x0, None, text)  # type: ignore[call-arg, arg-type]
         win32gui.EndPath(self.dc)
         # Getting Path produced by Microsoft API
         points, type_points = win32gui.GetPath(self.dc)
 
         # Checking for errors
         if len(points) == 0 or len(points) != len(type_points):
-            raise RuntimeError(f"{self.__class__.__name__}: no points detected or mismatch length between points and type_points")
+            raise RuntimeError(
+                f"{self.__class__.__name__}: no points detected or mismatch length between points and type_points"
+            )
 
         # Defining variables
         PT_MOVE, PT_LINE, PT_BÉZIER = win32con.PT_MOVETO, win32con.PT_LINETO, win32con.PT_BEZIERTO

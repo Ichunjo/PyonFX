@@ -138,7 +138,9 @@ class Font(_AbstractFont):
                 elif ptype == 1:
                     cmds.append(DC(l, (ppath[0] + x_add, ppath[1])))
                 elif ptype == 2:
-                    cmds.append(DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5])))
+                    cmds.append(
+                        DC(b, (ppath[0] + x_add, ppath[1]), (ppath[2] + x_add, ppath[3]), (ppath[4] + x_add, ppath[5]))
+                    )
 
             self.context.new_path()
             curr_width += self.text_extents(char)[0]
