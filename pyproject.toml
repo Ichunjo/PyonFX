@@ -43,7 +43,7 @@ image = ["scikit-image>=0.25.0"]
 
 [dependency-groups]
 dev = [
-    "mypy>=2.3.0, <2.4.0",
+    "mypy>=2.4.0, <2.5.0",
     "ruff>=0.16.0, <0.17.0",
     "pytest>=9.0.0, <10.0.0",
     "pytest_check>=2.6.0",
